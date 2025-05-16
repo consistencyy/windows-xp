@@ -66,28 +66,11 @@ A replication of the awesome Windows-XP in your browser made by using only the w
 </table>
 
 
-## Contributing
-
-### Step 1
-- :fork_and_knife: Fork this repository
-
-### Step 2
-- :dancers: Clone this repo to your local machine using ```git clone https://github.com/faisalakhtar/windows-xp.git```
-
-### Step 3
-- **HACK AWAY** :hammer: :hammer: :hammer:
-
-### Step 4
-- :repeat: Create a pull request using https://github.com/faisalakhtar/windows-xp/compare/
-
-
 ## License
 
 [![License](https://img.shields.io/badge/license-Mozilla%20Public%20License%20Version%202.0-blue?logo=mozilla)](LICENSE)
 
 Full license: [Mozilla Public License V2.0](LICENSE)
-
-Translation: _Ofcourse you can use this for you project! Just make sure to say where you got this from :)_
 
 
 ## Acknowledgement
