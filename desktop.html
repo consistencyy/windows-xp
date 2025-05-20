@@ -1,68 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no" name="viewport">
-    <link rel="stylesheet" type="text/css" href="assets/index.css">
-    <link rel="stylesheet" type="text/css" href="assets/desktop.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="assets/desktop.css" />
+  <title>XP Desktop</title>
 </head>
 
 <body>
+  <!-- BEGIN #desktop-root -->
+  <div id="desktop-root">
+<!-- ✦ Parallax background layers -->
+<div class="parallax back">
+  <video src="assets/back.webm" autoplay loop muted playsinline></video>
+</div>
+<div class="parallax mid">
+  <video src="assets/mid.webm" autoplay loop muted playsinline></video>
+</div>
+<div class="parallax fore">
+  <video src="assets/fore.webm" autoplay loop muted playsinline></video>
+</div>
+    <!-- ICONS -->
     <div class="desktop">
-        <div class="icon faisal-akhtar">
-            <img src="assets/documents.png">
-            <div class="icon-name">Faisal Akhtar</div>
-        </div>
-        <div class="icon my-computer">
-            <img src="assets/computer.png">
-            <div class="icon-name">My Computer</div>
-        </div>
-        <div class="icon my-network">
-            <img src="assets/network.png">
-            <div class="icon-name">My Network</div>
-        </div>
-        <div class="icon note-pad">
-            <img src="assets/notepad.png">
-            <div class="icon-name">ReadME.txt</div>
-        </div>
-        <div class="icon recycle-bin">
-            <img src="assets/recycle.png">
-            <div class="icon-name">Recycle Bin</div>
-        </div>
+      <div class="icon faisal-akhtar">
+        <img alt="" src="assets/documents.png" />
+        <div class="icon-name">Conor McCutcheon</div>
+      </div>
+      <div class="icon my-computer">
+        <img alt="" src="assets/computer.png" />
+        <div class="icon-name">Product/Brand Design</div>
+      </div>
+      <div class="icon my-network">
+        <img alt="" src="assets/network.png" />
+        <div class="icon-name">Animation &amp; Motion Graphics</div>
+      </div>
+      <div class="icon note-pad">
+        <img alt="" src="assets/filmmaking.png" />
+        <div class="icon-name">Filmmaking</div>
+      </div>
+      <div class="icon consistency">
+        <img alt="" src="assets/youtube.png"/>
+        <div class="icon-name">Consistency</div>
+      </div>
+      <div class="icon mixed-media">
+        <img alt="" src="assets/mixed.png" />
+        <div class="icon-name">Mixed Media</div>
+      </div>
+      <div class="icon recycle-bin" onclick="openMusicPlayer()">
+        <img alt="" src="assets/music.png" />
+        <div class="icon-name">what i'm listening to</div>
+      </div>
     </div>
 
-    <div class="window">
-        <div class="title-bar">
-            <div><img src="assets/notepad.png"> ReadME.txt</div>
-            <div class="controls">
-                <button class="cls"></button>
-                <button class="max"></button>
-                <button class="min"></button>
-            </div>
+    <!-- TASKBAR -->
+    <div class="taskbar" style="position: absolute; bottom: 0; left: 0; width: 100%;">
+      <div class="start-button">
+        <img src="assets/logo.svg" alt="Start Icon" />
+        start
+      </div>
+
+      <!-- START MENU -->
+      <div id="start-menu" class="start-menu">
+        <div class="menu-left">
+          <div class="menu-item"><img src="assets/computer.png" />My Computer</div>
+          <div class="menu-item"><img src="assets/network.png" />My Network Places</div>
+          <div class="menu-item"><img src="assets/folder.png" />Documents</div>
+          <div class="menu-item"><img src="assets/network.png" />Network Drives</div>
+          <div class="menu-item"><img src="assets/settings.png" />System Settings</div>
+          <div class="menu-item"><img src="assets/filmmaking.png" />Windows Movie Maker</div>
+          <div class="menu-item"><img src="assets/note.png" />Notepad</div>
+          <div class="menu-item"><img src="assets/paint.png" />MS Paint</div>
         </div>
-        <div class="menu-bar">
-            <span>File</span>
-            <span>Edit</span>
-            <span>Format</span>
-            <span>View</span>
-            <span>Help</span>
+
+        <div class="menu-right">
+          <div class="menu-item"><img src="assets/youtube.png" />Consistency</div>
+          <div class="menu-item"><img src="assets/mixed.png" />Mixed Media</div>
+          <div class="menu-item"><img src="assets/documents.png" />Portfolio Projects</div>
+          <div class="menu-item"><img src="assets/github.png" />Code Archive</div>
+          <div class="menu-item"><img src="assets/panel.png" />Control Panel</div>
+
+          <div class="menu-subrow">
+            <div class="menu-item small"><img src="assets/help.png" />Help</div>
+            <div class="menu-item small"><img src="assets/settings.png" />Settings</div>
+            <div class="menu-item small"><img src="assets/logout.png" />Log Off</div>
+          </div>
+
+          <div class="menu-profile">
+            <img src="assets/profile.png" alt="User profile" />
+            <span>Conor</span>
+          </div>
         </div>
-        <textarea></textarea>
+      </div>
+
+      <!-- TASKBAR TABS -->
+      <div class="opened-tabs">
+        <div class="open-tab" id="consistency-tab">
+          <img src="assets/ie.png" />Internet Explorer
+        </div>
+        <div class="open-tab" id="mixed-tab">
+          <img src="assets/folder.png" />My Files
+        </div>
+        <div class="open-tab music" id="music-tab" style="display: none;">
+          <img src="assets/music.png" />what i'm listening to
+        </div>
+      </div>
+
+      <div class="time">11:20 PM</div>
     </div>
+    <!-- END TASKBAR -->
 
-    <div class="taskbar">
-        <div class="start-button"><img src="assets/logo.svg"> start</div>
-
-        <div class="opened-tabs">
-            <div class="open-tab" onclick="window.open('https://faisalakhtar.github.io/')"><img src="assets/documents.png"> Faisal Akhtar</div>
-            <div class="open-tab" onclick="window.open('https://github.com/faisalAkhtar/')"><img src="assets/computer.png"> My Computer</div>
-            <div class="open-tab" onclick="window.open('https://twitter.com/faisallakhtarr/')"><img src="assets/network.png"> My Network</div>
-            <div class="open-tab readme active"><img src="assets/notepad.png"> ReadME.txt</div>
-        </div>
-
-        <div class="time">11:20 PM</div>
+<!-- MUSIC PLAYER WINDOW -->
+<div class="music-player" id="music-player" style="display: none;">
+  <div class="title-bar music-title-bar" id="music-drag-handle">
+    <span class="drag-title">Windows Media Player</span>
+    <button class="close-button" id="close-player">✕</button>
+  </div>
+  <div class="music-body">
+    <div id="track-cover-container">
+      <img id="track-cover-img" src="assets/cover-placeholder.png" style="display: block;" />
+      <video id="track-cover-video" muted autoplay loop style="display: none;"></video>
     </div>
+    <div id="track-title">Track Title</div>
+    <audio id="audio-player"></audio>
+    <div class="controls">
+      <button id="prev-btn">⏮</button>
+      <button id="play-btn">▶</button>
+      <button id="next-btn">⏭</button>
+    </div>
+    <div class="volume-control">
+      <label for="volume-slider">Volume</label>
+      <input id="volume-slider" max="1" min="0" step="0.01" type="range" value="1" />
+    </div>
+  </div>
+</div>
 
-    <script src="assets/desktop.js"></script>
+    <!-- BROWSER WINDOW -->
+    <div class="window hidden" id="browser-window">
+      <div class="window-header">
+          <div class="ie-toolbar">
+          <img src="assets/bbutton.png" id="ie-back-button" title="Back" />
+          <input class="spoof-search" type="text" placeholder="Search..." disabled />
+          </div>
+        <span class="window-title">Internet Explorer</span>
+        <div class="window-controls">
+          <button onclick="minimizeBrowser()">&#9472;</button>
+          <button onclick="closeBrowser()">&#10005;</button>
+        </div>
+      </div>
+      <div class="window-content">
+        <div id="fake-loading">
+        <img src="assets/load.gif" alt="Connecting..." />
+        <p>Connecting to the Internet...</p>
+      </div>
+<!--meow-->
+<div id="internet-home" class="internet-home hidden">
+
+  <div class="internet-logo">
+    <img src="assets/moogollogo.png" alt="Internet Logo" />
+  </div>
+
+<a href="https://www.google.com" target="_blank" class="internet-search">
+  <img src="assets/search.png" alt="Search the web..." />
+</a>
+
+  <div class="bookmark-grid">
+    <div class="bookmark" onclick="openChannel()">
+      <img src="assets/ytlogo.png" />
+      <span>Youtube Channel</span>
+    </div>
+    <div class="bookmark">
+      <img src="assets/about.png" />
+      <span>Wikipedia</span>
+    </div>
+    <div class="bookmark">
+      <img src="assets/file.png" />
+      <span>Projects</span>
+    </div>
+  </div>
+</div>
+      <!-- BEGIN Youtube screen -->
+<div id="mock-youtube" class="youtube-mock hidden">
+  <div class="youtube-header">
+    <img src="assets/profile-banner.png" class="banner" />
+    <div class="channel-info">
+      <img src="assets/profile-pic.png" class="profile-pic" />
+      <div class="channel-meta">
+        <h2>Consistencyy</h2>
+        <span>856 subscribers</span>
+      </div>
+    </div>
+    <div class="youtube-tabs">
+      <div class="yt-tab active" data-target="yt-videos">Videos</div>
+      <div class="yt-tab" data-target="yt-playlists">Playlists</div>
+    </div>
+  </div>
+
+  <div id="yt-videos" class="yt-section video-grid">
+    <!-- Repeat for 9 thumbnails -->
+    <div class="video-thumb"><img src="assets/thumb1.jpg"><p>VG Concept Pixel Art</p></div>
+    <div class="video-thumb"><img src="assets/thumb2.jpg"><p>Eminem If he was RESONANCE — MUSIC VIDEO</p></div>
+    <div class="video-thumb"><img src="assets/thumb3.jpg"><p>Jean Dawson — POWER FREAKS (UNOFFICIAL VISUALIZER)</p></div>
+    <div class="video-thumb"><img src="assets/thumb4.jpg"><p>world$tar money - channel bumper</p></div>
+    <div class="video-thumb"><img src="assets/thumb5.jpg"><p>KENDRICK LAMAR - FOR SALE? — UNOFFICIAL MUSIC VIDEO</p></div>
+    <div class="video-thumb"><img src="assets/thumb6.jpg"><p>TAKE OFF.</p></div>
+    <div class="video-thumb"><img src="assets/thumb7.jpg"><p>somethings always wrong with his brain</p></div>
+    <div class="video-thumb"><img src="assets/thumb8.jpg"><p>WHATS YOUR DEFINITION OF LOVE?</p></div>
+    <div class="video-thumb"><img src="assets/thumb9.jpg"><p>the burn marks on my memories never fade</p></div>
+  </div>
+
+  <div id="yt-playlists" class="yt-section video-grid" style="display: none;">
+    <div class="video-thumb"><img src="assets/thumb1.jpg"><p>FAVORITE SONGS OAT</p></div>
+    <div class="video-thumb"><img src="assets/thumb4.jpg"><p>ANIMATIONS</p></div>
+    <div class="video-thumb"><img src="assets/thumb7.jpg"><p>MUSIC VIDEOS</p></div>
+  </div>
+</div>
+    <!-- END #mock-youtube -->
+
+  </div>
+  <!-- END #desktop-root -->
+
+  <script src="assets/desktop.js" defer></script>
 </body>
 </html>

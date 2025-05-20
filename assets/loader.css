@@ -43,7 +43,7 @@ body {
 .logo .xp {
     font-size: 300%;
     font-weight: bold;
-    color: #FF3300;
+    color: #e8641c;
     float: left;
     margin-top: -20px;
 }
@@ -80,14 +80,14 @@ body {
 .title {
     font-family: 'arial-black', serif;
     position: absolute;
-    bottom: 12.5%;
-    right: 7.5%;
+    bottom: 6%;
+    right: 20%;
     font-weight: bold;
     font-style: italic;
 }
 
 .copy {
     position: absolute;
-    bottom: 12.5%;
-    left: 7.5%;
+    bottom: 6%;
+    left: 20%;
 }
