@@ -45,8 +45,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 
 /* specialised absolute‑positioned icons on bottom‑right stack */
 .recycle-bin{position:absolute;right:16px;bottom:48px;}
-.consistency {position:absolute;right:16px;bottom:168px;}   /* 120 px above recycle bin */
-.mixed-media {position:absolute;right:16px;bottom:288px;}   /* another 120 px above */
+.consistency {position:absolute;right:16px;bottom:168px;}   /* 120 px above recycle bin */ /* another 120 px above */
 
 /******************** TASKBAR ********************/
 .taskbar{
@@ -69,10 +68,6 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 @media(max-width:825px){.open-tab:nth-child(3){display:none;}}
 @media(max-width:675px){.open-tab:nth-child(2){display:none;}}
 @media(max-width:525px){.open-tab:nth-child(1){display:none;}}
-
-/******************** OPTIONAL – hide README window ********************/
-.readme{display:none!important;}
-
 /******************** JS LIVE‑SCALER ********************/
 
 .parallax {
@@ -117,7 +112,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   pointer-events: none;
   transform: translateY(2px);
   transition: opacity 0.25s ease, transform 0.25s ease;
-  z-index: 999;
+  z-index: 9999;
 }
 
 .start-menu.visible {
@@ -195,11 +190,12 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 
 #music-player {
   position: absolute !important;
+  top: 100px;
   width: 280px !important;
   background: #fcfcfc;
   border: 2px solid #003d90;
   box-shadow: 2px 2px 6px #0008;
-  z-index: 9999;
+  z-index: 8999;
   display: none;
   flex-direction: column;
   user-select: none;
@@ -704,3 +700,310 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   color: #222;
 }
 
+/* README.TXT WINDOW STYLES */
+.readme-window {
+  position: absolute;
+  width: 800px;
+  height: 540px;
+  top: 20%;
+  background: #fcfcfc;
+  border: 2px solid #003d90;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  font-family: Tahoma, sans-serif;
+}
+
+.readme-window .title-bar {
+  background: linear-gradient(to bottom, #0066cc, #004c99);
+  color: white;
+  padding: 6px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.readme-window .close-button {
+  background: red;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  border-radius: 2px;
+}
+
+.readme-window .readme-body {
+  padding: 12px;
+}
+
+.readme-window textarea {
+  width: 100%;
+  height: 350px;
+  border: none;
+  resize: none;
+  font-family: Consolas, monospace;
+  font-size: 13px;
+  background-color: #fff;
+  color: #000;
+}
+
+/* ---------- FILE EXPLORER ADDITIONS ---------- */
+
+.fwindow {
+  position: absolute;
+  top: 150px;
+  left: 40px;
+  width: 880px;
+  height: 420px;
+  background: #ffffff;
+  border: 2px solid #000080;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.fwindow-header {
+  background: #0a246a;
+  color: white;
+  padding: 6px 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-family: Tahoma, sans-serif;
+  font-size: 14px;
+}
+
+.explorer-view {
+  padding: 12px;
+  display: none;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.project-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.explorer-view h3 {
+  font-size: 16px;
+  margin: 8px 0;
+}
+
+.fback-button {
+  background: #f0f0f0;
+  border: 1px solid #999;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 13px;
+  margin-bottom: 8px;
+  height: 32px;
+  width: 64px;
+}
+
+.fback-button:hover {
+  background: #e0e0e0;
+}
+
+#file-explorer-root {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;   /* center horizontally */
+  align-items: center;       /* center vertically */
+  gap: 24px;
+  padding: 32px;
+  min-height: 300px;
+  text-align: center;
+}
+
+/* ---------- PROJECT INFO WINDOW ---------- */
+
+#project-info-content,
+.fwindow-content {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #fff;
+  color: #000;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.fwindow-content h2 {
+  font-size: 18px;
+  margin-top: 0;
+}
+
+.fwindow-content p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.fwindow-content img {
+  max-width: 100%;
+  border: 1px solid #ccc;
+  margin: 12px 0;
+}
+
+/* ---------- ICONS (reused for project icons) ---------- */
+
+.ficon {
+  width: 72px;
+  text-align: center;
+  cursor: default;
+}
+
+.ficon:hover {
+  background-color: #dce6f7; /* XP-style light blue */
+  border: 1px solid #a3c2f2;
+  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+.ficon img {
+  width: 64px;
+  height: 64px;
+}
+
+.ficon-name {
+  font-size: 12px;
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden; 
+  text-overflow: ellipsis;
+}
+
+/* ---------- TABS AND CLOSE BUTTONS ---------- */
+
+.fwindow-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.red-close {
+  background: red;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 2px;
+}
+
+.fwindow-content-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.wikipedia-mock {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  font-family: Georgia, serif;
+  background-color: #f9f9f9;
+  color: #202122;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.wiki-header {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 16px;
+}
+
+.wiki-title {
+  font-size: 28px;
+  margin: 0;
+}
+
+.wiki-subtitle {
+  font-size: 14px;
+  color: #555;
+  margin-top: 4px;
+}
+
+.wiki-main {
+  display: flex;
+  gap: 24px;
+}
+
+.wiki-sidebar {
+  flex: 0 0 200px;
+}
+
+.wiki-profile-pic {
+  width: 100%;
+  border: 1px solid #aaa;
+  margin-bottom: 12px;
+}
+
+.wiki-infobox {
+  background-color: #ffffff;
+  border: 1px solid #aaa;
+  font-size: 14px;
+  padding: 8px;
+}
+
+.wiki-infobox h3 {
+  margin-top: 0;
+}
+
+.wiki-infobox table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.wiki-infobox td {
+  padding: 4px;
+  vertical-align: top;
+}
+
+.wiki-content {
+  flex: 1;
+}
+
+.wiki-content h2 {
+  margin-top: 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.wiki-content p, .wiki-content ul {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.wiki-content ul {
+  padding-left: 20px;
+}
+
+#mock-video-player {
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.video-header button {
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
+
+.video-frame-container {
+  display: flex;
+  justify-content: center;
+}
+
+.video-description {
+  padding: 0 1.5rem;
+}

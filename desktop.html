@@ -22,35 +22,31 @@
 </div>
     <!-- ICONS -->
     <div class="desktop">
-      <div class="icon faisal-akhtar">
+      <div class="icon conor-m">
         <img alt="" src="assets/documents.png" />
         <div class="icon-name">Conor McCutcheon</div>
       </div>
-      <div class="icon my-computer">
-        <img alt="" src="assets/computer.png" />
-        <div class="icon-name">Product/Brand Design</div>
+      <div class="icon internet-explorer">
+        <img alt="" src="assets/ie.png" />
+        <div class="icon-name">Internet Explorer</div>
       </div>
-      <div class="icon my-network">
-        <img alt="" src="assets/network.png" />
-        <div class="icon-name">Animation &amp; Motion Graphics</div>
+        <div class="icon Projects">
+        <img alt="" src="assets/folder.png" />
+        <div class="icon-name">Projects</div>
       </div>
-      <div class="icon note-pad">
-        <img alt="" src="assets/filmmaking.png" />
-        <div class="icon-name">Filmmaking</div>
-      </div>
-      <div class="icon consistency">
-        <img alt="" src="assets/youtube.png"/>
+      <div class="icon consistency" onclick="openConsistency()">
+        <img alt="" src="assets/youtube.png" />
         <div class="icon-name">Consistency</div>
       </div>
       <div class="icon mixed-media">
-        <img alt="" src="assets/mixed.png" />
-        <div class="icon-name">Mixed Media</div>
-      </div>
-      <div class="icon recycle-bin" onclick="openMusicPlayer()">
-        <img alt="" src="assets/music.png" />
-        <div class="icon-name">what i'm listening to</div>
-      </div>
-    </div>
+        <img alt="" src="assets/notepad.png" />
+        <div class="icon-name">Readme.txt</div>
+</div>
+<div class="icon recycle-bin">
+  <img alt="" src="assets/music.png" />
+  <div class="icon-name">what i'm listening to</div>
+</div>
+</div>
 
     <!-- TASKBAR -->
     <div class="taskbar" style="position: absolute; bottom: 0; left: 0; width: 100%;">
@@ -92,22 +88,54 @@
         </div>
       </div>
 
-      <!-- TASKBAR TABS -->
-      <div class="opened-tabs">
-        <div class="open-tab" id="consistency-tab">
-          <img src="assets/ie.png" />Internet Explorer
-        </div>
-        <div class="open-tab" id="mixed-tab">
-          <img src="assets/folder.png" />My Files
-        </div>
-        <div class="open-tab music" id="music-tab" style="display: none;">
-          <img src="assets/music.png" />what i'm listening to
-        </div>
-      </div>
+<!-- TASKBAR TABS -->
+<div class="opened-tabs">
+  <div class="open-tab" id="consistency-tab">
+    <img src="assets/ie.png" />Internet Explorer
+  </div>
+<div class="open-tab" id="mixed-tab">
+  <img src="assets/folder.png" />My Files
+</div>
+  <div class="open-tab music" id="music-tab" style="display: none;">
+    <img src="assets/music.png" />what i'm listening to
+  </div>
+  <div class="open-tab" id="readme-tab" style="display: flex;">
+    <img src="assets/note.png" />readme.txt
+  </div>
+</div>
 
       <div class="time">11:20 PM</div>
     </div>
     <!-- END TASKBAR -->
+
+<!-- README.TXT WINDOW -->
+<div class="readme-window window" id="readme-window" style="display: flex;">
+  <div class="title-bar" id="readme-drag-handle">
+    <span>readme.txt - Notepad</span>
+    <button class="close-button" id="readme-close">✕</button>
+  </div>
+  <div class="readme-body">
+    <textarea readonly>
+🎨 Welcome to My Interactive Portfolio
+This is a creative portfolio designed to look and function like a classic Windows XP desktop.
+
+Navigate it like a real computer:
+
+Double-click icons to open folders and windows
+
+Explore projects across Design, Animation, and Filmmaking
+
+Use the Start Menu and browser for even more content
+
+Each project lives inside a custom-built, draggable window.
+Everything was designed and coded by me — with intention, detail, and a bit of nostalgia.
+
+Thanks for checking it out.
+— Conor
+    </textarea>
+  </div>
+</div>
+<!-- END README.TXT WINDOW -->
 
 <!-- MUSIC PLAYER WINDOW -->
 <div class="music-player" id="music-player" style="display: none;">
@@ -134,12 +162,126 @@
   </div>
 </div>
 
-    <!-- BROWSER WINDOW -->
+<!-- FILE EXPLORER WINDOW -->
+<div class="fwindow" id="file-explorer-window" style="display: none;">
+  <div class="fwindow-header" id="file-explorer-drag-handle">
+    <span>My Files</span>
+    <div class="fwindow-controls">
+      <button id="file-explorer-close" class="red-close">✕</button>
+    </div>
+  </div>
+
+  <!-- FILE EXPLORER CONTENT (all inside the same window) -->
+
+  <!-- Root Folder -->
+  <div class="fwindow-content explorer-view" id="file-explorer-root">
+    <div class="ficon" onclick="openCategory('design')">
+      <img src="assets/computer.png" />
+      <div class="ficon-name">Product/Brand Design</div>
+    </div>
+    <div class="ficon" onclick="openCategory('motion')">
+      <img src="assets/network.png" />
+      <div class="ficon-name">Animation & Motion Graphics</div>
+    </div>
+    <div class="ficon" onclick="openCategory('film')">
+      <img src="assets/filmmaking.png" />
+      <div class="ficon-name">Filmmaking</div>
+    </div>
+  </div>
+
+  <!-- Categories -->
+  <div class="fwindow-content explorer-view" id="category-design" style="display: none;">
+    <button class="fback-button" onclick="backToRoot()">⬅ Back</button>
+    <h3>Product / Brand Design</h3>
+    <div class="project-grid">
+      <div class="ficon" onclick="openProject('design-1')"><img src="assets/project.png" /><div class="ficon-name">Brand Identity</div></div>
+      <div class="ficon" onclick="openProject('design-2')"><img src="assets/project.png" /><div class="ficon-name">Package Design</div></div>
+      <div class="ficon" onclick="openProject('design-3')"><img src="assets/project.png" /><div class="ficon-name">Typography Study</div></div>
+    </div>
+  </div>
+
+  <div class="fwindow-content explorer-view" id="category-motion" style="display: none;">
+    <button class="fback-button" onclick="backToRoot()">⬅ Back</button>
+    <h3>Animation & Motion Graphics</h3>
+    <div class="project-grid">
+      <div class="ficon" onclick="openProject('motion-1')"><img src="assets/project.png" /><div class="ficon-name">Visual Loop</div></div>
+      <div class="ficon" onclick="openProject('motion-2')"><img src="assets/project.png" /><div class="ficon-name">Kinetic Type</div></div>
+      <div class="ficon" onclick="openProject('motion-3')"><img src="assets/project.png" /><div class="ficon-name">Title Sequence</div></div>
+    </div>
+  </div>
+
+  <div class="fwindow-content explorer-view" id="category-film" style="display: none;">
+    <button class="fback-button" onclick="backToRoot()">⬅ Back</button>
+    <h3>Filmmaking</h3>
+    <div class="project-grid">
+      <div class="ficon" onclick="openProject('film-1')"><img src="assets/project.png" /><div class="ficon-name">Short Film</div></div>
+      <div class="ficon" onclick="openProject('film-2')"><img src="assets/project.png" /><div class="ficon-name">Documentary</div></div>
+      <div class="ficon" onclick="openProject('film-3')"><img src="assets/project.png" /><div class="ficon-name">Cinematography Reel</div></div>
+    </div>
+  </div>
+
+  <!-- Project Views (inside same container) -->
+  <div class="fwindow-content explorer-view project-view" id="project-design-1" style="display: none;">
+    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
+    <h2>Brand Identity</h2>
+    <p>Description and visuals for Brand Identity</p>
+  </div>
+
+  <div class="fwindow-content explorer-view project-view" id="project-design-2" style="display: none;">
+    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
+    <h2>Package Design</h2>
+    <p>Description and visuals for Package Design</p>
+  </div>
+
+  <div class="fwindow-content explorer-view project-view" id="project-design-3" style="display: none;">
+    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
+    <h2>Typography Study</h2>
+    <p>Description and visuals for Typography Study</p>
+  </div>
+
+  <div class="fwindow-content explorer-view project-view" id="project-motion-1" style="display: none;">
+    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
+    <h2>Visual Loop</h2>
+    <p>Description and visuals for Visual Loop</p>
+  </div>
+
+  <div class="fwindow-content explorer-view project-view" id="project-motion-2" style="display: none;">
+    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
+    <h2>Kinetic Type</h2>
+    <p>Description and visuals for Kinetic Type</p>
+  </div>
+
+  <div class="fwindow-content explorer-view project-view" id="project-motion-3" style="display: none;">
+    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
+    <h2>Title Sequence</h2>
+    <p>Description and visuals for Title Sequence</p>
+  </div>
+
+  <div class="fwindow-content explorer-view project-view" id="project-film-1" style="display: none;">
+    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
+    <h2>Short Film</h2>
+    <p>Description and visuals for Short Film</p>
+  </div>
+
+  <div class="fwindow-content explorer-view project-view" id="project-film-2" style="display: none;">
+     <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
+    <h2>Documentary</h2>
+    <p>Description and visuals for Documentary</p>
+  </div>
+
+  <div class="fwindow-content explorer-view project-view" id="project-film-3" style="display: none;">
+    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
+    <h2>Cinematography Reel</h2>
+    <p>Description and visuals for Cinematography Reel</p>
+  </div>
+</div>
+
+<!-- BROWSER WINDOW -->
     <div class="window hidden" id="browser-window">
       <div class="window-header">
           <div class="ie-toolbar">
           <img src="assets/bbutton.png" id="ie-back-button" title="Back" />
-          <input class="spoof-search" type="text" placeholder="Search..." disabled />
+          <input class="spoof-search" type="text" placeholder="Search..." />
           </div>
         <span class="window-title">Internet Explorer</span>
         <div class="window-controls">
@@ -152,14 +294,14 @@
         <img src="assets/load.gif" alt="Connecting..." />
         <p>Connecting to the Internet...</p>
       </div>
-<!--meow-->
+<!--internet browser-->
 <div id="internet-home" class="internet-home hidden">
 
   <div class="internet-logo">
     <img src="assets/moogollogo.png" alt="Internet Logo" />
   </div>
 
-<a href="https://www.google.com" target="_blank" class="internet-search">
+<a target="_blank" class="internet-search">
   <img src="assets/search.png" alt="Search the web..." />
 </a>
 
@@ -168,11 +310,11 @@
       <img src="assets/ytlogo.png" />
       <span>Youtube Channel</span>
     </div>
-    <div class="bookmark">
+    <div class="bookmark" id="wikipedia-bookmark">
       <img src="assets/about.png" />
       <span>Wikipedia</span>
     </div>
-    <div class="bookmark">
+    <div class="bookmark" id="projects-bookmark">
       <img src="assets/file.png" />
       <span>Projects</span>
     </div>
@@ -216,9 +358,68 @@
 </div>
     <!-- END #mock-youtube -->
 
+<!-- BEGIN: Mock YouTube Video Player -->
+<div id="mock-video-player" class="youtube-mock hidden">
+  <div class="video-header">
+    <button onclick="closeVideoPlayer()">⬅ Back to Channel</button>
+  </div>
+  <div class="video-frame-container">
+    <iframe id="yt-iframe" width="100%" height="500" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <div class="video-description">
+    <h2 id="video-title">Loading title...</h2>
+    <p id="video-caption">Loading description...</p>
+  </div>
+</div>
+<!-- END: Mock YouTube Video Player -->
+
+<!-- BEGIN Wikipedia Mock Page -->
+<div id="mock-wikipedia" class="wikipedia-mock hidden">
+  <div class="wiki-header">
+    <h1 class="wiki-title">Consistencyy</h1>
+    <p class="wiki-subtitle">From the Mock Internet Encyclopedia</p>
+  </div>
+
+  <div class="wiki-main">
+    <div class="wiki-sidebar">
+      <img src="assets/profile-pic.png" class="wiki-profile-pic" />
+      <div class="wiki-infobox">
+        <h3>About</h3>
+        <table>
+          <tr><td><strong>Born</strong></td><td>July 7, 199x</td></tr>
+          <tr><td><strong>Alias</strong></td><td>Consistencyy</td></tr>
+          <tr><td><strong>Profession</strong></td><td>Multidisciplinary Artist</td></tr>
+          <tr><td><strong>Specialties</strong></td><td>Motion Graphics, Filmmaking, Design</td></tr>
+          <tr><td><strong>Website</strong></td><td><a href="#">consistencyy.art</a></td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="wiki-content">
+      <h2>Overview</h2>
+      <p><strong>Consistencyy</strong> is a creative persona and multidisciplinary artist known for vivid storytelling across motion graphics, visual design, and film. His works often blend nostalgia, glitch art, and emotional resonance to produce a unique digital language.</p>
+
+      <h2>Career</h2>
+      <p>Starting in independent animation and progressing into branded content, short films, and visual identities, Consistencyy has built a portfolio showcasing both artistic depth and strategic design thinking.</p>
+
+      <h2>Style</h2>
+      <p>Influenced by analog aesthetics, VHS textures, anime, and urban grit, his work often employs layered compositions, symbolic editing, and glitch-based rhythms to evoke emotional undercurrents.</p>
+
+      <h2>Contact</h2>
+      <ul>
+        <li><strong>Email:</strong> hello@consistencyy.art</li>
+        <li><strong>Instagram:</strong> <a href="#">@consistencyy</a></li>
+        <li><strong>Behance:</strong> <a href="#">behance.net/consistencyy</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- END Wikipedia Mock Page -->
+
   </div>
   <!-- END #desktop-root -->
 
   <script src="assets/desktop.js" defer></script>
+  
 </body>
 </html>
