@@ -22,7 +22,7 @@
 </div>
     <!-- ICONS -->
     <div class="desktop">
-      <div class="icon conor-m">
+      <div class="icon conor-m" id="conor-icon">
         <img alt="" src="assets/documents.png" />
         <div class="icon-name">Conor McCutcheon</div>
       </div>
@@ -100,7 +100,7 @@
     <img src="assets/music.png" />what i'm listening to
   </div>
   <div class="open-tab" id="readme-tab" style="display: flex;">
-    <img src="assets/note.png" />readme.txt
+    <img src="assets/notepad.png" />readme.txt
   </div>
 </div>
 
@@ -286,13 +286,14 @@ Thanks for checking it out.
         <span class="window-title">Internet Explorer</span>
         <div class="window-controls">
           <button onclick="minimizeBrowser()">&#9472;</button>
-          <button onclick="closeBrowser()">&#10005;</button>
+          <button onclick="closeBrowser()">✖</button>
         </div>
       </div>
       <div class="window-content">
         <div id="fake-loading">
         <img src="assets/load.gif" alt="Connecting..." />
         <p>Connecting to the Internet...</p>
+      </div>
       </div>
 <!--internet browser-->
 <div id="internet-home" class="internet-home hidden">
@@ -301,9 +302,11 @@ Thanks for checking it out.
     <img src="assets/moogollogo.png" alt="Internet Logo" />
   </div>
 
-<a target="_blank" class="internet-search">
-  <img src="assets/search.png" alt="Search the web..." />
-</a>
+<div class="internet-search-bar">
+  <input type="text" id="internet-search-input" placeholder="Surf the web..." />
+  <button id="internet-search-btn">Search</button>
+  <button id="internet-lucky-btn">I'm Feeling Lucky</button>
+</div>
 
   <div class="bookmark-grid">
     <div class="bookmark" onclick="openChannel()">
@@ -323,40 +326,95 @@ Thanks for checking it out.
       <!-- BEGIN Youtube screen -->
 <div id="mock-youtube" class="youtube-mock hidden">
   <div class="youtube-header">
-    <img src="assets/profile-banner.png" class="banner" />
+    <img src="assets/profile-banner.jpg" class="banner" />
     <div class="channel-info">
-      <img src="assets/profile-pic.png" class="profile-pic" />
+      <img src="assets/profile-pic.jpg" class="profile-pic" />
       <div class="channel-meta">
         <h2>Consistencyy</h2>
-        <span>856 subscribers</span>
+        <span>878 subscribers</span>
       </div>
     </div>
     <div class="youtube-tabs">
-      <div class="yt-tab active" data-target="yt-videos">Videos</div>
+      <div class="yt-tab active" data-target="yt-home">Home</div>
+      <div class="yt-tab" data-target="yt-videos-2">Videos</div>
       <div class="yt-tab" data-target="yt-playlists">Playlists</div>
     </div>
   </div>
 
-  <div id="yt-videos" class="yt-section video-grid">
-    <!-- Repeat for 9 thumbnails -->
-    <div class="video-thumb"><img src="assets/thumb1.jpg"><p>VG Concept Pixel Art</p></div>
-    <div class="video-thumb"><img src="assets/thumb2.jpg"><p>Eminem If he was RESONANCE — MUSIC VIDEO</p></div>
-    <div class="video-thumb"><img src="assets/thumb3.jpg"><p>Jean Dawson — POWER FREAKS (UNOFFICIAL VISUALIZER)</p></div>
-    <div class="video-thumb"><img src="assets/thumb4.jpg"><p>world$tar money - channel bumper</p></div>
-    <div class="video-thumb"><img src="assets/thumb5.jpg"><p>KENDRICK LAMAR - FOR SALE? — UNOFFICIAL MUSIC VIDEO</p></div>
-    <div class="video-thumb"><img src="assets/thumb6.jpg"><p>TAKE OFF.</p></div>
-    <div class="video-thumb"><img src="assets/thumb7.jpg"><p>somethings always wrong with his brain</p></div>
-    <div class="video-thumb"><img src="assets/thumb8.jpg"><p>WHATS YOUR DEFINITION OF LOVE?</p></div>
-    <div class="video-thumb"><img src="assets/thumb9.jpg"><p>the burn marks on my memories never fade</p></div>
+  <!-- Home Tab -->
+<div id="yt-home" class="yt-home-section yt-section">
+  <!-- Top: Post + Featured Video -->
+  <div class="home-top-row">
+    <div class="home-post">
+      <h2>New Community Post</h2>
+      <p>Just wrapped a crazy animation loop for an upcoming music drop. Stay tuned 🎥🔥</p>
+      <small>Posted 2 days ago</small>
+    </div>
+    <div class="home-post">
+      <h2>New Community Post</h2>
+      <p>Just wrapped a crazy animation loop for an upcoming music drop. Stay tuned 🎥🔥</p>
+      <small>Posted 1 week ago</small>
+    </div>
+    <div class="home-featured-video video-thumb" data-index="0">
+      <img src="assets/thumb1.jpg">
+      <p><strong>Latest Upload:</strong></p>
+      <p>VG Concept Pixel Art</p>
+    </div>
   </div>
 
-  <div id="yt-playlists" class="yt-section video-grid" style="display: none;">
-    <div class="video-thumb"><img src="assets/thumb1.jpg"><p>FAVORITE SONGS OAT</p></div>
-    <div class="video-thumb"><img src="assets/thumb4.jpg"><p>ANIMATIONS</p></div>
-    <div class="video-thumb"><img src="assets/thumb7.jpg"><p>MUSIC VIDEOS</p></div>
+  <!-- Shorts Row -->
+  <div class="home-row">
+    <h3>Shorts</h3>
+    <div class="scroll-row">
+      <div class="video-thumb" data-index="7"><img src="assets/thumby2.png"><p>What's your definition of love?</p></div>
+      <div class="video-thumb" data-index="9"><img src="assets/thumby3.png"><p>Resonance Nights</p></div>
+      <div class="video-thumb" data-index="10"><img src="assets/thumby4.png"><p>TAKE OFF (Cooking)</p></div>
+      <div class="video-thumb" data-index="11"><img src="assets/thumb8.jpg"><p>SPACING OUT</p></div>
+    </div>
+  </div>
+
+  <!-- Recommended Row -->
+  <div class="home-row">
+    <h3>Recommended</h3>
+    <div class="scroll-row">
+      <div class="video-thumb" data-index="14"><img src="assets/thumby7.png"><p>Medicine - Daughter [MV/Original Cover]</p></div>
+      <div class="video-thumb" data-index="12"><img src="assets/thumby5.png"><p>MGMT - Little Dark Age (Prødigy Remix) MUSIC VIDEO</p></div>
+      <div class="video-thumb" data-index="13"><img src="assets/thumby6.png"><p>mounika - cut my hair (music video)</p></div>
+      <div class="video-thumb playlist-link" data-url="https://www.youtube.com/watch?v=y0g_kAvJxiQ&list=ULcxqQ59vzyTk&ab_channel=Consistency"><img src="assets/thumb12.png" /><p>More videos from CONSISTENCYY...</p></div>
+    </div>
   </div>
 </div>
-    <!-- END #mock-youtube -->
+
+  <!-- Videos Tab (moved from old default tab) -->
+  <div id="yt-videos-2" class="yt-section video-grid" style="display: none;">
+    <div class="video-thumb" data-index="0"><img src="assets/thumb1.jpg"><p>VG Concept Pixel Art</p></div>
+    <div class="video-thumb" data-index="1"><img src="assets/thumb2.jpg"><p>Eminem If he was RESONANCE</p></div>
+    <div class="video-thumb" data-index="2"><img src="assets/thumb3.jpg"><p>Jean Dawson - POWER FREAKS</p></div>
+    <div class="video-thumb" data-index="3"><img src="assets/thumb4.jpg"><p>world$tar money - channel bumper</p></div>
+    <div class="video-thumb" data-index="4"><img src="assets/thumb5.jpg"><p>KENDRICK LAMAR - FOR SALE?</p></div>
+    <div class="video-thumb" data-index="5"><img src="assets/thumb6.jpg"><p>TAKE OFF.</p></div>
+    <div class="video-thumb" data-index="6"><img src="assets/thumby1.png"><p>somethings always wrong with his brain</p></div>
+    <div class="video-thumb" data-index="7"><img src="assets/thumby2.png"><p>WHATS YOUR DEFINITION OF LOVE?</p></div>
+    <div class="video-thumb" data-index="8"><img src="assets/thumb9.jpg"><p>the burn marks on my memories never fade</p></div>
+  </div>
+
+  <!-- Playlists -->
+  <div id="yt-playlists" class="yt-section video-grid" style="display: none;">
+    <div class="video-thumb playlist-link" data-url="https://www.youtube.com/playlist?list=PL_TvNrl5QKk464E3pUws8iVuyJ8Ga1jlm">
+      <img src="assets/thumb10.png" />
+      <p>FAVORITE SONGS OF ALL TIME (OAT)</p>
+    </div>
+    <div class="video-thumb playlist-link" data-url="https://youtube.com/playlist?list=PL_TvNrl5QKk6E32vOQJh-owpjbmFrz18W&si=czlPMeTArp6zjNnr">
+      <img src="assets/thumb11.png" />
+      <p>ANIMATIONS & MORE</p>
+    </div>
+    <div class="video-thumb playlist-link" data-url="https://www.youtube.com/watch?v=y0g_kAvJxiQ&list=ULcxqQ59vzyTk&ab_channel=Consistency">
+      <img src="assets/thumb12.png" />
+      <p>More videos from CONSISTENCYY...</p>
+    </div>
+  </div>
+</div>
+<!-- END #mock-youtube -->
 
 <!-- BEGIN: Mock YouTube Video Player -->
 <div id="mock-video-player" class="youtube-mock hidden">
@@ -369,53 +427,100 @@ Thanks for checking it out.
   <div class="video-description">
     <h2 id="video-title">Loading title...</h2>
     <p id="video-caption">Loading description...</p>
+    <p id="video-date" class="video-meta">Loading date...</p>
   </div>
 </div>
 <!-- END: Mock YouTube Video Player -->
 
-<!-- BEGIN Wikipedia Mock Page -->
 <div id="mock-wikipedia" class="wikipedia-mock hidden">
-  <div class="wiki-header">
-    <h1 class="wiki-title">Consistencyy</h1>
-    <p class="wiki-subtitle">From the Mock Internet Encyclopedia</p>
-  </div>
-
-  <div class="wiki-main">
-    <div class="wiki-sidebar">
-      <img src="assets/profile-pic.png" class="wiki-profile-pic" />
-      <div class="wiki-infobox">
-        <h3>About</h3>
-        <table>
-          <tr><td><strong>Born</strong></td><td>July 7, 199x</td></tr>
-          <tr><td><strong>Alias</strong></td><td>Consistencyy</td></tr>
-          <tr><td><strong>Profession</strong></td><td>Multidisciplinary Artist</td></tr>
-          <tr><td><strong>Specialties</strong></td><td>Motion Graphics, Filmmaking, Design</td></tr>
-          <tr><td><strong>Website</strong></td><td><a href="#">consistencyy.art</a></td></tr>
-        </table>
-      </div>
+  
+  <!-- TOP HEADER SECTION -->
+<div class="wiki-header">
+  <div class="wiki-logo-title">
+    <img src="assets/about.png" alt="Wikipedia Logo" class="wiki-logo" />
+    <div class="wiki-site-info">
+      <h2 class="wiki-site-name">Wikipedia</h2>
+      <p class="wiki-tagline">The Mock Free Encyclopedia</p>
     </div>
+    <div class="wiki-search">
+      <input type="text" placeholder="Search Wikipedia" />
+    </div>
+  </div>
+  <div class="wiki-page-title">
+    <h1 class="wiki-title">Conor McCutcheon</h1>
+    <p class="wiki-subtitle">About Me Page</p>
+  </div>
+  <hr />
+</div>
 
+  <!-- MAIN CONTENT AND SIDEBAR -->
+  <div class="wiki-main">
+    <!-- ARTICLE CONTENT -->
     <div class="wiki-content">
       <h2>Overview</h2>
-      <p><strong>Consistencyy</strong> is a creative persona and multidisciplinary artist known for vivid storytelling across motion graphics, visual design, and film. His works often blend nostalgia, glitch art, and emotional resonance to produce a unique digital language.</p>
+      <p><strong>Conor McCutcheon</strong> is a multidisciplinary artist...</p>
 
       <h2>Career</h2>
-      <p>Starting in independent animation and progressing into branded content, short films, and visual identities, Consistencyy has built a portfolio showcasing both artistic depth and strategic design thinking.</p>
+      <p>Conor’s work spans animation, film, and visual identity design...</p>
 
       <h2>Style</h2>
-      <p>Influenced by analog aesthetics, VHS textures, anime, and urban grit, his work often employs layered compositions, symbolic editing, and glitch-based rhythms to evoke emotional undercurrents.</p>
+      <p>He fuses glitch art, analog textures, and urban visual language...</p>
+
+      <h2>Notable Works</h2>
+      <ul>
+        <li>VG Concept Pixel Art</li>
+        <li>FOR SALE? — Unofficial Music Video</li>
+        <li>Power Freaks Visualizer</li>
+        <li>Consistencyy Channel</li>
+      </ul>
 
       <h2>Contact</h2>
       <ul>
-        <li><strong>Email:</strong> hello@consistencyy.art</li>
-        <li><strong>Instagram:</strong> <a href="#">@consistencyy</a></li>
-        <li><strong>Behance:</strong> <a href="#">behance.net/consistencyy</a></li>
+        <li><strong>Email:</strong> hello@conor.style</li>
+        <li><strong>Instagram:</strong> @consistencyy</li>
+        <li><strong>Website:</strong> conor.style</li>
       </ul>
+    </div>
+
+<!-- SIDEBAR -->
+<div class="wiki-sidebar">
+  <img src="assets/profile-pic2.png" class="wiki-profile-pic" />
+  <div class="wiki-infobox">
+    <h3>About</h3>
+    <table>
+      <tr><td><strong>Born</strong></td><td>November 2001</td></tr>
+      <tr><td><strong>Alias</strong></td><td>Consistencyy</td></tr>
+      <tr><td><strong>Profession</strong></td><td>Artist</td></tr>
+      <tr><td><strong>Specialties</strong></td><td>Motion, Design, Film</td></tr>
+    </table>
+  </div>
+
+  <!-- NEW: Additional Gallery Sidebar -->
+  <div class="wiki-gallery">
+    <h3>Notable Works</h3>
+    
+    <div class="gallery-item">
+      <img src="assets/thumb1.jpg" alt="Work 1" />
+      <p><strong>VG Pixel Art</strong><br/>Concept animation experiment.</p>
+    </div>
+    
+    <div class="gallery-item">
+      <img src="assets/thumb2.jpg" alt="Work 2" />
+      <p><strong>Power Freaks</strong><br/>Visualizer for Jean Dawson.</p>
+    </div>
+    
+    <div class="gallery-item">
+      <img src="assets/thumb3.jpg" alt="Work 3" />
+      <p><strong>Burn Marks</strong><br/>Visual poetry short.</p>
     </div>
   </div>
 </div>
-<!-- END Wikipedia Mock Page -->
-
+<!-- END SIDEBAR -->
+  </div>
+</div>
+<!-- END #mock-wikipedia -->
+</div> 
+<!-- END #browser-window -->
   </div>
   <!-- END #desktop-root -->
 

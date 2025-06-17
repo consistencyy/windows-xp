@@ -24,6 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Restore Readme and desktop icon/tab interactivity after all functions are defined
   openReadme();
 
+let browserInitialized = false;
+
   // CLOCK
   const clock = document.querySelector(".time");
   function updateClock() {
@@ -61,15 +63,15 @@ const tracks = [
   },
   {
     src: "assets/music2.mp3",
-    title: "LUCKI - Alternative Outro [Instrumental]",
-    coverSrc: "assets/cover2.png",
-    coverType: "image"
+    title: "eery - Her",
+    coverSrc: "assets/music2.webm",
+    coverType: "video"
   },
   {
     src: "assets/music3.mp3",
-    title: "The Backseat Lovers - Growing/Dying",
-    coverSrc: "assets/cover3.png",
-    coverType: "image"
+    title: "The Backseat Lovers - Slowing Down",
+    coverSrc: "assets/music3.webm",
+    coverType: "video"
   }
 ];
 
@@ -238,22 +240,30 @@ function openBrowserWindow() {
 
   if (browserMinimized) {
     browserMinimized = false;
-    // Do NOT restore old view — always go to home
-    currentView = "home";
-    updateBrowserView("home");
+
+    // Reopen last view ONLY if it's channel or video
+    if (currentView === "channel" || currentView === "video") {
+      updateBrowserView(currentView);
+    } else {
+      // Always go to home for any other minimized view
+      currentView = "home";
+      updateBrowserView("home");
+    }
+
     return;
   }
 
-  // Show loading screen for first-time open
-  mockYoutube.style.display = "none";
+  // COLD OPEN (show loading screen, go to homepage)
+  fakeLoading.style.display = "flex";
   internetHome.style.display = "none";
+  mockYoutube.style.display = "none";
+  mockVideoPlayer.style.display = "none";
   const mockWikipedia = document.getElementById("mock-wikipedia");
   if (mockWikipedia) mockWikipedia.style.display = "none";
-  fakeLoading.style.display = "flex";
 
   setTimeout(() => {
     fakeLoading.style.display = "none";
-    currentView = "home"; // Force reset
+    currentView = "home";
     updateBrowserView("home");
   }, 4500);
 }
@@ -276,6 +286,7 @@ function updateBrowserView(view) {
   // Hide all views first
   mockYoutube.style.display = "none";
   internetHome.style.display = "none";
+  mockVideoPlayer.style.display = "none";
   const mockWikipedia = document.getElementById("mock-wikipedia");
   if (mockWikipedia) mockWikipedia.style.display = "none";
 
@@ -284,6 +295,8 @@ function updateBrowserView(view) {
     mockYoutube.style.display = "flex";
   } else if (view === "wikipedia") {
     if (mockWikipedia) mockWikipedia.style.display = "flex";
+  } else if (view === "video") {
+    mockVideoPlayer.style.display = "flex";
   } else {
     internetHome.style.display = "flex";
   }
@@ -298,6 +311,9 @@ if (consistencyTab) {
 
 // Draggable Internet Explorer window
 browserHeader.addEventListener("mousedown", (e) => {
+  // Prevent dragging if clicking inside the search input
+  if (e.target.closest(".spoof-search")) return;
+
   const rootRect = document.getElementById("desktop-root").getBoundingClientRect();
   const winRect = browserWindow.getBoundingClientRect();
   offsetXBrowser = e.clientX - winRect.left;
@@ -327,12 +343,22 @@ function stopDragBrowser() {
 if (tabs.length) {
   tabs.forEach(tab => {
     tab.addEventListener("click", () => {
+      // Switch active tab styling
       tabs.forEach(t => t.classList.remove("active"));
       tab.classList.add("active");
+
       const target = tab.dataset.target;
+
+      // Hide all sections
       sections.forEach(sec => {
-        sec.style.display = sec.id === target ? "grid" : "none";
+        sec.style.display = "none";
       });
+
+      // Show the selected section (let CSS handle display type)
+      const targetSection = document.getElementById(target);
+      if (targetSection) {
+        targetSection.style.display = ""; // revert to CSS default (like flex/grid)
+      }
     });
   });
 }
@@ -343,7 +369,16 @@ function openChannel() {
 }
 
 if (backButton) {
-  backButton.addEventListener("click", () => updateBrowserView("home"));
+  backButton.addEventListener("click", () => {
+    // If watching a video, stop playback
+    if (currentView === "video") {
+      ytIframe.src = ""; // unload the video
+      mockVideoPlayer.style.display = "none"; // hide video player
+    }
+
+    // Always go back to homepage
+    updateBrowserView("home");
+  });
 }
 
 // ==============================
@@ -457,21 +492,22 @@ function openConsistency() {
   const fakeLoading = document.getElementById("fake-loading");
   const internetHome = document.getElementById("internet-home");
   const mockYoutube = document.getElementById("mock-youtube");
+  const mockWikipedia = document.getElementById("mock-wikipedia"); // ✅ Add this
 
   browserWindow.classList.remove("hidden");
   browserWindow.style.display = "flex";
 
-  // Hide all content initially, show loading screen
+  // ✅ Hide everything before loading
   fakeLoading.style.display = "flex";
   internetHome.style.display = "none";
   mockYoutube.style.display = "none";
+  if (mockWikipedia) mockWikipedia.style.display = "none"; // ✅ Hide Wikipedia too
 
-  // Then load the channel after a delay
   setTimeout(() => {
     fakeLoading.style.display = "none";
     mockYoutube.style.display = "flex";
     internetHome.style.display = "none";
-  }, 4500); // match your loading duration
+  }, 3200);
 }
 
 // FILE EXPLORER FUNCTIONALITY
@@ -638,72 +674,212 @@ const mockVideoPlayer = document.getElementById("mock-video-player");
 const ytIframe = document.getElementById("yt-iframe");
 const videoTitle = document.getElementById("video-title");
 const videoCaption = document.getElementById("video-caption");
+const videoDate = document.getElementById("video-date"); // <== Make sure this exists!
 
-// Your video list (match thumbnail order)
+// Full video list with upload dates
 const ytVideos = [
   {
     title: "VG Concept Pixel Art",
     caption: "A short pixel animation concept.",
-    url: "https://www.youtube.com/embed/KNtCdSNIqMk?si=E2iNGArACRcTONzm"
+    url: "https://www.youtube.com/embed/KNtCdSNIqMk?si=E2iNGArACRcTONzm",
+    date: "March 5, 2024"
   },
   {
     title: "Eminem If he was RESONANCE",
     caption: "Unofficial music video mashup.",
-    url: "https://www.youtube.com/embed/07Qr8RwWeMc?si=owAMy-g-jop5A79J"
+    url: "https://www.youtube.com/embed/07Qr8RwWeMc?si=owAMy-g-jop5A79J",
+    date: "April 2, 2024"
   },
   {
     title: "Jean Dawson — POWER FREAKS",
     caption: "Unofficial Visualizer for Jean Dawson.",
-    url: "https://www.youtube.com/embed/Rlmc4TMsFGU?si=B7eWIVpseuJKff6i"
+    url: "https://www.youtube.com/embed/Rlmc4TMsFGU?si=B7eWIVpseuJKff6i",
+    date: "March 19, 2024"
   },
   {
     title: "world$tar money - channel bumper",
     caption: "Channel bumper using Joji's iconic track.",
-    url: "https://www.youtube.com/embed/jxZKUgziw9E?si=-CemHXC4h8SqA1Ji"
+    url: "https://www.youtube.com/embed/jxZKUgziw9E?si=-CemHXC4h8SqA1Ji",
+    date: "February 28, 2024"
   },
   {
     title: "KENDRICK LAMAR - FOR SALE?",
     caption: "Unofficial music video for 'For Sale?' interlude.",
-    url: "https://www.youtube.com/embed/2Eay_dH9Hv4?si=ngVgJ5vuxyHg68PY"
+    url: "https://www.youtube.com/embed/2Eay_dH9Hv4?si=ngVgJ5vuxyHg68PY",
+    date: "March 12, 2024"
   },
   {
     title: "TAKE OFF.",
     caption: "Short animated experimental video.",
-    url: "https://www.youtube.com/embed/s6Ca5NciGuo?si=HNr12i8Zz2whYmhI"
+    url: "https://www.youtube.com/embed/s6Ca5NciGuo?si=HNr12i8Zz2whYmhI",
+    date: "April 9, 2024"
   },
   {
     title: "somethings always wrong with his brain",
     caption: "Dark experimental montage short.",
-    url: "https://youtube.com/embed/OcRxtFL9nck?si=lXkYWr0clBCjr509"
+    url: "https://youtube.com/embed/OcRxtFL9nck?si=lXkYWr0clBCjr509",
+    date: "March 25, 2024"
   },
   {
     title: "WHATS YOUR DEFINITION OF LOVE?",
     caption: "Visual essay exploring the idea of love.",
-    url: "https://youtube.com/embed/hw7YMhge0t0?si=NEb_17OJHn4GhGYK"
+    url: "https://youtube.com/embed/hw7YMhge0t0?si=NEb_17OJHn4GhGYK",
+    date: "February 14, 2024"
   },
   {
     title: "the burn marks on my memories never fade",
     caption: "Conceptual poetry short film.",
-    url: "https://www.youtube.com/embed/tUH_49myQI0?si=1P6eOAClmVz0a7md"
+    url: "https://www.youtube.com/embed/tUH_49myQI0?si=1P6eOAClmVz0a7md",
+    date: "March 8, 2024"
+  },
+  {
+    title: "Resonance nights",
+    caption: "Conceptual poetry short film.",
+    url: "https://www.youtube.com/embed/MGcQOrnC9Tk",
+    date: "April 11, 2024"
+  },
+  {
+    title: "Take Off (Cooking)",
+    caption: "Experimental cooking short.",
+    url: "https://www.youtube.com/embed/Sov7rcHr3tM",
+    date: "April 1, 2024"
+  },
+  {
+    title: "Spacing Out",
+    caption: "Dreamy motion test.",
+    url: "https://www.youtube.com/embed/4S5iAtoSi2E",
+    date: "March 29, 2024"
+  },
+  {
+    title: "Medicine - Daughter [MV/Cover]",
+    caption: "Cover of 'Medicine' by Daughter.",
+    url: "https://www.youtube.com/embed/k_G4np3jvZU?si=nmD3c326qB64t-2-",
+    date: "February 8, 2024"
+  },
+  {
+    title: "MGMT - Little Dark Age (Prødigy Remix) MUSIC VIDEO",
+    caption: "A remix of 'Little Dark Age' by MGMT.",
+    url: "https://www.youtube.com/embed/yUKtuTdMKUY?si=wI-QF7DVja9H1-MP",
+    date: "January 30, 2024"
+  },
+  {
+    title: "mounika - cut my hair (music video)",
+    caption: "A music video for 'cut my hair' by mounika.",
+    url: "https://www.youtube.com/embed/tUH_49myQI0?si=StU1veBB6mc2A3ab",
+    date: "March 3, 2024"
   }
 ];
 
-// Bind click handlers to video thumbnails
-document.querySelectorAll("#yt-videos .video-thumb").forEach((thumb, index) => {
-  thumb.addEventListener("click", () => {
-    const video = ytVideos[index];
-    ytIframe.src = video.url;
-    videoTitle.textContent = video.title;
-    videoCaption.textContent = video.caption;
+// Universal click handler
+function bindVideoThumbnails() {
+  const thumbs = document.querySelectorAll(".video-thumb");
 
-    // Switch view
-    mockYoutube.style.display = "none";
-    mockVideoPlayer.style.display = "flex";
+  thumbs.forEach((thumb) => {
+    const index = thumb.dataset.index;
+    if (index !== undefined && ytVideos[index]) {
+      thumb.addEventListener("click", () => {
+        const video = ytVideos[index];
+
+        ytIframe.src = video.url;
+        videoTitle.textContent = video.title;
+        videoCaption.textContent = video.caption;
+        if (videoDate) {
+          videoDate.textContent = video.date || "Unknown date";
+        }
+
+        mockYoutube.style.display = "none";
+        updateBrowserView("video");
+      });
+    }
   });
-});
+}
+
+// Make sure it's triggered after content is present
+bindVideoThumbnails();
 
 function closeVideoPlayer() {
   ytIframe.src = ""; // Stop the video
-  mockVideoPlayer.style.display = "none";
-  mockYoutube.style.display = "flex";
+  updateBrowserView("channel"); // Switch back to channel view
+}
+
+const conorIcon = document.getElementById("conor-icon");
+
+if (conorIcon) {
+  conorIcon.addEventListener("dblclick", () => {
+    const browserWindow = document.getElementById("browser-window");
+    const fakeLoading = document.getElementById("fake-loading");
+    const internetHome = document.getElementById("internet-home");
+    const mockYoutube = document.getElementById("mock-youtube");
+    const mockWikipedia = document.getElementById("mock-wikipedia"); // class is wikipedia-mock, but ID is correct
+
+    browserWindow.classList.remove("hidden");
+    browserWindow.style.display = "flex";
+
+    // Hide everything else initially
+    fakeLoading.style.display = "flex";
+    internetHome.style.display = "none";
+    mockYoutube.style.display = "none";
+    if (mockWikipedia) mockWikipedia.style.display = "none";
+
+    // After delay, show Wikipedia mock
+    setTimeout(() => {
+      fakeLoading.style.display = "none";
+      if (mockWikipedia) mockWikipedia.style.display = "flex";
+      mockYoutube.style.display = "none";
+      internetHome.style.display = "none";
+    }, 4500); // match loading duration
+  });
+}
+
+// Enable clicking playlist tiles to open in new tab
+document.querySelectorAll(".playlist-link").forEach(tile => {
+  tile.addEventListener("click", () => {
+    const url = tile.getAttribute("data-url");
+    if (url) window.open(url, "_blank");
+  });
+});
+
+// Enable Search functionality
+const searchInput = document.getElementById("internet-search-input");
+const searchBtn = document.getElementById("internet-search-btn");
+
+if (searchBtn && searchInput) {
+  searchBtn.addEventListener("click", () => {
+    const query = searchInput.value.trim();
+    if (query) {
+      const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+      window.open(url, "_blank");
+    }
+  });
+
+  // Optional: Pressing Enter triggers search
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") searchBtn.click();
+  });
+}
+
+const luckyBtn = document.getElementById("internet-lucky-btn");
+
+if (luckyBtn && searchInput) {
+  luckyBtn.addEventListener("click", () => {
+    const query = searchInput.value.trim();
+    if (query) {
+      const luckyURL = `https://www.google.com/search?btnI=I&q=${encodeURIComponent(query)}`;
+      window.open(luckyURL, "_blank");
+    }
+  });
+}
+
+const spoofSearch = document.querySelector(".spoof-search");
+
+if (spoofSearch) {
+  spoofSearch.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const query = spoofSearch.value.trim();
+      if (query) {
+        const searchURL = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+        window.open(searchURL, "_blank");
+      }
+    }
+  });
 }

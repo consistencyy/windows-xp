@@ -112,7 +112,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   pointer-events: none;
   transform: translateY(2px);
   transition: opacity 0.25s ease, transform 0.25s ease;
-  z-index: 9999;
+  z-index: 10000;
 }
 
 .start-menu.visible {
@@ -419,6 +419,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   color: white;
   overflow-y: auto;
   scroll-behavior: smooth;
+  padding-bottom: 80px;
   font-family: Arial, sans-serif;
   display: none;
   flex-direction: column;
@@ -496,6 +497,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
   padding: 16px;
+  padding-bottom: 40px;
 }
 
 .video-thumb {
@@ -519,6 +521,14 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   margin: 6px 0 0;
   font-size: 13px;
   color: #ddd;
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: bold;
+}
+
+.video-meta {
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 4px;
 }
 
 #fake-loading {
@@ -595,6 +605,27 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   margin-top: 20px;
 }
 
+.window-controls button {
+  background-color: #d3d3d3; /* default for minimize */
+  border: none;
+  cursor: pointer;
+  color: black;
+}
+
+.window-controls button:hover {
+  background-color: #bbb;
+}
+
+.window-controls button:last-child {
+  background-color: #e81123; /* bright red */
+  color: white;
+  font-weight: bold;
+}
+
+.window-controls button:last-child:hover {
+  background-color: #c50f1f; /* darker red on hover */
+}
+
 .bookmark {
   width: 100px;
   text-align: center;
@@ -614,12 +645,6 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 .bookmark span {
   font-size: 13px;
   color: #222;
-}
-
-.window-controls button.red-close {
-  background: red;
-  color: white;
-  border: none;
 }
 
 .ie-toolbar {
@@ -754,8 +779,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   color: #000;
 }
 
-/* ---------- FILE EXPLORER ADDITIONS ---------- */
-
+/* ---------- FILE EXPLORER WINDOW ---------- */
 .fwindow {
   position: absolute;
   top: 150px;
@@ -771,6 +795,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   overflow: hidden;
 }
 
+/* ---------- HEADER ---------- */
 .fwindow-header {
   background: #0a246a;
   color: white;
@@ -782,107 +807,6 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   font-family: Tahoma, sans-serif;
   font-size: 14px;
 }
-
-.explorer-view {
-  padding: 12px;
-  display: none;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.project-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.explorer-view h3 {
-  font-size: 16px;
-  margin: 8px 0;
-}
-
-.fback-button {
-  background: #f0f0f0;
-  border: 1px solid #999;
-  padding: 4px 8px;
-  cursor: pointer;
-  font-size: 13px;
-  margin-bottom: 8px;
-  height: 32px;
-  width: 64px;
-}
-
-.fback-button:hover {
-  background: #e0e0e0;
-}
-
-#file-explorer-root {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;   /* center horizontally */
-  align-items: center;       /* center vertically */
-  gap: 24px;
-  padding: 32px;
-  min-height: 300px;
-  text-align: center;
-}
-
-/* ---------- PROJECT INFO WINDOW ---------- */
-
-#project-info-content,
-.fwindow-content {
-  font-family: "Segoe UI", sans-serif;
-  background-color: #fff;
-  color: #000;
-  padding: 16px;
-  overflow-y: auto;
-}
-
-.fwindow-content h2 {
-  font-size: 18px;
-  margin-top: 0;
-}
-
-.fwindow-content p {
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.fwindow-content img {
-  max-width: 100%;
-  border: 1px solid #ccc;
-  margin: 12px 0;
-}
-
-/* ---------- ICONS (reused for project icons) ---------- */
-
-.ficon {
-  width: 72px;
-  text-align: center;
-  cursor: default;
-}
-
-.ficon:hover {
-  background-color: #dce6f7; /* XP-style light blue */
-  border: 1px solid #a3c2f2;
-  box-shadow: inset 1px 1px 3px rgba(0,0,0,0.2);
-}
-
-.ficon img {
-  width: 64px;
-  height: 64px;
-}
-
-.ficon-name {
-  font-size: 12px;
-  margin-top: 4px;
-  white-space: nowrap;
-  overflow: hidden; 
-  text-overflow: ellipsis;
-}
-
-/* ---------- TABS AND CLOSE BUTTONS ---------- */
 
 .fwindow-controls {
   display: flex;
@@ -899,14 +823,99 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   height: 24px;
   line-height: 24px;
   border-radius: 2px;
+  text-align: center;
 }
 
-.fwindow-content-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
+/* ---------- CONTENT VIEW ---------- */
+.fwindow-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* Center vertically */
+  align-items: center;       /* Center horizontally */
+  padding: 24px;
+  overflow-y: auto;
+  text-align: center;
 }
 
+/* Root Folder Specific (optional for extra spacing) */
+#file-explorer-root {
+  gap: 24px;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+/* ---------- BACK BUTTON ---------- */
+.fback-button {
+  position: absolute;
+  top: 60px;           /* Adjust if needed to avoid header */
+  left: 20px;
+  background: #f0f0f0;
+  border: 1px solid #999;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-size: 13px;
+  height: 32px;
+  width: 80px;
+  z-index: 10;
+}
+
+.fback-button:hover {
+  background: #e0e0e0;
+}
+
+/* ---------- ICONS ---------- */
+.ficon {
+  width: 210px;
+  cursor: default;
+}
+
+.ficon:hover {
+  background-color: #dce6f7;
+  border: 1px solid #a3c2f2;
+  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.ficon img {
+  width: 100px;
+  height: 100px;
+}
+
+.ficon-name {
+  font-size: 14px;
+  margin-top: 6px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* ---------- GRID FOR PROJECTS ---------- */
+.project-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 60px; /* create space under fixed back button */
+}
+
+/* ---------- INDIVIDUAL PROJECT VIEW ---------- */
+.fwindow-content h2 {
+  font-size: 18px;
+  margin-top: 0;
+}
+
+.fwindow-content p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.fwindow-content img {
+  max-width: 100%;
+  border: 1px solid #ccc;
+  margin: 12px 0;
+}
+
+/* ---------- WIKIPEDIA MOCKUP STYLES ---------- */
 .wikipedia-mock {
   display: flex;
   flex-direction: column;
@@ -926,6 +935,12 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 .wiki-title {
   font-size: 28px;
   margin: 0;
+}
+
+.wiki-logo {
+  width: 64px;
+  height: auto;
+  margin-bottom: 4px;
 }
 
 .wiki-subtitle {
@@ -988,6 +1003,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   padding-left: 20px;
 }
 
+/* ---------- MOCK VIDEO PLAYER STYLES ---------- */
 #mock-video-player {
   flex-direction: column;
   gap: 1rem;
@@ -1006,4 +1022,183 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 
 .video-description {
   padding: 0 1.5rem;
+}
+
+/*additional wiki styles*/
+.wiki-logo-title {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* optional spacing between elements */
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  justify-content: flex-start; /* left-aligned */
+}
+
+.wiki-site-info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 12px;
+}
+
+.wiki-site-name {
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 28px;
+  margin: 0;
+}
+
+.wiki-tagline {
+  font-size: 13px;
+  color: #666;
+  margin: 2px 0 0;
+}
+
+.wiki-search input {
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  background-color: #f5f5f5;
+  color: #666;
+  border-radius: 2px;
+  width: 160px;
+}
+
+.wiki-search input:focus {
+  outline: 2px solid #3366cc; /* Blue border */
+  outline-offset: 2px;
+}
+
+.wiki-page-title {
+  margin-top: 10px;
+}
+
+.wiki-gallery {
+  margin-top: 16px;
+  padding: 8px;
+  background-color: #fff;
+  border: 1px solid #aaa;
+}
+
+.wiki-gallery h3 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+.gallery-item {
+  margin-bottom: 12px;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  border: 1px solid #ccc;
+  margin-bottom: 4px;
+}
+
+.gallery-item p {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #333;
+}
+
+.internet-search-bar {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  gap: 8px;
+}
+
+#internet-search-input {
+  width: 60%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+}
+
+#internet-search-btn {
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+#internet-search-btn:hover {
+  background-color: #0c59c5;
+}
+
+#internet-lucky-btn {
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #f8f9fa;
+  color: #202124;
+  border: 1px solid #dadce0;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+#internet-lucky-btn:hover {
+  background-color: #e8eaed;
+}
+
+/* Home-specific override (renamed for clarity) */
+.yt-home-section {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+/* Top row with post + featured video */
+.home-top-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.home-post {
+  flex: 1;
+  background: #363636;
+  border-left: 4px solid #c4302b;
+  padding: 8px 12px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+  font-family: "Segoe UI", sans-serif;
+  font-size: 13px;
+  max-width: 320px;
+}
+
+.home-post h3 {
+  font-size: 16px;
+  margin: 0 0 6px;
+}
+
+.home-post p {
+  margin: 0 0 6px;
+  line-height: 1.4;
+}
+
+.home-featured-video {
+  flex: 1;
+  max-width: 380px;
+}
+
+/* Horizontally scrollable video row */
+.scroll-row {
+  display: flex;
+  overflow-x: auto;
+  gap: 16px;
+  padding-bottom: 8px;
+  scroll-snap-type: x mandatory;
+}
+
+.scroll-row::-webkit-scrollbar {
+  height: 8px;
+}
+.scroll-row::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
 }
