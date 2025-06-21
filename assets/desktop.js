@@ -38,6 +38,24 @@ let browserInitialized = false;
   setInterval(updateClock, 1000);
   updateClock();
 
+// === App Launcher Buttons ===
+document.getElementById("open-calculator")?.addEventListener("click", openCalculatorApp);
+document.getElementById("calculator-tab")?.addEventListener("click", toggleCalculatorApp);
+
+document.getElementById("open-paint")?.addEventListener("click", openPaintApp);
+document.getElementById("paint-tab")?.addEventListener("click", togglePaintApp);
+
+document.getElementById("open-snake")?.addEventListener("click", openSnakeApp);
+document.getElementById("snake-tab")?.addEventListener("click", toggleSnakeApp);
+
+document.getElementById("open-photos")?.addEventListener("click", openPhotosApp);
+document.getElementById("photos-tab")?.addEventListener("click", togglePhotosApp);
+document.getElementById("photos-close")?.addEventListener("click", closePhotosApp);
+
+document.getElementById("open-videos")?.addEventListener("click", openVideosApp);
+document.getElementById("videos-tab")?.addEventListener("click", toggleVideosApp);
+document.getElementById("videos-close")?.addEventListener("click", closeVideosApp);
+
 });
 
   // MUSIC PLAYER FUNCTIONALITY
@@ -261,11 +279,12 @@ function openBrowserWindow() {
   const mockWikipedia = document.getElementById("mock-wikipedia");
   if (mockWikipedia) mockWikipedia.style.display = "none";
 
-  setTimeout(() => {
-    fakeLoading.style.display = "none";
-    currentView = "home";
-    updateBrowserView("home");
-  }, 4500);
+setTimeout(() => {
+  fakeLoading.style.display = "none";
+  internetHome.classList.remove("hidden"); // ← THIS is the fix
+  currentView = "home";
+  updateBrowserView("home");
+}, 4500);
 }
 
 function closeBrowser() {
@@ -283,22 +302,34 @@ function minimizeBrowser() {
 }
 
 function updateBrowserView(view) {
+  const mockWikipedia = document.getElementById("mock-wikipedia");
+
   // Hide all views first
   mockYoutube.style.display = "none";
   internetHome.style.display = "none";
   mockVideoPlayer.style.display = "none";
-  const mockWikipedia = document.getElementById("mock-wikipedia");
   if (mockWikipedia) mockWikipedia.style.display = "none";
+
+  mockYoutube.classList.add("hidden");
+  internetHome.classList.add("hidden");
+  mockVideoPlayer.classList.add("hidden");
+  if (mockWikipedia) mockWikipedia.classList.add("hidden");
 
   // Show the appropriate view
   if (view === "channel") {
     mockYoutube.style.display = "flex";
+    mockYoutube.classList.remove("hidden");
   } else if (view === "wikipedia") {
-    if (mockWikipedia) mockWikipedia.style.display = "flex";
+    if (mockWikipedia) {
+      mockWikipedia.style.display = "flex";
+      mockWikipedia.classList.remove("hidden");
+    }
   } else if (view === "video") {
     mockVideoPlayer.style.display = "flex";
+    mockVideoPlayer.classList.remove("hidden");
   } else {
     internetHome.style.display = "flex";
+    internetHome.classList.remove("hidden");
   }
 
   currentView = view;
@@ -492,21 +523,25 @@ function openConsistency() {
   const fakeLoading = document.getElementById("fake-loading");
   const internetHome = document.getElementById("internet-home");
   const mockYoutube = document.getElementById("mock-youtube");
-  const mockWikipedia = document.getElementById("mock-wikipedia"); // ✅ Add this
+  const mockWikipedia = document.getElementById("mock-wikipedia");
 
   browserWindow.classList.remove("hidden");
   browserWindow.style.display = "flex";
 
-  // ✅ Hide everything before loading
+  // Hide everything
   fakeLoading.style.display = "flex";
   internetHome.style.display = "none";
   mockYoutube.style.display = "none";
-  if (mockWikipedia) mockWikipedia.style.display = "none"; // ✅ Hide Wikipedia too
+  if (mockWikipedia) mockWikipedia.style.display = "none";
+
+  internetHome.classList.add("hidden");
+  mockYoutube.classList.add("hidden");
+  if (mockWikipedia) mockWikipedia.classList.add("hidden");
 
   setTimeout(() => {
     fakeLoading.style.display = "none";
     mockYoutube.style.display = "flex";
-    internetHome.style.display = "none";
+    mockYoutube.classList.remove("hidden");
   }, 3200);
 }
 
@@ -537,11 +572,12 @@ function openFileExplorer() {
   fileExplorerTab.style.display = "inline-flex";
 }
 
-// Handle tab click: minimize or restore
 fileExplorerTab.onclick = () => {
-  if (isFileExplorerMinimized) {
+  const isHidden = fileExplorerWin.style.display === "none" || fileExplorerWin.classList.contains("hidden");
+
+  if (isHidden || isFileExplorerMinimized) {
     fileExplorerWin.style.display = "flex";
-    requestAnimationFrame(() => fileExplorerWin.classList.add("show"));
+    fileExplorerWin.classList.add("show");
     isFileExplorerMinimized = false;
   } else {
     fileExplorerWin.style.display = "none";
@@ -883,3 +919,541 @@ if (spoofSearch) {
     }
   });
 }
+
+// === Calculator App ===
+function openCalculatorApp() {
+  document.getElementById("calculator-app").classList.remove("hidden");
+  document.getElementById("calculator-tab").style.display = "inline-flex";
+}
+function toggleCalculatorApp() {
+  const app = document.getElementById("calculator-app");
+  app.classList.toggle("hidden");
+}
+
+// === Paint App ===
+function openPaintApp() {
+  document.getElementById("paint-app").classList.remove("hidden");
+  document.getElementById("paint-tab").style.display = "inline-flex";
+}
+function togglePaintApp() {
+  const app = document.getElementById("paint-app");
+  app.classList.toggle("hidden");
+}
+function closePaintApp() {
+  document.getElementById("paint-app").classList.add("hidden");
+  document.getElementById("paint-tab").style.display = "none";
+}
+
+// === Snake App ===
+function openSnakeApp() {
+  document.getElementById("snake-app").classList.remove("hidden");
+  document.getElementById("snake-start-overlay").classList.remove("hidden");
+  document.getElementById("snake-tab").style.display = "inline-flex";
+}
+function toggleSnakeApp() {
+  const app = document.getElementById("snake-app");
+  app.classList.toggle("hidden");
+}
+function closeSnakeApp() {
+  document.getElementById("snake-app").classList.add("hidden");
+  document.getElementById("snake-tab").style.display = "none";
+}
+function closeSnakeModal() {
+  document.getElementById("snake-lose-modal").classList.add("hidden");
+}
+
+// === Photos App ===
+function openPhotosApp() {
+  document.getElementById("photos-app").classList.remove("hidden");
+  document.getElementById("photos-tab").style.display = "inline-flex";
+}
+function togglePhotosApp() {
+  document.getElementById("photos-app").classList.toggle("hidden");
+}
+function closePhotosApp() {
+  document.getElementById("photos-app").classList.add("hidden");
+  document.getElementById("photos-tab").style.display = "none";
+}
+
+// === Videos App ===
+function openVideosApp() {
+  document.getElementById("videos-app").classList.remove("hidden");
+  document.getElementById("videos-tab").style.display = "inline-flex";
+}
+function toggleVideosApp() {
+  document.getElementById("videos-app").classList.toggle("hidden");
+}
+function closeVideosApp() {
+  document.getElementById("videos-app").classList.add("hidden");
+  document.getElementById("videos-tab").style.display = "none";
+}
+// 
+// === PAINT TAB FUNCTIONALITY ===
+const paintTab = document.getElementById("paint-tab");
+const paintApp = document.getElementById("paint-app");
+
+paintTab.onclick = () => {
+  paintApp.classList.toggle("hidden");
+};
+
+function openPaintApp() {
+  paintApp.classList.remove("hidden");
+  paintTab.style.display = "inline-flex";
+}
+
+function closePaintApp() {
+  paintApp.classList.add("hidden");
+  paintTab.style.display = "none";
+}
+
+// === CALCULATOR TAB FUNCTIONALITY ===
+const calculatorTab = document.getElementById("calculator-tab");
+const calculatorApp = document.getElementById("calculator-app");
+
+calculatorTab.onclick = () => {
+  calculatorApp.classList.toggle("hidden");
+};
+
+function openCalculatorApp() {
+  calculatorApp.classList.remove("hidden");
+  calculatorTab.style.display = "inline-flex";
+}
+
+function closeCalculatorApp() {
+  calculatorApp.classList.add("hidden");
+  calculatorTab.style.display = "none";
+}
+
+
+// === SNAKE TAB FUNCTIONALITY ===
+const snakeTab = document.getElementById("snake-tab");
+const snakeApp = document.getElementById("snake-app");
+
+snakeTab.onclick = () => {
+  snakeApp.classList.toggle("hidden");
+};
+
+function openSnakeApp() {
+  snakeApp.classList.remove("hidden");
+  snakeTab.style.display = "inline-flex";
+  resetSnakeGame();
+  document.getElementById("snake-start-overlay").classList.remove("hidden");
+  isSnakeReady = false;
+}
+
+function closeSnakeApp() {
+  snakeApp.classList.add("hidden");
+  snakeTab.style.display = "none";
+  clearInterval(gameInterval);
+}
+
+function closeSnakeModal() {
+  document.getElementById("snake-lose-modal").classList.remove("show");
+  closeSnakeApp();
+}
+
+// ==========================
+// START MENU APP LAUNCHERS
+// ==========================
+function closeStartMenu() {
+  document.getElementById("start-menu").classList.remove("visible");
+}
+
+document.getElementById("open-paint").addEventListener("click", () => {
+  openPaintApp();
+  closeStartMenu();
+});
+
+document.getElementById("open-calculator").addEventListener("click", () => {
+  openCalculatorApp();
+  closeStartMenu();
+});
+
+document.getElementById("open-snake").addEventListener("click", () => {
+  openSnakeApp();
+  closeStartMenu();
+});
+
+["paint-tab", "calculator-tab", "snake-tab", "photos-tab", "videos-tab"].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.style.display = "none";
+});
+
+// ==========================
+// MAKE WINDOWS DRAGGABLE
+// ==========================
+function makeDraggable(windowEl) {
+  const header = windowEl.querySelector('.app-header-bar');
+  let isDragging = false;
+  let offsetX = 0, offsetY = 0;
+
+  header.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    offsetX = e.clientX - windowEl.offsetLeft;
+    offsetY = e.clientY - windowEl.offsetTop;
+    windowEl.style.zIndex = 1001;
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    windowEl.style.left = `${e.clientX - offsetX}px`;
+    windowEl.style.top = `${e.clientY - offsetY}px`;
+  });
+
+  document.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+}
+
+makeDraggable(document.getElementById("paint-app"));
+makeDraggable(document.getElementById("calculator-app"));
+makeDraggable(document.getElementById("snake-app"));
+
+// ==========================
+// MS PAINT FUNCTIONALITY
+// ==========================
+const paintCanvas = document.getElementById("paint-canvas");
+const paintCtx = paintCanvas.getContext("2d");
+let painting = false;
+let isErasing = false;
+
+document.getElementById("toggle-eraser").addEventListener("click", () => {
+  isErasing = !isErasing;
+  document.getElementById("toggle-eraser").textContent = isErasing ? "✏️ Draw" : "🧽 Eraser";
+});
+
+function startPaint(e) {
+  painting = true;
+  paintCtx.beginPath();
+  paintCtx.moveTo(e.offsetX, e.offsetY);
+}
+
+function drawPaint(e) {
+  if (!painting) return;
+  paintCtx.lineTo(e.offsetX, e.offsetY);
+  paintCtx.strokeStyle = isErasing ? "#FFFFFF" : document.getElementById("paint-color").value;
+  paintCtx.lineWidth = document.getElementById("paint-size").value;
+  paintCtx.lineCap = "round";
+  paintCtx.stroke();
+}
+
+function stopPaint() {
+  painting = false;
+}
+
+function clearPaint() {
+  paintCtx.clearRect(0, 0, paintCanvas.width, paintCanvas.height);
+}
+
+paintCanvas.addEventListener("mousedown", startPaint);
+paintCanvas.addEventListener("mousemove", drawPaint);
+paintCanvas.addEventListener("mouseup", stopPaint);
+paintCanvas.addEventListener("mouseout", stopPaint);
+
+// ==========================
+// CALCULATOR FUNCTIONALITY
+// ==========================
+const calcDisplay = document.getElementById("calc-display");
+const calcButtons = document.querySelectorAll("#calculator-app .calc-grid button");
+
+let currentCalc = "";
+
+calcButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    const val = button.textContent;
+
+    switch (val) {
+      case "=":
+        try {
+          currentCalc = eval(currentCalc).toString();
+        } catch {
+          currentCalc = "Error";
+        }
+        break;
+
+      case "C":
+        currentCalc = "";
+        break;
+
+      case "←":
+        currentCalc = currentCalc.slice(0, -1);
+        break;
+
+      case "+/-":
+        if (currentCalc) {
+          if (currentCalc.startsWith("-")) {
+            currentCalc = currentCalc.slice(1);
+          } else {
+            currentCalc = "-" + currentCalc;
+          }
+        }
+        break;
+
+      case "%":
+        try {
+          currentCalc = (parseFloat(currentCalc) / 100).toString();
+        } catch {
+          currentCalc = "Error";
+        }
+        break;
+
+      default:
+        currentCalc += val;
+    }
+
+    calcDisplay.value = currentCalc;
+  });
+});
+
+// ==========================
+// SNAKE GAME FUNCTIONALITY
+// ==========================
+const snakeCanvas = document.getElementById("snake-canvas");
+const ctx = snakeCanvas.getContext("2d");
+
+let snake, food, dx, dy, gameInterval;
+let gameOver = false;
+let isSnakeReady = false;
+
+function resetSnakeGame() {
+  clearInterval(gameInterval);
+  gameOver = false;
+  isSnakeReady = false;
+  snake = [{ x: 150, y: 150 }];
+  dx = 10;
+  dy = 0;
+  placeFood();
+  drawSnake();
+}
+
+function placeFood() {
+  food = {
+    x: Math.floor(Math.random() * 30) * 10,
+    y: Math.floor(Math.random() * 30) * 10
+  };
+}
+
+function updateSnake() {
+  if (gameOver) return;
+
+  const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+
+  if (
+    head.x < 0 || head.x >= 300 ||
+    head.y < 0 || head.y >= 300 ||
+    snake.some(seg => seg.x === head.x && seg.y === head.y)
+  ) {
+    gameOver = true;
+    clearInterval(gameInterval);
+    document.getElementById("snake-lose-modal").classList.add("show");
+    return;
+  }
+
+  snake.unshift(head);
+
+  if (head.x === food.x && head.y === food.y) {
+    placeFood();
+  } else {
+    snake.pop();
+  }
+
+  drawSnake();
+}
+
+function drawSnake() {
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, 300, 300);
+
+  ctx.fillStyle = "lime";
+  snake.forEach(seg => ctx.fillRect(seg.x, seg.y, 10, 10));
+
+  ctx.fillStyle = "red";
+  ctx.fillRect(food.x, food.y, 10, 10);
+}
+
+document.addEventListener("keydown", (e) => {
+  if (document.getElementById("snake-app").classList.contains("hidden")) return;
+
+  if (!isSnakeReady) {
+    isSnakeReady = true;
+    document.getElementById("snake-start-overlay").classList.add("hidden");
+    gameInterval = setInterval(updateSnake, 100);
+    return;
+  }
+
+  if (gameOver) return;
+
+  switch (e.key) {
+    case "ArrowUp":
+      if (dy === 0) { dx = 0; dy = -10; }
+      break;
+    case "ArrowDown":
+      if (dy === 0) { dx = 0; dy = 10; }
+      break;
+    case "ArrowLeft":
+      if (dx === 0) { dx = -10; dy = 0; }
+      break;
+    case "ArrowRight":
+      if (dx === 0) { dx = 10; dy = 0; }
+      break;
+  }
+});
+
+// === ADDITIONAL START MENU BUTTONS ===
+document.getElementById("open-my-files")?.addEventListener("click", () => {
+  openFileExplorer();
+  closeStartMenu();
+});
+
+document.getElementById("open-browser")?.addEventListener("click", () => {
+  openBrowserWindow();
+  closeStartMenu();
+});
+
+document.getElementById("open-media-player")?.addEventListener("click", () => {
+  openPlayer();
+  closeStartMenu();
+});
+
+document.getElementById("open-youtube")?.addEventListener("click", () => {
+  openConsistency();  // Shows mock YT channel view
+  closeStartMenu();
+});
+
+document.getElementById("open-projects")?.addEventListener("click", () => {
+  openFileExplorer();
+  closeStartMenu();
+});
+
+document.getElementById("open-readme")?.addEventListener("click", () => {
+  openReadme();
+  closeStartMenu();
+});
+
+// Placeholder: Later implementation
+document.getElementById("open-latest-work")?.addEventListener("click", () => {
+  alert("Latest Work feature not implemented yet.");
+  closeStartMenu();
+});
+
+document.getElementById("open-profile-wikipedia")?.addEventListener("click", () => {
+  const browserWindow = document.getElementById("browser-window");
+  const fakeLoading = document.getElementById("fake-loading");
+  const internetHome = document.getElementById("internet-home");
+  const mockYoutube = document.getElementById("mock-youtube");
+  const mockWikipedia = document.getElementById("mock-wikipedia");
+
+  browserWindow.classList.remove("hidden");
+  browserWindow.style.display = "flex";
+
+  // Hide everything else
+  fakeLoading.style.display = "flex";
+  internetHome.style.display = "none";
+  mockYoutube.style.display = "none";
+  if (mockWikipedia) mockWikipedia.style.display = "none";
+
+  setTimeout(() => {
+    fakeLoading.style.display = "none";
+    if (mockWikipedia) mockWikipedia.style.display = "flex";
+    updateBrowserView("wikipedia");
+  }, 4500);
+
+  closeStartMenu();
+});
+
+// ==========================
+// PHOTOS APP FUNCTIONALITY
+// ==========================
+const photosApp = document.getElementById("photos-app");
+const photosTab = document.getElementById("photos-tab");
+const photosCloseBtn = document.getElementById("photos-close");
+const photosDragHandle = document.getElementById("photos-drag");
+
+let isPhotosMinimized = false;
+
+document.getElementById("open-photos")?.addEventListener("click", () => {
+  photosApp.classList.remove("hidden");
+  photosTab.style.display = "inline-flex";
+  closeStartMenu();
+});
+
+photosTab.onclick = () => {
+  if (isPhotosMinimized) {
+    photosApp.classList.remove("hidden");
+    isPhotosMinimized = false;
+  } else {
+    photosApp.classList.add("hidden");
+    isPhotosMinimized = true;
+  }
+};
+
+photosCloseBtn.onclick = () => {
+  photosApp.classList.add("hidden");
+  photosTab.style.display = "none";
+  isPhotosMinimized = false;
+};
+
+// ==========================
+// VIDEOS APP FUNCTIONALITY
+// ==========================
+const videosApp = document.getElementById("videos-app");
+const videosTab = document.getElementById("videos-tab");
+const videosCloseBtn = document.getElementById("videos-close");
+const videosDragHandle = document.getElementById("videos-drag");
+
+let isVideosMinimized = false;
+
+document.getElementById("open-videos")?.addEventListener("click", () => {
+  videosApp.classList.remove("hidden");
+  videosTab.style.display = "inline-flex";
+  closeStartMenu();
+});
+
+videosTab.onclick = () => {
+  if (isVideosMinimized) {
+    videosApp.classList.remove("hidden");
+    isVideosMinimized = false;
+  } else {
+    videosApp.classList.add("hidden");
+    isVideosMinimized = true;
+  }
+};
+
+videosCloseBtn.onclick = () => {
+  videosApp.classList.add("hidden");
+  videosTab.style.display = "none";
+  isVideosMinimized = false;
+};
+
+// ==========================
+// DRAGGABLE WINDOWS
+// ==========================
+function makeWindowDraggable(appWindow, dragHandle) {
+  let isDragging = false;
+  let offsetX = 0, offsetY = 0;
+
+  dragHandle.addEventListener("mousedown", (e) => {
+    const rect = appWindow.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    isDragging = true;
+
+    document.addEventListener("mousemove", dragWindow);
+    document.addEventListener("mouseup", stopDragging);
+  });
+
+  function dragWindow(e) {
+    if (!isDragging) return;
+    appWindow.style.left = `${e.clientX - offsetX}px`;
+    appWindow.style.top = `${e.clientY - offsetY}px`;
+  }
+
+  function stopDragging() {
+    isDragging = false;
+    document.removeEventListener("mousemove", dragWindow);
+    document.removeEventListener("mouseup", stopDragging);
+  }
+}
+
+makeWindowDraggable(photosApp, photosDragHandle);
+makeWindowDraggable(videosApp, videosDragHandle);

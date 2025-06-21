@@ -58,36 +58,133 @@
       <!-- START MENU -->
       <div id="start-menu" class="start-menu">
         <div class="menu-left">
-          <div class="menu-item"><img src="assets/computer.png" />My Computer</div>
-          <div class="menu-item"><img src="assets/network.png" />My Network Places</div>
-          <div class="menu-item"><img src="assets/folder.png" />Documents</div>
-          <div class="menu-item"><img src="assets/network.png" />Network Drives</div>
-          <div class="menu-item"><img src="assets/settings.png" />System Settings</div>
-          <div class="menu-item"><img src="assets/filmmaking.png" />Windows Movie Maker</div>
-          <div class="menu-item"><img src="assets/note.png" />Notepad</div>
-          <div class="menu-item"><img src="assets/paint.png" />MS Paint</div>
+          <div class="menu-item" id="open-my-files"><img src="assets/computer.png" />My Files</div>
+          <div class="menu-item" id="open-browser"><img src="assets/network.png" />Internet Explorer</div>
+          <div class="menu-item" id="open-photos"><img src="assets/network.png" />Photos</div>
+          <div class="menu-item" id="open-videos"><img src="assets/settings.png" />Videos</div>
+          <div class="menu-item" id="open-media-player"><img src="assets/mixed.png" />Media Player</div>
+          <div class="menu-item" id="open-calculator"><img src="assets/calc.png" />Calculator</div>
+          <div class="menu-item" id="open-paint"><img src="assets/paint.png" />Paint</div>
+          <div class="menu-item" id="open-snake"><img src="assets/snake.png" />Snake</div>
         </div>
 
         <div class="menu-right">
-          <div class="menu-item"><img src="assets/youtube.png" />Consistency</div>
-          <div class="menu-item"><img src="assets/mixed.png" />Mixed Media</div>
-          <div class="menu-item"><img src="assets/documents.png" />Portfolio Projects</div>
-          <div class="menu-item"><img src="assets/github.png" />Code Archive</div>
-          <div class="menu-item"><img src="assets/panel.png" />Control Panel</div>
+          <div class="menu-item" id="open-youtube"><img src="assets/youtube.png" />Youtube Channel</div>
+          <div class="menu-item" id="open-projects"><img src="assets/documents.png" />Portfolio Projects</div>
+          <div class="menu-item" id="open-latest-work"><img src="assets/filmmaking.png" />Latest Work</div>
+
 
           <div class="menu-subrow">
-            <div class="menu-item small"><img src="assets/help.png" />Help</div>
-            <div class="menu-item small"><img src="assets/settings.png" />Settings</div>
-            <div class="menu-item small"><img src="assets/logout.png" />Log Off</div>
+            <div class="menu-item small" id="open-readme"><img src="assets/help.png" />Help</div>
+            <div class="menu-item small" id="open-settings"><img src="assets/settings.png" />Settings</div>
+            <div class="menu-item small" id="open-logout"><img src="assets/logout.png" />Log Off</div>
           </div>
 
-          <div class="menu-profile">
+          <div class="menu-profile" id="open-profile-wikipedia">
             <img src="assets/profile.png" alt="User profile" />
             <span>Conor</span>
           </div>
         </div>
       </div>
+      <!-- END START MENU -->
+<!-- MS Paint -->
+<div id="paint-app" class="app-window-unique paint-app-window hidden">
+  <div class="app-header-bar">
+    <span>MS Paint</span>
+    <button class="app-close-btn" onclick="closePaintApp()">✕</button>
+  </div>
+  <div class="app-body">
+    <canvas id="paint-canvas" width="500" height="300"></canvas>
+    <div class="paint-toolbar">
+      <input type="color" id="paint-color" value="#000000" />
+      <input type="range" id="paint-size" min="1" max="20" value="5" />
+      <button id="toggle-eraser">🧽 Eraser</button>
+      <button onclick="clearPaint()">Clear</button>
+    </div>
+  </div>
+</div>
 
+<!-- Snake Game -->
+<div id="snake-app" class="app-window-unique snake-app-window hidden">
+  <div class="app-header-bar">
+    <span>Snake Game</span>
+    <button class="app-close-btn" onclick="closeSnakeApp()">✕</button>
+  </div>
+  <div class="app-body">
+    <canvas id="snake-canvas" width="300" height="300"></canvas>
+    <p class="snake-help-text">Use arrow keys to move. 🐍</p>
+    <div id="snake-start-overlay" class="snake-modal-overlay hidden">
+      <p class="snake-help-text">Press any key to start</p>
+    </div>
+  </div>
+</div>
+
+<!-- Snake Lose Modal -->
+<div id="snake-lose-modal" class="app-window-unique hidden">
+  <div class="modal-content">
+    <p>💀 Snake has crashed. You lost!</p>
+    <button onclick="closeSnakeModal()">OK</button>
+  </div>
+</div>
+
+<!-- Calculator -->
+<div id="calculator-app" class="app-window-unique calc-app-window hidden">
+  <div class="app-header-bar">
+    <span>Calculator</span>
+    <button class="app-close-btn" onclick="closeCalculatorApp()">✕</button>
+  </div>
+  <div class="app-body">
+    <input type="text" id="calc-display" readonly />
+    <div class="calc-button-grid">
+      <button>C</button><button>←</button><button>%</button><button>/</button>
+      <button>7</button><button>8</button><button>9</button><button>*</button>
+      <button>4</button><button>5</button><button>6</button><button>-</button>
+      <button>1</button><button>2</button><button>3</button><button>+</button>
+      <button>+/-</button><button>0</button><button>.</button><button>=</button>
+    </div>
+  </div>
+</div>
+
+<!-- PHOTOS APP -->
+<div id="photos-app" class="app-window-unique app-photo-video-window hidden">
+  <div class="app-header-bar" id="photos-drag">
+    <span>📸 Photos</span>
+    <div class="app-photo-video-controls">
+      <button id="photos-minimize">🗕</button>
+      <button id="photos-maximize">🗖</button>
+      <button id="photos-close" class="app-close-btn">✕</button>
+    </div>
+  </div>
+  <div class="app-body app-photo-grid">
+    ${Array.from({ length: 32 }).map((_, i) => `
+      <div class="app-thumb">
+        <img src="assets/photos/photo_${i + 1}.jpg" alt="photo ${i + 1}" />
+        <span>photo_${i + 1}.jpg</span>
+      </div>
+    `).join("")}
+  </div>
+</div>
+
+<!-- VIDEOS APP -->
+<div id="videos-app" class="app-window-unique app-photo-video-window hidden">
+  <div class="app-header-bar" id="videos-drag">
+    <span>🎬 Videos</span>
+    <div class="app-photo-video-controls">
+      <button id="videos-minimize">🗕</button>
+      <button id="videos-maximize">🗖</button>
+      <button id="videos-close" class="app-close-btn">✕</button>
+    </div>
+  </div>
+  <div class="app-body app-photo-grid">
+    ${Array.from({ length: 10 }).map((_, i) => `
+      <div class="app-thumb">
+        <img src="assets/videos/video_${i + 1}.jpg" alt="video ${i + 1}" />
+        <span>video_${i + 1}.mp4</span>
+      </div>
+    `).join("")}
+  </div>
+</div>
+      <!-- END START MENU -->
 <!-- TASKBAR TABS -->
 <div class="opened-tabs">
   <div class="open-tab" id="consistency-tab">
@@ -97,16 +194,34 @@
   <img src="assets/folder.png" />My Files
 </div>
   <div class="open-tab music" id="music-tab" style="display: none;">
-    <img src="assets/music.png" />what i'm listening to
+    <img src="assets/music.png" />Media Player
   </div>
   <div class="open-tab" id="readme-tab" style="display: flex;">
     <img src="assets/notepad.png" />readme.txt
   </div>
+<!-- MS Paint Tab -->
+<div class="open-tab" id="paint-tab" style="display: none;">
+  <img src="assets/paint.png" />Paint
 </div>
-
+<!-- Calculator Tab -->
+<div class="open-tab" id="calculator-tab" style="display: none;">
+  <img src="assets/calc.png" />Calculator
+</div>
+<!-- Snake Game Tab -->
+<div class="open-tab" id="snake-tab" style="display: none;">
+  <img src="assets/snake.png" />Snake
+</div>
+  <div class="open-tab" id="photos-tab" style="display: none;">
+    <img src="assets/photos.png" />Photos
+  </div>
+  <div class="open-tab" id="videos-tab" style="display: none;">
+    <img src="assets/videos.png" />Videos
+  </div>
+</div>
+<!-- END TASKBAR TABS -->
       <div class="time">11:20 PM</div>
     </div>
-    <!-- END TASKBAR -->
+<!-- END TASKBAR -->
 
 <!-- README.TXT WINDOW -->
 <div class="readme-window window" id="readme-window" style="display: flex;">
