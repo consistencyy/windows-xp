@@ -21,13 +21,13 @@ body {
 }
 
 .back {
-  background-image: url('assets/parallax-back.png');
+  background-image: url('assets/back.png');
 }
 .mid {
-  background-image: url('assets/parallax-mid.png');
+  background-image: url('assets/mid.png');
 }
 .fore {
-  background-image: url('assets/parallax-fore.png');
+  background-image: url('assets/fore.png');
 }
 
 /* Home Screen */
