@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", scaleDesktop);
   scaleDesktop();
 
-
   // START MENU TOGGLE
   const startButton = document.querySelector(".start-button");
   const startMenu = document.getElementById("start-menu");
@@ -323,34 +322,41 @@ if (consistencyTab) {
 }
 
 // Draggable Internet Explorer window
+// === Simplified Dragging Logic for Internet Explorer Window ===
+(function() {
+  const browserHeader = document.querySelector("#browser-window .window-header");
+  const browserWindow = document.getElementById("browser-window");
+
+  let isDragging = false;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  if (browserHeader && browserWindow) {
 browserHeader.addEventListener("mousedown", (e) => {
-  // Prevent dragging if clicking inside the search input
   if (e.target.closest(".spoof-search")) return;
 
-  const rootRect = document.getElementById("desktop-root").getBoundingClientRect();
-  const winRect = browserWindow.getBoundingClientRect();
-  offsetXBrowser = e.clientX - winRect.left;
-  offsetYBrowser = e.clientY - winRect.top;
-  isDraggingBrowser = true;
+  const rect = browserWindow.getBoundingClientRect();
+  offsetX = e.clientX - rect.left;
+  offsetY = e.clientY - rect.top;
+  isDragging = true;
 
-  document.addEventListener("mousemove", onDragBrowser);
-  document.addEventListener("mouseup", stopDragBrowser);
+  document.addEventListener("mousemove", onDrag);
+  document.addEventListener("mouseup", stopDrag);
 });
+  }
 
-function onDragBrowser(e) {
-  if (!isDraggingBrowser) return;
-  const rootRect = document.getElementById("desktop-root").getBoundingClientRect();
-  const newLeft = e.clientX - rootRect.left - offsetXBrowser;
-  const newTop = e.clientY - rootRect.top - offsetYBrowser;
-  browserWindow.style.left = `${newLeft}px`;
-  browserWindow.style.top = `${newTop}px`;
-}
+  function onDrag(e) {
+    if (!isDragging) return;
+    browserWindow.style.left = `${e.clientX - offsetX}px`;
+    browserWindow.style.top = `${e.clientY - offsetY}px`;
+  }
 
-function stopDragBrowser() {
-  isDraggingBrowser = false;
-  document.removeEventListener("mousemove", onDragBrowser);
-  document.removeEventListener("mouseup", stopDragBrowser);
-}
+  function stopDrag() {
+    isDragging = false;
+    document.removeEventListener("mousemove", onDrag);
+    document.removeEventListener("mouseup", stopDrag);
+  }
+})();
 
 // Tab switch logic for YouTube mock
 if (tabs.length) {
@@ -541,6 +547,7 @@ const categoryViews = {
   design: document.getElementById("category-design"),
   motion: document.getElementById("category-motion"),
   film: document.getElementById("category-film"),
+  
 };
 
 let isFileExplorerDragging = false;
@@ -900,6 +907,27 @@ if (spoofSearch) {
   });
 }
 
+function closeStartMenu() {
+  const startMenu = document.getElementById("start-menu");
+  if (startMenu) {
+    startMenu.classList.remove("visible");
+  }
+}
+
+document.addEventListener("click", (event) => {
+  const startMenu = document.getElementById("start-menu");
+  const startButton = document.querySelector(".start-button");
+
+  // Don't close if the click is inside the start menu or the start button
+  if (
+    startMenu.classList.contains("visible") &&
+    !startMenu.contains(event.target) &&
+    !startButton.contains(event.target)
+  ) {
+    closeStartMenu();
+  }
+});
+
 // === ADDITIONAL START MENU BUTTONS ===
 document.getElementById("open-my-files")?.addEventListener("click", () => {
   openFileExplorer();
@@ -964,3 +992,124 @@ document.getElementById("open-profile-wikipedia")?.addEventListener("click", () 
 // ==========================
 // END OF START MENU BUTTONS
 // ==========================
+
+// === PROJECT FWINDOW LOGIC ===
+const projectWindows = document.querySelectorAll(".project-fwindow");
+const stmarksWindow = document.getElementById("project-stmarks");
+const cloverWindow = document.getElementById("project-clover");
+const projectsTab = document.getElementById("projects-tab");
+
+let lastOpenedProjectId = null;
+
+function openProjectFWindow(id) {
+  // Close all other project windows
+  projectWindows.forEach(win => {
+    win.classList.remove("show");
+    win.classList.add("hidden");
+  });
+
+  const win = document.getElementById(id);
+  if (!win) return;
+
+  win.classList.remove("hidden");
+  win.classList.add("show");
+
+  lastOpenedProjectId = id;
+
+  if (projectsTab) {
+    projectsTab.style.display = "flex";
+  }
+}
+
+function closeProjectFWindow(id) {
+  const win = document.getElementById(id);
+  if (!win) return;
+  win.classList.remove("show");
+  win.classList.add("hidden");
+
+  if (projectsTab) {
+    projectsTab.style.display = "none";
+  }
+
+  lastOpenedProjectId = null;
+}
+
+if (projectsTab) {
+  projectsTab.onclick = () => {
+    const anyVisible = Array.from(projectWindows).some(win => win.classList.contains("show"));
+    if (anyVisible) {
+      projectWindows.forEach(win => win.classList.remove("show"));
+      projectWindows.forEach(win => win.classList.add("hidden"));
+    } else if (lastOpenedProjectId) {
+      const win = document.getElementById(lastOpenedProjectId);
+      if (win) {
+        win.classList.remove("hidden");
+        win.classList.add("show");
+      }
+    }
+  };
+}
+
+// When closing File Explorer, also hide project windows and reset view
+fileExplorerClose.addEventListener("click", () => {
+  projectWindows.forEach(win => {
+    win.classList.remove("show");
+    win.classList.add("hidden");
+  });
+  if (projectsTab) {
+    projectsTab.style.display = "none";
+  }
+  lastOpenedProjectId = null;
+
+  // Reset File Explorer to root view
+  document.getElementById("file-explorer-root").style.display = "flex";
+  document.querySelectorAll(".explorer-view").forEach(view => {
+    if (view.id !== "file-explorer-root") {
+      view.style.display = "none";
+    }
+  });
+});
+
+function switchProjectFWindow(nextId) {
+  // Close all open project windows
+  projectWindows.forEach(win => {
+    win.classList.remove("show");
+    win.classList.add("hidden");
+  });
+
+  const win = document.getElementById(nextId);
+  if (!win) return;
+
+  win.classList.remove("hidden");
+  win.classList.add("show");
+
+  // Keep the Projects tab open
+  if (projectsTab) {
+    projectsTab.style.display = "flex";
+  }
+
+  lastOpenedProjectId = nextId;
+}
+// Event listeners for project windows
+
+function isMobileDevice() {
+  return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || window.innerWidth <= 768;
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  if (isMobileDevice()) {
+    document.getElementById("mobile-mode-prompt").classList.remove("hidden");
+  }
+});
+
+function redirectToMobile() {
+  // Optional: Add a quick fade-out effect
+  document.body.style.opacity = '0';
+  setTimeout(() => {
+    window.location.href = 'mobile.html';
+  }, 300); // Adjust if you add fade-out CSS
+}
+
+function dismissMobileWarning() {
+  document.getElementById("mobile-mode-prompt").classList.add("hidden");
+}

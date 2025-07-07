@@ -98,6 +98,9 @@
   <div class="open-tab" id="readme-tab" style="display: flex;">
     <img src="assets/notepad.png" />readme.txt
   </div>
+  <div class="open-tab" id="projects-tab" style="display: none;">
+  <img src="assets/project.png" />Projects
+  </div>
 </div>
 <!-- END TASKBAR TABS -->
       <div class="time">11:20 PM</div>
@@ -170,107 +173,780 @@ Thanks for checking it out.
   <!-- FILE EXPLORER CONTENT (all inside the same window) -->
 
   <!-- Root Folder -->
-  <div class="fwindow-content explorer-view" id="file-explorer-root">
-    <div class="ficon" onclick="openCategory('design')">
-      <img src="assets/computer.png" />
-      <div class="ficon-name">Product/Brand Design</div>
-    </div>
-    <div class="ficon" onclick="openCategory('motion')">
-      <img src="assets/network.png" />
-      <div class="ficon-name">Animation & Motion Graphics</div>
-    </div>
-    <div class="ficon" onclick="openCategory('film')">
-      <img src="assets/filmmaking.png" />
-      <div class="ficon-name">Filmmaking</div>
-    </div>
-  </div>
+<div class="fwindow-content explorer-view" id="file-explorer-root">
+      <div class="project-grid file-page">
+        <div class="ficon" onclick="openCategory('design')">
+          <img src="assets/computer.png" />
+          <div class="ficon-name">Graphic Design</div>
+        </div>
+        <div class="ficon" onclick="openCategory('motion')">
+          <img src="assets/network.png" />
+          <div class="ficon-name">Video Editing</div>
+        </div>
+        <div class="ficon" onclick="openCategory('film')">
+          <img src="assets/filmmaking.png" />
+          <div class="ficon-name">Film Reel</div>
+        </div>
+      </div>
+</div>
+<!-- END Root Folder -->
 
   <!-- Categories -->
-  <div class="fwindow-content explorer-view" id="category-design" style="display: none;">
-    <button class="fback-button" onclick="backToRoot()">⬅ Back</button>
-    <h3>Product / Brand Design</h3>
-    <div class="project-grid">
-      <div class="ficon" onclick="openProject('design-1')"><img src="assets/project.png" /><div class="ficon-name">Brand Identity</div></div>
-      <div class="ficon" onclick="openProject('design-2')"><img src="assets/project.png" /><div class="ficon-name">Package Design</div></div>
-      <div class="ficon" onclick="openProject('design-3')"><img src="assets/project.png" /><div class="ficon-name">Typography Study</div></div>
+<div class="fwindow-content explorer-view" id="category-design" style="display: none;">
+  <button class="fback-button" onclick="backToRoot()">⬅ Back</button>
+  <h3>Graphic Design</h3>
+  <div class="project-grid">
+    <div class="ficon" onclick="openProject('design-1')">
+      <img src="assets/brandidentity-thumb.png" />
+      <div class="ficon-name">Brand Identity</div>
     </div>
-  </div>
-
-  <div class="fwindow-content explorer-view" id="category-motion" style="display: none;">
-    <button class="fback-button" onclick="backToRoot()">⬅ Back</button>
-    <h3>Animation & Motion Graphics</h3>
-    <div class="project-grid">
-      <div class="ficon" onclick="openProject('motion-1')"><img src="assets/project.png" /><div class="ficon-name">Visual Loop</div></div>
-      <div class="ficon" onclick="openProject('motion-2')"><img src="assets/project.png" /><div class="ficon-name">Kinetic Type</div></div>
-      <div class="ficon" onclick="openProject('motion-3')"><img src="assets/project.png" /><div class="ficon-name">Title Sequence</div></div>
+    <div class="ficon" onclick="openProject('design-2')">
+      <img src="assets/packagedesign-thumb.png" />
+      <div class="ficon-name">Package Design</div>
     </div>
-  </div>
-
-  <div class="fwindow-content explorer-view" id="category-film" style="display: none;">
-    <button class="fback-button" onclick="backToRoot()">⬅ Back</button>
-    <h3>Filmmaking</h3>
-    <div class="project-grid">
-      <div class="ficon" onclick="openProject('film-1')"><img src="assets/project.png" /><div class="ficon-name">Short Film</div></div>
-      <div class="ficon" onclick="openProject('film-2')"><img src="assets/project.png" /><div class="ficon-name">Documentary</div></div>
-      <div class="ficon" onclick="openProject('film-3')"><img src="assets/project.png" /><div class="ficon-name">Cinematography Reel</div></div>
+    <div class="ficon" onclick="openProject('design-3')">
+      <img src="assets/typographystudy-thumb.png" />
+      <div class="ficon-name">Typography Study</div>
     </div>
-  </div>
-
-  <!-- Project Views (inside same container) -->
-  <div class="fwindow-content explorer-view project-view" id="project-design-1" style="display: none;">
-    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
-    <h2>Brand Identity</h2>
-    <p>Description and visuals for Brand Identity</p>
-  </div>
-
-  <div class="fwindow-content explorer-view project-view" id="project-design-2" style="display: none;">
-    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
-    <h2>Package Design</h2>
-    <p>Description and visuals for Package Design</p>
-  </div>
-
-  <div class="fwindow-content explorer-view project-view" id="project-design-3" style="display: none;">
-    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
-    <h2>Typography Study</h2>
-    <p>Description and visuals for Typography Study</p>
-  </div>
-
-  <div class="fwindow-content explorer-view project-view" id="project-motion-1" style="display: none;">
-    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
-    <h2>Visual Loop</h2>
-    <p>Description and visuals for Visual Loop</p>
-  </div>
-
-  <div class="fwindow-content explorer-view project-view" id="project-motion-2" style="display: none;">
-    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
-    <h2>Kinetic Type</h2>
-    <p>Description and visuals for Kinetic Type</p>
-  </div>
-
-  <div class="fwindow-content explorer-view project-view" id="project-motion-3" style="display: none;">
-    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
-    <h2>Title Sequence</h2>
-    <p>Description and visuals for Title Sequence</p>
-  </div>
-
-  <div class="fwindow-content explorer-view project-view" id="project-film-1" style="display: none;">
-    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
-    <h2>Short Film</h2>
-    <p>Description and visuals for Short Film</p>
-  </div>
-
-  <div class="fwindow-content explorer-view project-view" id="project-film-2" style="display: none;">
-     <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
-    <h2>Documentary</h2>
-    <p>Description and visuals for Documentary</p>
-  </div>
-
-  <div class="fwindow-content explorer-view project-view" id="project-film-3" style="display: none;">
-    <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
-    <h2>Cinematography Reel</h2>
-    <p>Description and visuals for Cinematography Reel</p>
   </div>
 </div>
+
+<div class="fwindow-content explorer-view project-view has-body" id="category-motion" style="display: none;">
+  <button class="fback-button" onclick="backToRoot()">⬅ Back</button>
+  <h2>Video Editing</h2>
+
+  <div class="project-grid">
+    <!-- Motion 1: Commercial Ad -->
+    <div class="ficon" onclick="openProjectFWindow('project-motion-ad')">
+      <img src="assets/motion-ad-thumb.png" />
+      <div class="ficon-name">Product Ad Cut</div>
+    </div>
+
+    <!-- Motion 2: Title Sequence -->
+    <div class="ficon" onclick="openProjectFWindow('project-motion-titles')">
+      <img src="assets/motion-titles-thumb.png" />
+      <div class="ficon-name">Opening Titles</div>
+    </div>
+
+    <!-- Motion 3: Conceptual Edit (Original Idea) -->
+    <div class="ficon" onclick="openProjectFWindow('project-motion-fracture')">
+      <img src="assets/motion-fracture-thumb.png" />
+      <div class="ficon-name">Fracture Edit</div>
+    </div>
+  </div>
+</div>
+
+<div class="fwindow-content explorer-view project-view has-body" id="category-film" style="display: none;">
+  <button class="fback-button" onclick="backToRoot()">⬅ Back</button>
+  <h2>Film Reel</h2>
+
+  <div class="project-summary">
+    <p>
+      <strong>Creative Film Reel</strong><br>
+      A curated reel featuring narrative work, cinematography, and editing. Includes short film highlights, branded sequences, and original visuals — demonstrating visual storytelling, pacing, and camera work across multiple genres.
+    </p>
+  </div>
+
+  <div class="film-reel-container">
+    <!-- Replace the src with your actual YouTube video ID -->
+    <iframe 
+      width="100%" 
+      height="500" 
+      src="https://www.youtube.com/embed/YOUR_VIDEO_ID_HERE" 
+      title="Film Reel"
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+    </iframe>
+  </div>
+</div>
+
+  <!-- Project Views (inside same container) -->
+<div class="fwindow-content explorer-view project-view has-body" id="project-design-1" style="display: none;">
+  <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
+  <h2>Brand Identity</h2>
+
+    <!-- ✅ Insert summary here -->
+  <div class="project-summary">
+    <p>
+      <strong>Brand Identity Projects (UPS)</strong><br>
+      These branding pieces were created as part of my design work at The UPS Store, where I collaborated directly with clients to develop business cards, menus, promotional graphics, and logos tailored to their businesses. Each project reflects a unique brand voice, while maintaining clarity, structure, and print-readiness.
+    </p>
+  </div>
+
+  <div class="project-grid">
+    <div class="ficon" onclick="openProjectFWindow('project-stmarks')">
+      <img src="assets/stmarks-thumb.png" />
+      <div class="ficon-name">St. Mark Baptist</div>
+    </div>
+    <div class="ficon" onclick="openProjectFWindow('project-clover')">
+      <img src="assets/clovercard-thumb.png" />
+      <div class="ficon-name">Clover Carpentry</div>
+    </div>
+    <div class="ficon" onclick="openProjectFWindow('project-cookies')">
+      <img src="assets/cookiesbeyond-thumb.png" />
+      <div class="ficon-name">Cookies & Beyond</div>
+    </div>
+  </div>
+</div>
+
+<div class="fwindow-content explorer-view project-view has-body" id="project-design-2" style="display: none;">
+  <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
+  <h2>Package Design</h2>
+
+  <div class="project-summary">
+    <p>
+      <strong>Experimental & Promotional Packaging</strong><br>
+      A small collection of bold, creative package design explorations — from playful consumer products to conceptual packaging for retail. These projects balance attention-grabbing visuals with structure, hierarchy, and print production constraints.
+    </p>
+  </div>
+
+  <div class="project-grid">
+    <!-- Weed Brand -->
+    <div class="ficon" onclick="openProjectFWindow('project-emerald')">
+      <img src="assets/emeraldbud-thumb.png" />
+      <div class="ficon-name">Emerald Bud</div>
+    </div>
+
+    <!-- Cereal Box -->
+    <div class="ficon" onclick="openProjectFWindow('project-cereal')">
+      <img src="assets/cerealbox-thumb.png" />
+      <div class="ficon-name">Pow Pow Crunch</div>
+    </div>
+
+    <!-- Third fun one -->
+    <div class="ficon" onclick="openProjectFWindow('project-socks')">
+      <img src="assets/socktube-thumb.png" />
+      <div class="ficon-name">SockTube™</div>
+    </div>
+  </div>
+</div>
+
+<div class="fwindow-content explorer-view project-view has-body" id="project-design-3" style="display: none;">
+  <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
+  <h2>Typography Study</h2>
+
+  <div class="project-summary">
+    <p>
+      <strong>Typography-Driven Experiments</strong><br>
+      A collection of kinetic, experimental, and layout-focused projects centered around expressive and functional use of type. These projects span motion, print, and digital — each one emphasizing form, rhythm, and the emotional power of letterforms.
+    </p>
+  </div>
+
+  <div class="project-grid">
+    <!-- Music Video Typography -->
+    <div class="ficon" onclick="openProjectFWindow('project-musictype')">
+      <img src="assets/musictype-thumb.png" />
+      <div class="ficon-name">Lyrics in Motion</div>
+    </div>
+
+    <!-- Original Project: Gridded Editorial Poster -->
+    <div class="ficon" onclick="openProjectFWindow('project-editorialgrid')">
+      <img src="assets/editorialgrid-thumb.png" />
+      <div class="ficon-name">Typo:Editorial</div>
+    </div>
+
+    <!-- Original Project: Typeface Personality Booklet -->
+    <div class="ficon" onclick="openProjectFWindow('project-typefacezine')">
+      <img src="assets/typefacezine-thumb.png" />
+      <div class="ficon-name">TypeMood Zine</div>
+    </div>
+  </div>
+</div> <!--end graphic design project 3-->
+</div> <!-- END FILE EXPLORER WINDOW -->
+<!-- BEGIN PROJECTS WINDOW -->
+ <!-- FULLSCREEN PROJECT WINDOW -->
+  <!-- St. Mark Baptist Project Window -->
+<div class="project-fwindow hidden" id="project-stmarks">
+  <div class="project-fwindow-header">
+    <span>St. Mark Baptist — Brand Case Study</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-stmarks')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study">
+      <div class="project-nav">
+        <button onclick="switchProjectFWindow('project-cookies')">← Previous</button>
+        <button onclick="switchProjectFWindow('project-clover')">Next →</button>
+      </div>
+  <h1>St. Mark Baptist Church – Brand Case Study</h1>
+  <p class="cs-subtitle">Visual Identity · Print Design · Community Engagement</p>
+
+  <h2>Project Brief</h2>
+  <p>
+    St. Mark Baptist Church, a historic Black Baptist congregation in Yonkers, NY, requested a redesign of their outdated business cards. Their previous design was a plain white layout with a generic PNG graphic of a “modern church” and centered contact info. The reverse side was completely blank.
+  </p>
+  <p>
+    The client’s ask: “Make it pop.” My goal: give them a visual identity that reflects their actual space, community, and values.
+  </p>
+
+  <h2>Visual Audit & Research</h2>
+  <p>
+    I started by reviewing a reference photo and studying the church exterior via Google Street View to capture its structure — a recognizable gabled facade, tall central window, and brick detailing.
+  </p>
+  <p>
+    <em>Design Insight:</em> Replace the generic icon with a custom, minimalist logo based on the church’s real architecture.
+  </p>
+
+  <!-- PLACEHOLDER: Logo before/after -->
+  <div class="img-block">
+    <img src="assets/stmarks-logo-before.png" alt="Old Logo">
+    <img src="assets/stmarks-logo-after.png" alt="New Logo">
+  </div>
+
+  <h2>Typography & Layout (Front)</h2>
+  <p>
+    Contact details were restructured using a classic serif typeface for names and headers, paired with a clean sans-serif for legibility. Layout spacing was refined for hierarchy, rhythm, and clarity.
+  </p>
+
+  <!-- PLACEHOLDER: Contact layout preview -->
+  <div class="img-block">
+    <img src="assets/stmarks-front-layout.png" alt="Front Layout">
+  </div>
+
+  <h2>Color & Design (Back)</h2>
+  <p>
+    For the reverse, I designed a colorful event promo area in deep plum and warm gold tones — inspired by stained glass. Rounded motifs and bold headers create an uplifting, energetic contrast to the reserved front.
+  </p>
+
+  <!-- PLACEHOLDER: Back layout preview -->
+  <div class="img-block">
+    <img src="assets/stmarks-back-layout.png" alt="Back Layout">
+  </div>
+
+  <h2>Final Deliverables</h2>
+  <ul>
+    <li>Print-ready business cards (front + back)</li>
+    <li>Custom vector logo for branding use</li>
+    <li>Modular contact layout for use in letterheads and signage</li>
+  </ul>
+
+<h2>Client Feedback</h2>
+<blockquote>
+  <div class="star-rating">⭐ ⭐ ⭐ ⭐ ⭐</div>
+  “We didn’t know how to explain what we wanted — but this is <strong>exactly</strong> it. It looks like <em>us</em>.”
+</blockquote>
+
+  <h2>Reflection</h2>
+  <p>
+    This case reminded me how powerful it is to translate “make it pop” into a clear, branded visual story. It’s not just design — it’s identity.
+  </p>
+</section>
+  </div>
+</div>
+<!-- END St. Mark Baptist Project Window -->
+
+<!--begin project clover carpentry-->
+<div class="project-fwindow hidden" id="project-clover">
+  <div class="project-fwindow-header">
+    <span>Clover Carpentry – Case Study</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-clover')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study">
+        <div class="project-nav">
+          <button onclick="switchProjectFWindow('project-stmarks')">← Previous</button>
+          <button onclick="switchProjectFWindow('project-cookies')">Next →</button>
+        </div>
+      <h1>Clover Carpentry & Contracting – Business Card Design</h1>
+      <p class="cs-subtitle">Print Design · Trades Branding · Minimalist Aesthetic</p>
+      <h2>Project Brief</h2>
+      <p>
+        A local independent contractor needed a clean, professional business card for his carpentry and construction business. His only request? “Make it simple, readable, and include a clover.”
+      </p>
+
+      <h2>Design Approach</h2>
+      <p>
+        I created a strong, no-frills layout using Montserrat and a custom 3-leaf clover icon. The card emphasizes clarity, professionalism, and just a touch of character — like the client himself.
+      </p>
+
+      <h2>Design Details</h2>
+      <ul>
+        <li>Font: Montserrat Medium/Regular</li>
+        <li>Layout: Left-aligned grid, structured spacing</li>
+        <li>Color: Black on off-white matte stock</li>
+        <li>Icon: Minimal clover tucked bottom-right</li>
+      </ul>
+
+      <h2>Client Feedback</h2>
+      <blockquote>
+        <div class="img-block">
+          <img src="assets/clovercard-preview.png" alt="Clover Business Card Preview">
+        </div>
+        “This is exactly what I was looking for. Ordered a hundred. Can’t wait to hand them out.”
+      </blockquote>
+
+      <h2>Deliverables</h2>
+      <ul>
+        <li>Business card (print-ready PDF w/ bleed)</li>
+        <li>Vector clover icon</li>
+        <li>Grayscale alternate for invoice headers</li>
+      </ul>
+
+      <h2>Reflection</h2>
+      <p>
+        Design doesn’t always have to shout. This was a reminder that thoughtful layout and one meaningful graphic can say everything you need to.
+      </p>
+    </section>
+  </div>
+</div>
+<!-- END Clover Carpentry Project Window -->
+<!--begin third project, cookies & beyond-->
+<!-- Cookies & Beyond Project Window -->
+<div class="project-fwindow hidden" id="project-cookies">
+  <div class="project-fwindow-header">
+    <span>Cookies & Beyond – Brand Identity</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-cookies')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study cookies-case">
+        <div class="project-nav">
+          <button onclick="switchProjectFWindow('project-clover')">← Previous</button>
+          <button onclick="switchProjectFWindow('project-stmarks')">Next →</button>
+        </div>
+      <div class="hero-banner">
+        <img src="assets/cookiesbeyond-logo.png" alt="Cookies & Beyond Logo">
+        <h1>Cookies & Beyond</h1>
+        <p class="cs-subtitle">Complete Brand System for a Boutique Dessert Business</p>
+      </div>
+
+      <h2>🍪 Overview</h2>
+      <p>
+        Cookies & Beyond is a woman-owned, boutique dessert brand based in White Plains, NY. The client approached me to create a cohesive identity across print and digital touchpoints. From logo to Instagram story templates, the goal was to make her treats as visually delicious as they are edible.
+      </p>
+
+      <div class="img-block">
+        <img src="assets/cookiesbeyond-cookies.jpg" alt="Cookies Display">
+        <img src="assets/cookiesbeyond-box.png" alt="Branded Packaging">
+      </div>
+
+      <h2>🎨 Color & Type Palette</h2>
+      <div class="img-block wide">
+        <img src="assets/cookiesbeyond-colors.png" alt="Color Palette">
+      </div>
+      <p>
+        We used soft natural tones inspired by baked goods: warm cream, cocoa brown, a hint of raspberry pink, and golden caramel.
+      </p>
+
+      <h2>🛠️ Brand Assets</h2>
+      <ul>
+        <li><strong>Logo:</strong> Script-style with a swirl ampersand</li>
+        <li><strong>Fonts:</strong> Rounded sans-serif paired with delicate serif headers</li>
+        <li><strong>Consistency:</strong> Carried across digital, print, and packaging</li>
+      </ul>
+
+      <div class="img-block">
+        <img src="assets/cookiesbeyond-menu.png" alt="Tri-Fold Menu Design">
+        <img src="assets/cookiesbeyond-businesscard.png" alt="Business Card Preview">
+      </div>
+
+      <h2>📲 Social Media Templates</h2>
+      <div class="img-block">
+        <img src="assets/cookiesbeyond-instastory1.png" alt="IG Story Promo">
+        <img src="assets/cookiesbeyond-grid.png" alt="Instagram Grid Layout">
+      </div>
+      
+      <div class="img-block">
+        <img src="assets/cookiesbeyond-feedback.png" alt="Screenshot of Client Comment">
+        <img src="assets/cookiesbeyond-textreaction.png" alt="Text Reaction">
+      </div>
+
+      <h2>📦 Deliverables</h2>
+      <div class="grid-deliverables">
+        <div>✔️ Logo suite (stacked + horizontal)</div>
+        <div>✔️ Tri-fold menu</div>
+        <div>✔️ Product tags & packaging stickers</div>
+        <div>✔️ Business cards</div>
+        <div>✔️ Social templates & icons</div>
+        <div>✔️ Color guide & type spec sheet</div>
+      </div>
+
+      <h2>🧠 Reflection</h2>
+      <p>
+        Helping Cookies & Beyond bloom into a full visual identity was like baking a brand from scratch. We brought charm, strategy, and consistency to every touchpoint — from business cards to cookie boxes to Instagram reels. A delicious success.
+      </p>
+    </section>
+  </div>
+</div>
+<!-- END Cookies & Beyond Project Window -->
+ <!--begin project emerald bud-->
+ <div class="project-fwindow hidden" id="project-emerald">
+  <div class="project-fwindow-header">
+    <span>Emerald Bud – Cannabis Packaging</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-emerald')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study">
+      <h1>Emerald Bud</h1>
+      <p class="cs-subtitle">Luxury Packaging for a Boutique Cannabis Brand</p>
+
+      <h2>🌿 Project Overview</h2>
+      <p>
+        Emerald Bud needed a packaging system that looked high-end but approachable. The goal was to elevate the brand to compete on dispensary shelves without losing its earthy, holistic roots.
+      </p>
+
+      <div class="img-block">
+        <img src="assets/emerald-packaging.png" alt="Emerald Bud Packaging Preview">
+        <img src="assets/emerald-label.png" alt="Label Design">
+      </div>
+
+      <h2>Design Notes</h2>
+      <ul>
+        <li>Matte black base with emerald foil stamp</li>
+        <li>THC/legal info integrated cleanly on back panel</li>
+        <li>Botanical elements subtly embossed in background</li>
+      </ul>
+
+      <div class="project-nav">
+        <button onclick="switchProjectFWindow('project-socks')">← Previous</button>
+        <button onclick="switchProjectFWindow('project-cereal')">Next →</button>
+      </div>
+    </section>
+  </div>
+</div>
+<!--end emerald bud project-->
+<!--begin project cereal box-->
+<div class="project-fwindow hidden" id="project-cereal">
+  <div class="project-fwindow-header">
+    <span>Pow Pow Crunch – Cereal Box</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-cereal')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study">
+      <h1>Pow Pow Crunch</h1>
+      <p class="cs-subtitle">Conceptual Cereal Box for a Fictional Sugar Bomb</p>
+
+      <h2>🥣 The Brief</h2>
+      <p>
+        A wild, punchy cereal box built for kids and nostalgic adults. This project let me lean into maximalist typography, explosive visuals, and mascot-driven storytelling.
+      </p>
+
+      <div class="img-block">
+        <img src="assets/powpow-box-front.png" alt="Pow Pow Box Front">
+        <img src="assets/powpow-box-back.png" alt="Game Panel">
+      </div>
+
+      <h2>Highlights</h2>
+      <ul>
+        <li>Y2K-style chunky type and vibrant colors</li>
+        <li>Side panel nutrition designed in pixel font</li>
+        <li>Includes back-of-box maze + quiz game</li>
+      </ul>
+
+      <div class="project-nav">
+        <button onclick="switchProjectFWindow('project-emerald')">← Previous</button>
+        <button onclick="switchProjectFWindow('project-socks')">Next →</button>
+      </div>
+    </section>
+  </div>
+</div>
+<!--end cereal box project-->
+<!--begin project socktube-->
+<div class="project-fwindow hidden" id="project-socks">
+  <div class="project-fwindow-header">
+    <span>SockTube™ – Gimmick Packaging</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-socks')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study">
+      <h1>SockTube™</h1>
+      <p class="cs-subtitle">Socks... Packaged Like Chips?</p>
+
+      <h2>🧦 Concept</h2>
+      <p>
+        This fictional packaging line reimagines how everyday apparel is presented. Socks are rolled and sealed in a foil-lined “chip tube” for vending machines and boutique shops alike. It’s part satire, part consumer experiment.
+      </p>
+
+      <div class="img-block">
+        <img src="assets/socktube-stack.png" alt="SockTube Lineup">
+        <img src="assets/socktube-closeup.png" alt="Label Closeup">
+      </div>
+
+      <h2>Design Features</h2>
+      <ul>
+        <li>Minimalist Helvetica-based labeling</li>
+        <li>Soft-touch matte wrap with foil lid</li>
+        <li>Includes odd flavor names like “Argyle Dill” and “No-Show Nacho”</li>
+      </ul>
+
+      <div class="project-nav">
+        <button onclick="switchProjectFWindow('project-cereal')">← Previous</button>
+        <button onclick="switchProjectFWindow('project-emerald')">Next →</button>
+      </div>
+    </section>
+  </div>
+</div>
+<!--end socktube project-->
+<!--begin project musictype-->
+<div class="project-fwindow hidden" id="project-musictype">
+  <div class="project-fwindow-header">
+    <span>Lyrics in Motion – Kinetic Typography</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-musictype')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study">
+      <h1>Lyrics in Motion</h1>
+      <p class="cs-subtitle">Kinetic Type · Motion Design · Sound-Responsive Layout</p>
+
+      <h2>🎧 Project Overview</h2>
+      <p>
+        This motion graphics study syncs dynamic typography with a vocal performance — transforming each beat, pause, and word into a rhythmic visual pulse. Each lyric reacts with scale, timing, and motion to mirror the delivery and tone of the verse.
+      </p>
+
+      <div class="img-block">
+        <img src="assets/musictype-frame1.png" alt="Intro Typography Frame">
+        <img src="assets/musictype-frame2.png" alt="Beat Synced Impact Frame">
+      </div>
+
+      <h2>Techniques & Tools</h2>
+      <ul>
+        <li>After Effects (3D camera + text animation)</li>
+        <li>Font: Monospaced + Condensed Sans</li>
+        <li>Timing manually matched to waveform</li>
+        <li>Visual accents hit on beat drops + vocal emphasis</li>
+      </ul>
+
+      <div class="img-block">
+        <img src="assets/musictype-overlay.png" alt="Overlay Example with Song Visualizer">
+      </div>
+
+      <div class="project-nav">
+        <button onclick="switchProjectFWindow('project-typefacezine')">← Previous</button>
+        <button onclick="switchProjectFWindow('project-editorialgrid')">Next →</button>
+      </div>
+    </section>
+  </div>
+</div>
+<!--end project musictype-->
+<!--begin project editorial grid-->
+<div class="project-fwindow hidden" id="project-editorialgrid">
+  <div class="project-fwindow-header">
+    <span>Typo:Editorial – Poster Grid Study</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-editorialgrid')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study">
+      <h1>Typo:Editorial</h1>
+      <p class="cs-subtitle">Swiss-Style Layout · Poster System · Visual Hierarchy</p>
+
+      <h2>📐 The Concept</h2>
+      <p>
+        This is a modular poster system built on strict grid structure — inspired by editorial layouts and Swiss International Style. Each poster explores a different typographic technique while sticking to a strict column and baseline rhythm.
+      </p>
+
+      <div class="img-block">
+        <img src="assets/editorialgrid-layout1.png" alt="Poster Layout A">
+        <img src="assets/editorialgrid-layout2.png" alt="Poster Layout B">
+      </div>
+
+      <h2>Design Principles</h2>
+      <ul>
+        <li>Grid: 8-column system, modular baseline spacing</li>
+        <li>Typefaces: Neue Haas Grotesk + Bodoni</li>
+        <li>Color: One accent per composition, rest in grayscale</li>
+        <li>Each poster acts as a “lesson” in balance, contrast, and space</li>
+      </ul>
+
+      <div class="img-block">
+        <img src="assets/editorialgrid-posterwall.png" alt="Posters Displayed Together">
+      </div>
+
+      <div class="project-nav">
+        <button onclick="switchProjectFWindow('project-musictype')">← Previous</button>
+        <button onclick="switchProjectFWindow('project-typefacezine')">Next →</button>
+      </div>
+    </section>
+  </div>
+</div>
+<!--end project editorial grid-->
+<!--begin project typeface zine-->
+<div class="project-fwindow hidden" id="project-typefacezine">
+  <div class="project-fwindow-header">
+    <span>TypeMood Zine – Font Personality Study</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-typefacezine')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study">
+      <h1>TypeMood Zine</h1>
+      <p class="cs-subtitle">Print & Web Zine · Typeface Personality Showcase</p>
+
+      <h2>🧠 Overview</h2>
+      <p>
+        TypeMood is a conceptual mini-zine exploring the moods and personalities behind different typefaces. Each spread is dedicated to a single font and its visual “voice,” using original phrases and layout styles that embody its identity.
+      </p>
+
+      <div class="img-block">
+        <img src="assets/typezine-page1.png" alt="Zine Spread – Elegant Serif">
+        <img src="assets/typezine-page2.png" alt="Zine Spread – Tech Sans">
+      </div>
+
+      <h2>Features</h2>
+      <ul>
+        <li>Hand-assembled spreads in InDesign</li>
+        <li>Each font shown in real-world usage: ads, menus, web UIs</li>
+        <li>Distributed as both PDF + vertical scroll site</li>
+      </ul>
+
+      <div class="img-block">
+        <img src="assets/typezine-covers.png" alt="Printed Zine Mockup">
+      </div>
+
+      <div class="project-nav">
+        <button onclick="switchProjectFWindow('project-editorialgrid')">← Previous</button>
+        <button onclick="switchProjectFWindow('project-musictype')">Next →</button>
+      </div>
+    </section>
+  </div>
+</div>
+<!--end project typeface zine-->
+<!--new video project 1-->
+<div class="project-fwindow hidden" id="project-motion-ad">
+  <div class="project-fwindow-header">
+    <span>Product Ad Cut – Commercial Editing</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-motion-ad')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study">
+      <h1>Product Ad Cut</h1>
+      <p class="cs-subtitle">Commercial Editing · Promo Spot · Visual Rhythm</p>
+
+      <h2>🎯 Overview</h2>
+      <p>
+        A sleek 30-second promotional edit for a fictional smart wearable. This project focused on rhythm-matched cuts, animated overlays, and tight commercial pacing — the kind of quick, slick video you'd see pre-roll on YouTube or TikTok.
+      </p>
+
+      <div class="video-embed-film">
+        <iframe width="100%" height="500" src="https://www.youtube.com/embed/YOUR_VIDEO_ID_AD" frameborder="0" allowfullscreen></iframe>
+      </div>
+
+      <h2>Details</h2>
+      <ul>
+        <li>Edited in Adobe Premiere Pro</li>
+        <li>Overlay animation in After Effects</li>
+        <li>Cut-to-beat pacing with tight zoom transitions</li>
+        <li>Product, hands, and lifestyle B-roll sourced and composited</li>
+      </ul>
+
+      <div class="img-block">
+        <img src="assets/productad-mock1.png" alt="Scene Breakdown">
+        <img src="assets/productad-overlay.png" alt="Text Overlay Preview">
+      </div>
+
+      <div class="project-nav">
+        <button onclick="switchProjectFWindow('project-motion-fracture')">← Previous</button>
+        <button onclick="switchProjectFWindow('project-motion-titles')">Next →</button>
+      </div>
+    </section>
+  </div>
+</div>
+<!--end video project 1-->
+<!--new video project 2-->
+<div class="project-fwindow hidden" id="project-motion-titles">
+  <div class="project-fwindow-header">
+    <span>Opening Titles – Cinematic Sequence</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-motion-titles')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study">
+      <h1>Opening Titles</h1>
+      <p class="cs-subtitle">Cinematic Title Design · Visual Atmosphere · Sound Design</p>
+
+      <h2>🎬 Project Description</h2>
+      <p>
+        A mood-driven opening title sequence inspired by modern drama TV. Created as a speculative intro for a fictional psychological thriller, this piece pairs text, atmosphere, and slow montage to create an unsettling tone.
+      </p>
+
+      <div class="video-embed-film">
+        <iframe width="100%" height="500" src="https://www.youtube.com/embed/YOUR_VIDEO_ID_TITLES" frameborder="0" allowfullscreen></iframe>
+      </div>
+
+      <h2>Process</h2>
+      <ul>
+        <li>Footage sourced and recolored to match tone</li>
+        <li>Type layout in After Effects using tracked motion</li>
+        <li>Atmospheric ambient soundtrack + risers</li>
+        <li>Influenced by titles like <em>Mindhunter</em> and <em>Sharp Objects</em></li>
+      </ul>
+
+      <div class="img-block">
+        <img src="assets/titles-frame1.png" alt="Title Overlay Frame">
+        <img src="assets/titles-styleframes.png" alt="Styleframe Mood Grid">
+      </div>
+
+      <div class="project-nav">
+        <button onclick="switchProjectFWindow('project-motion-ad')">← Previous</button>
+        <button onclick="switchProjectFWindow('project-motion-fracture')">Next →</button>
+      </div>
+    </section>
+  </div>
+</div>
+<!--end video project 2-->
+<!--new video project 3-->
+<div class="project-fwindow hidden" id="project-motion-fracture">
+  <div class="project-fwindow-header">
+    <span>Fracture – Conceptual Edit</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-motion-fracture')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study">
+      <h1>Fracture</h1>
+      <p class="cs-subtitle">Experimental Editing · Timeline Deconstruction · Visual Metaphor</p>
+
+      <h2>🧩 Concept</h2>
+      <p>
+        Fracture is a conceptual video piece about memory loss and nonlinear perception. Through editing techniques like glitch overlays, time reversal, jump cuts, and layered timelines, the video mimics a fractured psychological state.
+      </p>
+
+      <div class="video-embed-film">
+        <iframe width="100%" height="500" src="https://www.youtube.com/embed/YOUR_VIDEO_ID_FRACTURE" frameborder="0" allowfullscreen></iframe>
+      </div>
+
+      <h2>Techniques</h2>
+      <ul>
+        <li>VHS distortion and analog overlays</li>
+        <li>Reverse time sequences + flicker masking</li>
+        <li>Use of opacity ghosts and color splits</li>
+        <li>Sound design: pitch-shifted dialogue + reverb stack</li>
+      </ul>
+
+      <div class="img-block">
+        <img src="assets/fracture-glitch1.png" alt="Timeline Collapse Frame">
+        <img src="assets/fracture-overlay.png" alt="Overlaid Emotion Frames">
+      </div>
+
+      <div class="project-nav">
+        <button onclick="switchProjectFWindow('project-motion-titles')">← Previous</button>
+        <button onclick="switchProjectFWindow('project-motion-ad')">Next →</button>
+      </div>
+    </section>
+  </div>
+</div>
+<!--end video project 3-->
+<!-- END FULLSCREEN PROJECT WINDOW -->
+<!-- END PROJECTS WINDOW -->
 
 <!-- BROWSER WINDOW -->
     <div class="window hidden" id="browser-window">
@@ -443,8 +1119,8 @@ Thanks for checking it out.
     </div>
   </div>
   <div class="wiki-page-title">
-    <h1 class="wiki-title">Conor McCutcheon</h1>
-    <p class="wiki-subtitle">About Me Page</p>
+    <h1 class="wiki-title">About Me</h1>
+    <p class="wiki-subtitle">This is a mockup page display for my resume.</p>
   </div>
   <hr />
 </div>
@@ -452,31 +1128,60 @@ Thanks for checking it out.
   <!-- MAIN CONTENT AND SIDEBAR -->
   <div class="wiki-main">
     <!-- ARTICLE CONTENT -->
-    <div class="wiki-content">
-      <h2>Overview</h2>
-      <p><strong>Conor McCutcheon</strong> is a multidisciplinary artist...</p>
+<div class="cmWiki_resume">
+  <h1 class="cmWiki_name">Conor McCutcheon</h1>
+  <p class="cmWiki_title">Designer, Editor & Notary Public</p>
+  <p class="cmWiki_contact">
+    YONKERS, NY · <a href="http://conor.style" target="_blank">conor.style</a> · 
+    <a href="mailto:conormcc.edits@gmail.com">conormcc.edits@gmail.com</a>
+  </p>
 
-      <h2>Career</h2>
-      <p>Conor’s work spans animation, film, and visual identity design...</p>
+  <h2 class="cmWiki_section">Summary</h2>
+  <p class="cmWiki_body">
+    Graphic Designer with expertise in motion graphics, typography, brand identity, and video production. Proficient in Adobe CC (Illustrator, Photoshop, InDesign, Premiere Pro, After Effects), DaVinci Resolve, Blender, and AutoCAD. Experienced in video production, DSLR/drone operation, and color grading. Eager to contribute fresh ideas and energy to a creative team. Quick learner with a passion for design trends and visual storytelling.
+  </p>
 
-      <h2>Style</h2>
-      <p>He fuses glitch art, analog textures, and urban visual language...</p>
+  <h2 class="cmWiki_section">Experience</h2>
+  <div class="cmWiki_job">
+    <h3>The UPS Store — Graphic Designer & Notary Public</h3>
+    <p><em>Aug. 2024 – Present</em></p>
+    <ul>
+      <li>Created custom marketing and branding materials: business cards, flyers, posters, and certificates.</li>
+      <li>Optimized images for print/digital formats.</li>
+      <li>Collaborated directly with customers to translate ideas into compelling designs.</li>
+    </ul>
+  </div>
 
-      <h2>Notable Works</h2>
-      <ul>
-        <li>VG Concept Pixel Art</li>
-        <li>FOR SALE? — Unofficial Music Video</li>
-        <li>Power Freaks Visualizer</li>
-        <li>Consistencyy Channel</li>
-      </ul>
+  <div class="cmWiki_job">
+    <h3>PopGeeks.com — Production Assistant, Designer</h3>
+    <p><em>Aug. 2023 – Present</em></p>
+    <ul>
+      <li>Designed branded content including business cards, blog visuals, and social media assets.</li>
+      <li>Updated site and blog posts using HTML/CSS for a multimedia experience.</li>
+      <li>Shot and edited live events, managing DSLR workflows and post-production.</li>
+    </ul>
+  </div>
 
-      <h2>Contact</h2>
-      <ul>
-        <li><strong>Email:</strong> hello@conor.style</li>
-        <li><strong>Instagram:</strong> @consistencyy</li>
-        <li><strong>Website:</strong> conor.style</li>
-      </ul>
-    </div>
+  <div class="cmWiki_job">
+    <h3>Freelance — Designer & Video Editor</h3>
+    <p><em>2021 – Present</em></p>
+    <ul>
+      <li>Delivered branding packages, social media assets, and promotional videos for diverse clients.</li>
+      <li>Led all stages of production: planning, graphics, revisions, and final delivery.</li>
+      <li>Adapted creative styles to meet unique brand messaging needs.</li>
+    </ul>
+  </div>
+
+  <h2 class="cmWiki_section">Education</h2>
+  <p class="cmWiki_body">BA in Graphic Design, Minor in Film & Media Studies — SUNY at Buffalo, 2023.</p>
+
+  <h2 class="cmWiki_section">Licenses & Awards</h2>
+  <ul class="cmWiki_list">
+    <li>Certified Notary Public, State of New York (2025–2029)</li>
+    <li>FAA TRUST Drone Certification, 2025</li>
+    <li>Winner, NHTSA Video Entry Contest, 2023</li>
+  </ul>
+</div>
 
 <!-- SIDEBAR -->
 <div class="wiki-sidebar">
@@ -484,8 +1189,8 @@ Thanks for checking it out.
   <div class="wiki-infobox">
     <h3>About</h3>
     <table>
-      <tr><td><strong>Born</strong></td><td>November 2001</td></tr>
-      <tr><td><strong>Alias</strong></td><td>Consistencyy</td></tr>
+      <tr><td><strong>Born</strong></td><td>2001</td></tr>
+      <tr><td><strong>YT Channel</strong></td><td>Consistencyy</td></tr>
       <tr><td><strong>Profession</strong></td><td>Artist</td></tr>
       <tr><td><strong>Specialties</strong></td><td>Motion, Design, Film</td></tr>
     </table>
@@ -522,5 +1227,18 @@ Thanks for checking it out.
 
   <script src="assets/desktop.js" defer></script>
   
+<!-- Mobile Mode Prompt -->
+<div id="mobile-mode-prompt" class="mobile-modal hidden">
+  <div class="mobile-modal-box">
+    <h2>🪟 Welcome to My Portfolio</h2>
+    <p>This experience was designed for desktop, but we’ve crafted a mobile-optimized version just for you.</p>
+
+    <div class="mobile-modal-buttons">
+      <button class="primary" onclick="redirectToMobile()">📱 Mobile Version (Recommended)</button>
+      <button onclick="dismissMobileWarning()">💻 Desktop Anyway</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
