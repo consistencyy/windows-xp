@@ -4,6 +4,19 @@ function supportsWebM() {
   return video.canPlayType('video/webm; codecs="vp8, vorbis"') !== "";
 }
 
+// ---- Request Motion Permission on iOS ----
+function requestMotionPermission() {
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    DeviceMotionEvent.requestPermission()
+      .then(permissionState => {
+        if (permissionState === 'granted') {
+          document.getElementById('motion-permission').classList.add('hidden');
+        }
+      })
+      .catch(console.error);
+  }
+}
+
 // ---- Load Parallax Video Layers If Supported ----
 function loadParallaxVideos() {
   if (!supportsWebM()) {
@@ -46,7 +59,7 @@ window.addEventListener("deviceorientation", (e) => {
   if (fore) fore.style.transform = `translate(${x * 30}px, ${y * 30}px) scale(1.2)`;
 });
 
-// ---- App Logic (unchanged) ----
+// ---- App Open/Close Logic ----
 function openMobileApp(id) {
   document.getElementById("app-" + id).classList.remove("hidden");
 }
@@ -55,21 +68,15 @@ function closeMobileApp(id) {
   document.getElementById("app-" + id).classList.add("hidden");
 }
 
-// Request motion access on iOS
-function requestMotionPermission() {
-  if (typeof DeviceMotionEvent !== "undefined" && typeof DeviceMotionEvent.requestPermission === "function") {
-    DeviceMotionEvent.requestPermission()
-      .then(response => {
-        if (response === "granted") {
-          console.log("Motion permission granted");
-        }
-      })
-      .catch(console.error);
-  }
-}
-
-// ---- Init Everything ----
-window.addEventListener("DOMContentLoaded", () => {
-document.body.addEventListener("click", requestMotionPermission, { once: true });
+// ---- Init ----
+window.addEventListener('DOMContentLoaded', () => {
   loadParallaxVideos();
+
+  // Only show motion prompt if required (iOS)
+  if (
+    typeof DeviceMotionEvent !== "undefined" &&
+    typeof DeviceMotionEvent.requestPermission === "function"
+  ) {
+    document.getElementById('motion-permission').classList.remove('hidden');
+  }
 });
