@@ -1,5 +1,15 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
 body {
   margin: 0;
+  padding: 0;
   background: #0044aa;
   font-family: "Tahoma", sans-serif;
   color: #fff;
@@ -12,20 +22,19 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 120%;
-  height: 120%;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-position: center;
-  pointer-events: none;
   z-index: -1;
   will-change: transform;
+  pointer-events: none;
   transition: transform 0.3s ease;
 }
 
 .back {
   background-image: url('assets/mobileback.png');
   z-index: -3;
-  transform: scale(1.1); /* Scaled up by 10% */
 }
 
 .mid {

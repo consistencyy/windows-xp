@@ -16,14 +16,13 @@ window.addEventListener("deviceorientation", (e) => {
   const x = e.gamma / 45;
   const y = e.beta / 90;
 
-  const back = document.getElementById('parallax-back');
-  const mid  = document.getElementById('parallax-mid');
-  const fore = document.getElementById('parallax-fore');
+  const back = document.querySelector('.back');
+  const mid  = document.querySelector('.mid');
+  const fore = document.querySelector('.fore');
 
-  // More aggressive translations
-  if (back) back.style.transform = `translate(${x * 15}px, ${y * 15}px) scale(1.1)`;
-  if (mid)  mid.style.transform  = `translate(${x * 25}px, ${y * 25}px) scale(1.1)`;
-  if (fore) fore.style.transform = `translate(${x * 35}px, ${y * 35}px) scale(1.2)`;
+  if (back) back.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
+  if (mid)  mid.style.transform  = `translate(${x * 20}px, ${y * 20}px)`;
+  if (fore) fore.style.transform = `translate(${x * 30}px, ${y * 30 + 80}px)`;
 });
 
 // ---- App Open/Close Logic ----
