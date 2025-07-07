@@ -19,20 +19,22 @@ body {
   pointer-events: none;
   z-index: -1;
   will-change: transform;
+  transition: transform 0.3s ease;
 }
 
 .back {
-  background-image: url('assets/back.png');
+  background-image: url('assets/mobileback.png');
   z-index: -3;
+  transform: scale(1.1); /* Scaled up by 10% */
 }
 
 .mid {
-  background-image: url('assets/mid.png');
+  background-image: url('assets/mobilemid.png');
   z-index: -2;
 }
 
 .fore {
-  background-image: url('assets/fore.png');
+  background-image: url('assets/mobilefore.png');
   z-index: -1;
 }
 
@@ -103,16 +105,6 @@ body {
 
 .hidden {
   display: none;
-}
-
-.parallax-video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 120%;
-  height: 120%;
-  object-fit: cover;
-  z-index: -1;
 }
 
 .motion-permission {
