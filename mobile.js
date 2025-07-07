@@ -20,29 +20,22 @@ function requestMotionPermission() {
 // ---- Load Parallax Video Layers If Supported ----
 function loadParallaxVideos() {
   if (!supportsWebM()) {
-    console.log("WebM not supported. Falling back to PNG backgrounds.");
+    console.log("WebM not supported. Using PNG fallback for all layers.");
     return;
   }
 
-  const layers = [
-    { id: 'parallax-back', src: 'assets/back.webm' },
-    { id: 'parallax-mid',  src: 'assets/mid.webm' },
-    { id: 'parallax-fore', src: 'assets/fore.webm' }
-  ];
+  const container = document.getElementById('parallax-fore');
+  if (!container) return;
 
-  layers.forEach(layer => {
-    const container = document.getElementById(layer.id);
-    if (!container) return;
+  const video = document.createElement('video');
+  video.src = 'assets/fore.webm';
+  video.autoplay = true;
+  video.loop = true;
+  video.muted = true;
+  video.playsInline = true;
+  video.classList.add('parallax-video');
 
-    const video = document.createElement('video');
-    video.src = layer.src;
-    video.autoplay = true;
-    video.loop = true;
-    video.muted = true;
-    video.playsInline = true;
-    video.classList.add('parallax-video');
-    container.appendChild(video);
-  });
+  container.appendChild(video);
 }
 
 // ---- Parallax via Device Orientation ----
