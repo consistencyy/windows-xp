@@ -98,3 +98,14 @@ body {
 .hidden {
   display: none;
 }
+
+.parallax-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+  z-index: -1;
+}
+
