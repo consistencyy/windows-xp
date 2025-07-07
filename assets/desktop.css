@@ -853,6 +853,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   text-align: center;
   max-height: calc(100% - 40px); /* leaves room for header */
   box-sizing: border-box;
+  position: relative;
 }
 
 /* Root Folder Specific (optional for extra spacing) */
