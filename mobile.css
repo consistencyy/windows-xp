@@ -18,16 +18,22 @@ body {
   background-position: center;
   pointer-events: none;
   z-index: -1;
+  will-change: transform;
 }
 
 .back {
   background-image: url('assets/back.png');
+  z-index: -3;
 }
+
 .mid {
   background-image: url('assets/mid.png');
+  z-index: -2;
 }
+
 .fore {
   background-image: url('assets/fore.png');
+  z-index: -1;
 }
 
 /* Home Screen */

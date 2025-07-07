@@ -1,9 +1,3 @@
-// ---- Detect WebM Support ----
-function supportsWebM() {
-  const video = document.createElement('video');
-  return video.canPlayType('video/webm; codecs="vp8, vorbis"') !== "";
-}
-
 // ---- Request Motion Permission on iOS ----
 function requestMotionPermission() {
   if (typeof DeviceMotionEvent.requestPermission === 'function') {
@@ -15,27 +9,6 @@ function requestMotionPermission() {
       })
       .catch(console.error);
   }
-}
-
-// ---- Load Parallax Video Layers If Supported ----
-function loadParallaxVideos() {
-  if (!supportsWebM()) {
-    console.log("WebM not supported. Using PNG fallback for all layers.");
-    return;
-  }
-
-  const container = document.getElementById('parallax-fore');
-  if (!container) return;
-
-  const video = document.createElement('video');
-  video.src = 'assets/fore.webm';
-  video.autoplay = true;
-  video.loop = true;
-  video.muted = true;
-  video.playsInline = true;
-  video.classList.add('parallax-video');
-
-  container.appendChild(video);
 }
 
 // ---- Parallax via Device Orientation ----
@@ -63,9 +36,7 @@ function closeMobileApp(id) {
 
 // ---- Init ----
 window.addEventListener('DOMContentLoaded', () => {
-  loadParallaxVideos();
-
-  // Only show motion prompt if required (iOS)
+  // Only show motion permission prompt if required (iOS)
   if (
     typeof DeviceMotionEvent !== "undefined" &&
     typeof DeviceMotionEvent.requestPermission === "function"
