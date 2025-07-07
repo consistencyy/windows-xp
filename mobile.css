@@ -33,17 +33,17 @@ body {
 }
 
 .back {
-  background-image: url('assets/mobileback.png');
+  background-image: url('assets/back.png');
   z-index: -3;
 }
 
 .mid {
-  background-image: url('assets/mobilemid.png');
+  background-image: url('assets/mid.png');
   z-index: -2;
 }
 
 .fore {
-  background-image: url('assets/mobilefore.png');
+  background-image: url('assets/fore.png');
   z-index: -1;
 }
 
@@ -54,9 +54,24 @@ body {
 }
 
 .xp-title {
-  font-size: 28px;
-  margin-bottom: 24px;
+  font-size: 32px;
+  margin-bottom: 8px;
   color: #fff;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+.xp-title, .xp-subtitle {
+  animation: float 4s ease-in-out infinite;
+}
+
+.xp-subtitle {
+  font-size: 18px;
+  margin-bottom: 50px;
+  color: #cce6ff;
 }
 
 .mobile-app-grid {
@@ -94,6 +109,16 @@ body {
   z-index: 10;
   display: flex;
   flex-direction: column;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.mobile-app.show {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
 }
 
 .mobile-app-header {
@@ -127,4 +152,40 @@ body {
   z-index: 100;
 }
 
+.social-launchers {
+  position: fixed;
+  bottom: 32px;
+  right: 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  z-index: 100;
+}
 
+.social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  font-size: 28px;
+  font-weight: bold;
+  background: #cce6ff;
+  color: #003366;
+  border: 2px solid #336699;
+  border-radius: 8px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.social-btn:hover {
+  background: #aaccee;
+  transform: scale(1.05);
+}
+
+.social-btn img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}

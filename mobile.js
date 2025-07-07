@@ -27,11 +27,19 @@ window.addEventListener("deviceorientation", (e) => {
 
 // ---- App Open/Close Logic ----
 function openMobileApp(id) {
-  document.getElementById("app-" + id).classList.remove("hidden");
+  const app = document.getElementById("app-" + id);
+  if (app) {
+    app.classList.remove("hidden");
+    setTimeout(() => app.classList.add("show"), 10); // allow for transition
+  }
 }
 
 function closeMobileApp(id) {
-  document.getElementById("app-" + id).classList.add("hidden");
+  const app = document.getElementById("app-" + id);
+  if (app) {
+    app.classList.remove("show");
+    setTimeout(() => app.classList.add("hidden"), 300); // match CSS duration
+  }
 }
 
 // ---- Init ----

@@ -14,11 +14,13 @@
 
 <!-- App Grid -->
 <div class="mobile-home">
-  <h1 class="xp-title">Welcome</h1>
+  <h1 class="xp-title">Welcome!</h1>
+  <h3 class="xp-subtitle">Conor McCutcheon's Mobile Portfolio</h3>
   <div class="mobile-app-grid">
     <button class="app-button" onclick="openMobileApp('projects')">📁 Projects</button>
     <button class="app-button" onclick="openMobileApp('reel')">🎞 Reel</button>
     <button class="app-button" onclick="openMobileApp('about')">👤 About</button>
+    <button class="app-button" onclick="openMobileApp('resume')">📄 Résumé</button>
   </div>
 </div>
 
@@ -61,6 +63,35 @@
       <p>Short bio and resume link here!</p>
     </div>
   </div>
+
+  <!-- Résumé App -->
+<div id="app-resume" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>📄 Résumé</span>
+    <button onclick="closeMobileApp('resume')">✕</button>
+  </div>
+  <div class="mobile-app-body">
+    <p>Download or view my résumé:</p>
+    <a href="assets/Conor-McCutcheon-Resume.pdf" target="_blank">📥 View PDF</a>
+    <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
+    <p>Instagram: <a href="https://instagram.com/yourhandle" target="_blank">@yourhandle</a></p>
+    <p>LinkedIn: <a href="https://linkedin.com/in/yourprofile" target="_blank">View profile</a></p>
+  </div>
+</div>
+
+<!--social media icons-->
+<div class="social-launchers">
+  <a href="https://instagram.com/yourhandle" target="_blank" class="social-btn" aria-label="Instagram">
+    <img src="assets/icon-instagram.png" alt="📷">
+  </a>
+  <a href="https://youtube.com/yourchannel" target="_blank" class="social-btn" aria-label="YouTube">
+    <img src="assets/icon-youtube.png" alt="▶️">
+  </a>
+  <a href="https://tiktok.com/@yourhandle" target="_blank" class="social-btn" aria-label="TikTok">
+    <img src="assets/icon-tiktok.png" alt="🎵">
+  </a>
+</div>
+<!-- end of social media icons -->
 
   <script src="mobile.js"></script>
 </body>
