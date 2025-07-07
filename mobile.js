@@ -52,3 +52,41 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('motion-permission').classList.remove('hidden');
   }
 });
+
+function openProjectCategory(cat) {
+  const root = document.getElementById("mobile-projects-root");
+  const target = document.getElementById("mobile-cat-" + cat);
+
+  root.classList.add("slide-out");
+  setTimeout(() => {
+    root.classList.add("hidden");
+    root.classList.remove("slide-out");
+
+    target.classList.remove("hidden");
+    target.classList.add("category-section", "slide-in");
+
+    setTimeout(() => {
+      target.classList.remove("slide-in");
+    }, 300);
+  }, 300);
+}
+
+function backToProjectRoot() {
+  const root = document.getElementById("mobile-projects-root");
+  document.querySelectorAll("[id^=mobile-cat-]").forEach(cat => {
+    cat.classList.add("slide-out");
+
+    setTimeout(() => {
+      cat.classList.add("hidden");
+      cat.classList.remove("slide-out");
+
+      root.classList.remove("hidden");
+      root.classList.add("category-section", "slide-in");
+
+      setTimeout(() => {
+        root.classList.remove("slide-in");
+      }, 300);
+    }, 300);
+  });
+}
+

@@ -17,10 +17,9 @@
   <h1 class="xp-title">Welcome!</h1>
   <h3 class="xp-subtitle">Conor McCutcheon's Mobile Portfolio</h3>
   <div class="mobile-app-grid">
-    <button class="app-button" onclick="openMobileApp('projects')">📁 Projects</button>
-    <button class="app-button" onclick="openMobileApp('reel')">🎞 Reel</button>
-    <button class="app-button" onclick="openMobileApp('about')">👤 About</button>
-    <button class="app-button" onclick="openMobileApp('resume')">📄 Résumé</button>
+    <button class="app-button" onclick="openMobileApp('projects')"><strong>Projects</strong> 📁</button>
+    <button class="app-button" onclick="openMobileApp('reel')"><strong>Reel</strong> 🎞</button>
+    <button class="app-button" onclick="openMobileApp('resume')"><strong>Résumé</strong> 📄</button>
   </div>
 </div>
 
@@ -30,54 +29,260 @@
 </div>
 
   <!-- App Panels -->
+   <!-- Projects App -->
   <div id="app-projects" class="mobile-app hidden">
+
     <div class="mobile-app-header">
       <span>📁 Projects</span>
-      <button onclick="closeMobileApp('projects')">✕</button>
+      <button class="red-close" onclick="closeMobileApp('projects')">✕</button>
     </div>
-    <div class="mobile-app-body">
-      <p>This would list your design and editing projects.</p>
-    </div>
-  </div>
 
-  <div id="app-reel" class="mobile-app hidden">
-    <div class="mobile-app-header">
-      <span>🎞 Film Reel</span>
-      <button onclick="closeMobileApp('reel')">✕</button>
-    </div>
-    <div class="mobile-app-body">
-      <iframe
-        width="100%" height="200"
-        src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
-        frameborder="0" allowfullscreen>
-      </iframe>
-    </div>
-  </div>
+<div class="mobile-app-body" id="mobile-projects-root">
 
-  <div id="app-about" class="mobile-app hidden">
-    <div class="mobile-app-header">
-      <span>👤 About Me</span>
-      <button onclick="closeMobileApp('about')">✕</button>
-    </div>
-    <div class="mobile-app-body">
-      <p>Short bio and resume link here!</p>
-    </div>
-  </div>
-
-  <!-- Résumé App -->
-<div id="app-resume" class="mobile-app hidden">
-  <div class="mobile-app-header">
-    <span>📄 Résumé</span>
-    <button onclick="closeMobileApp('resume')">✕</button>
-  </div>
-  <div class="mobile-app-body">
-    <p>Download or view my résumé:</p>
-    <a href="assets/Conor-McCutcheon-Resume.pdf" target="_blank">📥 View PDF</a>
-    <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
-    <p>Instagram: <a href="https://instagram.com/yourhandle" target="_blank">@yourhandle</a></p>
-    <p>LinkedIn: <a href="https://linkedin.com/in/yourprofile" target="_blank">View profile</a></p>
+  <div class="project-category-container">
+    <div class="project-category" onclick="openProjectCategory('brand')">🎨 Brand Identity</div>
+    <div class="project-category" onclick="openProjectCategory('product')">📦 Product Design</div>
+    <div class="project-category" onclick="openProjectCategory('type')">🔠 Typography</div>
+    <div class="project-category" onclick="openProjectCategory('video')">🎬 Film & Video</div>
   </div>
 </div>
+
+<!-- Category Views -->
+<div class="mobile-app-body hidden" id="mobile-cat-brand">
+  <button class="back-button" onclick="backToProjectRoot()">⬅ Back</button>
+  <h3>Brand Identity</h3>
+  <div class="project-list">
+    <div class="project-card" onclick="openMobileApp('project-stmarks')">
+        <img src="assets/stmarks-thumb.png" alt="St. Mark’s Baptist">
+        <div class="project-info">
+            <h3>St. Mark's Baptist</h3>
+            <p>New logo, brand colors, and business cards for a local church in the Bronx.</p>
+        </div>
+    </div>
+
+    <div class="project-card" onclick="openMobileApp('project-clover')">
+        <img src="assets/clovercard-thumb.png" alt="Clover Carpentry">
+        <div class="project-info">
+            <h3>Clover Carpentry</h3>
+            <p>A strong, simple identity system for a no-nonsense contractor who knew exactly what he wanted.</p>
+        </div>
+    </div>
+
+    <div class="project-card" onclick="openMobileApp('project-cookies')">
+        <img src="assets/cookiesbeyond-thumb.png" alt="Cookies & Beyond">
+        <div class="project-info">
+            <h3>Cookies & Beyond</h3>
+            <p>Complete brand identity: logo, color palette, menu, packaging, and social media design for a boutique cookie shop.</p>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-app-body hidden" id="mobile-cat-product">
+  <button class="back-button" onclick="backToProjectRoot()">⬅ Back</button>
+  <h3>Product Design</h3>
+  <div class="project-list">
+        <div class="project-card" onclick="openMobileApp('project-emerald')">
+        <img src="assets/emeraldpack-thumb.png" alt="Emerald Edibles">
+            <div class="project-info">
+                <h3>Emerald Edibles</h3>
+                <p>High-end, compliant cannabis snack packaging with a glowing logo and multi-language labels.</p>
+            </div>
+        </div>
+
+        <div class="project-card" onclick="openMobileApp('project-cereal')">
+        <img src="assets/cerealbox-thumb.png" alt="Cereal Box Redesign">
+            <div class="project-info">
+                <h3>Retro Cereal Box</h3>
+                <p>A nostalgic reimagining of a cereal box brand using retro vector mascots and cereal mascots.</p>
+            </div>
+        </div>
+
+        <div class="project-card" onclick="openMobileApp('project-socks')">
+        <img src="assets/sockbox-thumb.png" alt="Sock Subscription Box">
+            <div class="project-info">
+                <h3>SockBox™</h3>
+                <p>Packaging and pattern design for a sock subscription service featuring monthly themes and collector cards.</p>
+            </div>
+        </div>
+</div>
+</div>
+
+<div class="mobile-app-body hidden" id="mobile-cat-type">
+  <button class="back-button" onclick="backToProjectRoot()">⬅ Back</button>
+  <h3>Typography</h3>
+
+  <div class="project-list">
+    <div class="project-card" onclick="openMobileApp('project-albumtype')">
+    <img src="assets/albumtype-thumb.png" alt="Typography Album Cover">
+        <div class="project-info">
+            <h3>Typographic Album Art</h3>
+            <p>Exploring emotional type pairing through a fictional album cover layout and lyric breakdown.</p>
+        </div>
+    </div>
+
+    <div class="project-card" onclick="openMobileApp('project-grunge')">
+    <img src="assets/grungegrid-thumb.png" alt="Experimental Typography">
+        <div class="project-info">
+            <h3>Grid Grunge Poster</h3>
+            <p>Experimental poster design using distorted grids and expressive type lockups, inspired by David Carson.</p>
+        </div>
+    </div>
+
+    <div class="project-card" onclick="openMobileApp('project-lyrics')">
+    <img src="assets/musicvidtype-thumb.png" alt="Kinetic Typography Video">
+        <div class="project-info">
+            <h3>Lyrics in Motion</h3>
+            <p>Kinetic typography synced to a music video using After Effects and CSS animation for a modern visual lyric experience.</p>
+        </div>
+    </div>
+  </div>
+</div>
+
+<div class="mobile-app-body hidden" id="mobile-cat-video">
+  <button class="back-button" onclick="backToProjectRoot()">⬅ Back</button>
+  <h3>Film & Video</h3>
+  <div class="project-list">
+
+    <div class="project-card" onclick="openMobileApp('project-adcut')">
+    <img src="assets/adcut-thumb.png" alt="Ad Cut">
+        <div class="project-info">
+            <h3>30s Product Ad</h3>
+            <p>A fast-paced cut for a product teaser, using high contrast overlays and custom sound design.</p>
+        </div>
+    </div>
+
+    <div class="project-card" onclick="openMobileApp('project-title-seq')">
+    <img src="assets/title-seq-thumb.png" alt="Title Sequence">
+        <div class="project-info">
+            <h3>Opening Credits Sequence</h3>
+            <p>Original title sequence animation designed in After Effects, stylized for a neo-noir short film.</p>
+        </div>
+    </div>
+
+    <div class="project-card" onclick="openMobileApp('project-editorialvid')">
+    <img src="assets/editorialvid-thumb.png" alt="Editorial Video Essay">
+        <div class="project-info">
+            <h3>Video Essay Cut</h3>
+            <p>Long-form editorial cut for a YouTube-style commentary video with pacing, titles, and B-roll sync.</p>
+        </div>
+    </div>
+
+  </div>
+</div> <!--end video projects-->
+<!--spacer-->
+  </div>
+<!-- end all projects windows-->
+
+<!-- Film Reel App -->
+<div id="app-reel" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>🎞 Film Reel</span>
+    <button class="red-close" onclick="closeMobileApp('reel')">✕</button>
+  </div>
+
+  <div class="mobile-app-body">
+    <h2>Film Editing Reel 2025</h2>
+
+    <iframe
+      width="100%" height="200"
+      src="https://www.youtube.com/embed/YOUR_VIDEO_ID"
+      frameborder="0" allowfullscreen>
+    </iframe>
+
+    <p><strong>Uploaded:</strong> July 2025</p>
+
+    <p>
+      A one-minute cut highlighting my most effective narrative, promotional, and experimental video work. 
+      Includes footage from short films, branded content, motion typography, and synced audio-visual loops.
+    </p>
+
+    <ul>
+      <li><strong>Edited in:</strong> Adobe Premiere Pro + After Effects</li>
+      <li><strong>Includes:</strong> 4K footage, kinetic type, sound design</li>
+      <li><strong>Roles:</strong> Editor, motion designer, colorist</li>
+    </ul>
+
+    <p>
+      This reel is structured around pacing and rhythm, building from clean cuts to expressive motion
+      and experimental transitions. Made to impress in both freelance and studio interview settings.
+    </p>
+  </div>
+</div>
+
+<!-- Mobile Resume / About Me App (Optimized) -->
+<div id="app-resume" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>👤 About Me</span>
+    <button class="red-close" onclick="closeMobileApp('resume')">✕</button>
+  </div>
+
+  <div class="mobile-app-body resume-body">
+    <h2>Conor McCutcheon</h2>
+    <p class="title">Designer, Editor & Notary Public</p>
+    <p class="location">Based in Yonkers, NY</p>
+
+    <hr>
+
+    <section>
+      <h3>Summary</h3>
+      <p>
+        Creative and detail-driven Graphic Designer with expertise in motion graphics, typography, and brand identity. 
+        Proficient in Adobe Creative Cloud and industry-standard tools. Experienced in video production, print design, and asset management. 
+        Certified Notary and FAA TRUST drone operator, blending creative versatility with technical skill. 
+        Eager to bring energy and innovation to forward-thinking creative teams.
+      </p>
+    </section>
+
+    <section>
+      <h3>Experience</h3>
+      <ul>
+        <li><strong>The UPS Store</strong> – Graphic Designer / Notary <span class="date">(2024–Present)</span></li>
+        <li><strong>PopGeeks.com</strong> – Designer, Editor, Blogger <span class="date">(2023–Present)</span></li>
+        <li><strong>Freelance</strong> – Branding, Editing, Motion Work <span class="date">(2021–Present)</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Skills</h3>
+      <ul class="skills-list">
+        <li>Adobe CC – Illustrator, Photoshop, Premiere, After Effects</li>
+        <li>DaVinci Resolve, Blender, InDesign, AutoCAD</li>
+        <li>Video editing, motion graphics, typography, print layout</li>
+        <li>Drone footage, DSLR workflows, HTML/CSS</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Certifications</h3>
+      <ul>
+        <li>Certified Notary Public, State of New York (2025–2029)</li>
+        <li>FAA TRUST Drone Certification, 2025</li>
+        <li>NHTSA Video Entry Winner, 2023</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Education</h3>
+      <p>BA in Graphic Design, Minor in Film & Media Studies — SUNY Buffalo, 2023</p>
+    </section>
+
+    <section>
+      <h3>Contact</h3>
+      <ul>
+        <li>Email: <a href="mailto:conormcc.edits@gmail.com">conormcc.edits@gmail.com</a></li>
+        <li>Website: <a href="https://conor.style" target="_blank">conor.style</a></li>
+      </ul>
+    </section>
+
+    <div class="download-resume-cta">
+      <a href="assets/Conor-McCutcheon-Resume-2025.pdf" target="_blank" class="download-btn">
+        📄 Download Full Résumé (PDF)
+      </a>
+    </div>
+  </div>
+</div>
+<!-- end of résumé app -->
 
 <!--social media icons-->
 <div class="social-launchers">
@@ -92,6 +297,210 @@
   </a>
 </div>
 <!-- end of social media icons -->
+
+<!--individual project windows, all 12-->
+<!--BEGIN St. Mark's PROJECT WINDOW-->
+<!-- St. Mark's Baptist -->
+<!-- Mobile Project App: St. Mark's -->
+<div id="app-project-stmarks" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>St. Mark's Baptist</span>
+    <button class="red-close" onclick="closeMobileApp('project-stmarks')">✕</button>
+  </div>
+  <div class="mobile-app-body">
+    <h2>Visual Identity for a Historic Church</h2>
+    <img src="assets/stmarks-logo-after.png" class="project-image" alt="New Church Logo" />
+    <p>Business cards for a Baptist congregation in Yonkers, NY. Replaced generic art with a minimalist custom icon based on the real church facade. Serif + sans-serif typography used for clarity and respect.</p>
+    <img src="assets/stmarks-front-layout.png" class="project-image" alt="Front Layout" />
+    <img src="assets/stmarks-back-layout.png" class="project-image" alt="Back Layout" />
+    <blockquote class="mobile-quote">⭐️⭐️⭐️⭐️⭐️ “It looks like <em>us</em>.”</blockquote>
+  </div>
+</div>
+
+<!-- Mobile Project App: Clover Carpentry -->
+<div id="app-project-clover" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>Clover Carpentry</span>
+    <button class="red-close" onclick="closeMobileApp('project-clover')">✕</button>
+  </div>
+  <div class="mobile-app-body">
+    <h2>Minimalist Business Card for a Contractor</h2>
+    <img src="assets/clovercard-preview.png" class="project-image" alt="Card Preview" />
+    <p>Clean, left-aligned layout using Montserrat and a custom clover icon. Designed for readability and simple professionalism.</p>
+    <ul>
+      <li>Off-white matte card stock</li>
+      <li>Black text, centered spacing</li>
+      <li>Custom vector clover in bottom corner</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Mobile Project App: Cookies & Beyond -->
+<div id="app-project-cookies" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>Cookies & Beyond</span>
+    <button class="red-close" onclick="closeMobileApp('project-cookies')">✕</button>
+  </div>
+  <div class="mobile-app-body">
+    <h2>Full Branding Suite for a Boutique Cookie Shop</h2>
+    <img src="assets/cookiesbeyond-logo.png" class="project-image" alt="Logo" />
+    <p>From logo to trifold menus, I designed an entire cohesive system for Cookies & Beyond: a woman-owned dessert business in White Plains, NY.</p>
+    <img src="assets/cookiesbeyond-cookies.jpg" class="project-image" alt="Cookies Display" />
+    <img src="assets/cookiesbeyond-businesscard.png" class="project-image" alt="Business Card" />
+    <img src="assets/cookiesbeyond-instastory1.png" class="project-image" alt="Social Promo" />
+    <blockquote class="fake-text-thread">
+      <div class="bubble left">YOU KILLED THIS OMG 🔥</div>
+      <div class="bubble left">My cousin literally asked if you do cake logos.</div>
+      <div class="bubble right">That’s amazing 🙌</div>
+    </blockquote>
+  </div>
+</div>
+
+<!-- Mobile Project App: Emerald Edibles -->
+<div id="app-project-emerald" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>Emerald Edibles</span>
+    <button class="red-close" onclick="closeMobileApp('project-emerald')">✕</button>
+  </div>
+  <div class="mobile-app-body">
+    <h2>Glow-Inspired Cannabis Packaging</h2>
+    <img src="assets/emeraldpack-thumb.png" class="project-image" alt="Emerald Packaging" />
+    <p>Clean, compliant packaging design for a fictional cannabis edible line. Used dark green, gradients, and light aura effects to reflect the product theme.</p>
+    <ul>
+      <li>Multi-language panels</li>
+      <li>Foil-safe color treatment</li>
+      <li>Legal zone labeling built in</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Mobile Project App: Retro Cereal Box -->
+<div id="app-project-cereal" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>Retro Cereal Box</span>
+    <button class="red-close" onclick="closeMobileApp('project-cereal')">✕</button>
+  </div>
+  <div class="mobile-app-body">
+    <h2>A Nostalgic Cereal Package Redesign</h2>
+    <img src="assets/cerealbox-thumb.png" class="project-image" alt="Retro Cereal Box" />
+    <p>Throwback cereal box mockup inspired by early 90s aesthetics. Full wraparound design with a redrawn mascot and textured halftone backgrounds.</p>
+    <ul>
+      <li>Original side-game panel</li>
+      <li>Hand-lettered type & logos</li>
+      <li>Print-safe foldout layout</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Mobile Project App: SockBox™ -->
+<div id="app-project-socks" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>SockBox™</span>
+    <button class="red-close" onclick="closeMobileApp('project-socks')">✕</button>
+  </div>
+  <div class="mobile-app-body">
+    <h2>Subscription Sock Packaging</h2>
+    <img src="assets/sockbox-thumb.png" class="project-image" alt="SockBox Subscription" />
+    <p>Designed monthly box packaging and collectible insert tags for a fictional subscription sock brand. Monthly patterns, color variants, and limited designs.</p>
+    <ul>
+      <li>Flat dieline layout for digital/print</li>
+      <li>Sticker label template</li>
+      <li>Reusable brand color spec sheet</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Typography Album Art -->
+<div id="app-project-albumtype" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>Typography Album Art</span>
+    <button class="red-close" onclick="closeMobileApp('project-albumtype')">✕</button>
+  </div>
+  <div class="mobile-app-body">
+    <h2>Expressive Typography for Album Cover</h2>
+    <img src="assets/albumtype-thumb.png" class="project-image" alt="Album Cover Typography" />
+    <p>Designed a fictional album cover focused entirely on type and mood. Inspired by dream pop and ambient genres, the layout expresses tone through kerning, color contrast, and overlapping hierarchy.</p>
+    <img src="assets/albumtype-closeup.png" class="project-image" alt="Typography Detail" />
+    <p>Fonts: ITC Garamond + Inter. Grid layout adjusted manually for emotion and rhythm.</p>
+  </div>
+</div>
+
+<!-- Grid Grunge Poster -->
+<div id="app-project-grunge" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>Grid Grunge Poster</span>
+    <button class="red-close" onclick="closeMobileApp('project-grunge')">✕</button>
+  </div>
+  <div class="mobile-app-body">
+    <h2>Typographic Poster – Broken Grid</h2>
+    <img src="assets/grungegrid-thumb.png" class="project-image" alt="Grunge Poster" />
+    <p>This experimental poster explores how traditional Swiss-style grids can be distorted to create urgency and tone. Includes a type-only layout, printed with grain texture and halftones.</p>
+    <img src="assets/grungegrid-layout.png" class="project-image" alt="Grid Layout" />
+    <img src="assets/grungegrid-detail.png" class="project-image" alt="Closeup Type" />
+    <p>Fonts: Neue Haas Grotesk, vector overlays, ripped-paper masks.</p>
+  </div>
+</div>
+
+<!-- Kinetic Typography Video -->
+<div id="app-project-lyrics" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>Kinetic Typography</span>
+    <button class="red-close" onclick="closeMobileApp('project-lyrics')">✕</button>
+  </div>
+  <div class="mobile-app-body">
+    <h2>Motion Type Music Video</h2>
+    <img src="assets/musicvidtype-thumb.png" class="project-image" alt="Kinetic Type Thumbnail" />
+    <p>Set to a licensed track, this kinetic type animation visualizes lyrics and rhythm through scale, timing, and animation curves. Created in After Effects with attention to easing and frame pacing.</p>
+    <iframe width="100%" height="200" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+    <p>Tools used: After Effects, Adobe Fonts, Audacity (for lyric sync). Delivered as 1080p for social distribution.</p>
+  </div>
+</div>
+
+<!-- 30s Product Ad -->
+<div id="app-project-adcut" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>30s Product Ad</span>
+    <button class="red-close" onclick="closeMobileApp('project-adcut')">✕</button>
+  </div>
+  <div class="mobile-app-body">
+    <h2>Fast-Cut Ad with Motion Overlays</h2>
+    <img src="assets/adcut-thumb.png" class="project-image" alt="Ad Cut" />
+    <p>This 30-second ad uses fast cuts, stylized overlays, and stock footage to emulate a brand teaser. Transitions include directional wipes and audio beat matching.</p>
+    <iframe width="100%" height="200" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+  </div>
+</div>
+
+<!-- Title Sequence -->
+<div id="app-project-title-seq" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>Opening Title Sequence</span>
+    <button class="red-close" onclick="closeMobileApp('project-title-seq')">✕</button>
+  </div>
+  <div class="mobile-app-body">
+    <h2>Neo-Noir Inspired Intro</h2>
+    <img src="assets/title-seq-thumb.png" class="project-image" alt="Title Sequence" />
+    <p>Custom title sequence inspired by noir cinematography and analog tech. Used glowing typography, lens blur overlays, and flicker effects to match genre.</p>
+    <iframe width="100%" height="200" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+    <p>Credits design, pacing, and logo reveal handled by me start to finish.</p>
+  </div>
+</div>
+
+<!-- Video Essay Cut -->
+<div id="app-project-editorialvid" class="mobile-app hidden">
+  <div class="mobile-app-header">
+    <span>Video Essay</span>
+    <button class="red-close" onclick="closeMobileApp('project-editorialvid')">✕</button>
+  </div>
+  <div class="mobile-app-body">
+    <h2>Longform Commentary Edit</h2>
+    <img src="assets/editorialvid-thumb.png" class="project-image" alt="Editorial Video" />
+    <p>Edited a longform video essay with B-roll layering, lower-thirds, and subtle animation to support a scripted voiceover. Balanced pacing to avoid visual fatigue.</p>
+    <iframe width="100%" height="200" src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
+    <p>Assets from Unsplash, transitions from Motion Bro, edited in Premiere Pro with minor After Effects for titles.</p>
+  </div>
+</div>
+
+<!--end of all 12 project windows-->
 
   <script src="mobile.js"></script>
 </body>
