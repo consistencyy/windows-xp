@@ -800,7 +800,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   top: 150px;
   left: 40px;
   width: 880px;
-  height: 420px;
+  height: 450px;
   background: #ffffff;
   border: 2px solid #000080;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
@@ -848,7 +848,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   flex-direction: column;
   justify-content: center;   /* Center vertically */
   align-items: center;       /* Center horizontally */
-  padding: 20px 24px;
+  padding: 8px;
   overflow-y: auto;
   text-align: center;
   max-height: calc(100% - 40px); /* leaves room for header */
@@ -858,7 +858,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 
 /* Root Folder Specific (optional for extra spacing) */
 #file-explorer-root {
-  gap: 24px;
+  gap: 4px;
   flex-direction: row;
   flex-wrap: wrap;
 }
@@ -866,7 +866,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 /* ---------- BACK BUTTON ---------- */
 .fback-button {
   position: absolute;
-  top: 60px;           /* Adjust if needed to avoid header */
+  top: 30px;           /* Adjust if needed to avoid header */
   left: 20px;
   background: #f0f0f0;
   border: 1px solid #999;
@@ -912,8 +912,8 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 24px;
-  margin-top: 60px; /* create space under fixed back button */
+  gap: 16px;
+  margin-top: 6px; /* create space under fixed back button */
 }
 
 /* ---------- INDIVIDUAL PROJECT VIEW ---------- */
@@ -1308,7 +1308,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 .project-fwindow-header {
   background: linear-gradient(to bottom, #0066cc, #003f7d);
   color: white;
-  padding: 8px 12px;
+  padding: 10px;
   font-weight: bold;
   display: flex;
   justify-content: space-between;
@@ -1319,7 +1319,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .project-fwindow-content {
-  padding: 24px;
+  padding: 16px;
   overflow-y: auto;
   background: white;
   flex-grow: 1;
@@ -1454,18 +1454,18 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 
 .fwindow-content.has-body {
   overflow-y: auto;
-  padding-bottom: 50px;
+  padding-bottom: 25px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
 .project-nav {
   display: flex;
   justify-content: center;
   gap: 16px;
-  margin-top: 32px;
+  margin-top: 16px;
   padding-top: 20px;
   border-top: 1px solid #ccc;
 }
@@ -1498,7 +1498,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 #category-film h2 {
-  margin-top: 500px; /* or more — adjust to your liking */
+  margin-top: 400px; /* or more — adjust to your liking */
 }
 
 #category-motion h2 {
@@ -1506,19 +1506,19 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 #project-design-1 h2 {
-  margin-top: 160px; /* or more — adjust to your liking */
+  margin-top: 40px; /* or more — adjust to your liking */
 }
 
 #project-design-1 h2 {
-  margin-top: 160px; /* or more — adjust to your liking */
+  margin-top: 40px; /* or more — adjust to your liking */
 }
 
 #project-design-2 h2 {
-  margin-top: 160px; /* or more — adjust to your liking */
+  margin-top: 40px; /* or more — adjust to your liking */
 }
 
 #project-design-3 h2 {
-  margin-top: 160px; /* or more — adjust to your liking */
+  margin-top: 40px; /* or more — adjust to your liking */
 }
 
 /* Video Embed Styles for Film Category */
@@ -1588,4 +1588,25 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 
 body {
   transition: opacity 0.3s ease;
+}
+
+.explorer-intro {
+  padding: 16px;
+  margin-bottom: 8px;
+  background: #eef6ff;
+  border: 1px solid #99ccee;
+  border-radius: 12px;
+  color: #003366;
+  text-align: center;
+  width: 85%;
+}
+
+.explorer-intro h2 {
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.explorer-intro p {
+  font-size: 14px;
+  line-height: 1.5;
 }
