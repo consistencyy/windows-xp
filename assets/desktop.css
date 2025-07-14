@@ -1491,14 +1491,12 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .film-reel-container iframe {
-  max-width: 960px;
-  width: 100%;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 #category-film h2 {
-  margin-top: 400px; /* or more — adjust to your liking */
+  margin-top: 450px; /* or more — adjust to your liking */
 }
 
 #category-motion h2 {
