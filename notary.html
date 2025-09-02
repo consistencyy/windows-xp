@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Traveling Notary — Yonkers, NY</title>
+  <meta name="description" content="Mobile Notary Public services in Yonkers & Westchester. In‑person only — no remote notarizations.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Note your filename change -->
+  <link rel="stylesheet" href="notarystyles.css" />
+</head>
+<body>
+  <!-- NAVBAR (no mobile hamburger; stays clean + responsive) -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="#top" class="brand" aria-label="Home">
+        <img class="logo" src="notaryassets/logo.png" alt="Your Logo" />
+        <span>Traveling Notary — Yonkers</span>
+      </a>
+      <div class="nav-links" aria-label="Primary">
+        <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#schedule">Schedule</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="#faq">FAQ</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO (dark background, all-white text, room for CTA) -->
+  <header id="top" class="hero-section">
+    <div class="container hero-inner">
+      <div class="hero-copy reveal slideL">
+        <span class="badge success">✔ In‑person notarizations</span>
+        <h1>Professional Notary Public — Yonkers & Westchester</h1>
+        <p class="lead">I come to you for acknowledgments, jurats, POAs, affidavits, and more.
+          <br><strong class="pill">No remote notarizations (RON).</strong>
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="#schedule">Book an Appointment</a>
+          <a class="btn ghost" href="#pricing">See Pricing</a>
+        </div>
+      </div>
+      <!-- Right side: optional hero visual slot. Replace with an image OR keep logo space. Full-height control via CSS. -->
+      <div class="hero-visual reveal slideR" aria-hidden="true">
+        <!-- Option A: keep empty to emphasize logo/typography -->
+        <!-- Option B: uncomment for a tall image that fills the hero height -->
+        <!-- <img src="assets/your-portrait-or-scene.jpg" alt="" /> -->
+      </div>
+    </div>
+  </header>
+
+  <!-- FULL-PAGE VIDEO SECTION (drone footage) -->
+  <section id="reel" class="video-hero">
+    <div class="video-wrap">
+      <video class="video" src="notaryassets/yonkers-drone.mp4" autoplay muted loop playsinline preload="metadata" poster="notaryassets/yonkers-drone-poster.jpg"></video>
+      <div class="video-overlay"></div>
+      <div class="video-text">
+        <div class="container">
+          <h2>On-site Notary, Wherever You Are</h2>
+          <p>Homes • Offices • Hospitals • Cafés — Serving Yonkers, Westchester & nearby NYC</p>
+          <a class="btn primary" href="#contact">Text or Call to Book</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services" class="section section-light">
+    <div class="container">
+      <h2 class="reveal">Services</h2>
+      <p class="muted reveal">Common notarizations handled on‑site: homes, offices, hospitals, and more.</p>
+      <div class="grid cols-3">
+        <div class="card service reveal tilt"><h3>Acknowledgments</h3><p>Deeds, POAs, and general documents.</p></div>
+        <div class="card service reveal tilt"><h3>Jurats / Oaths</h3><p>Affidavits and sworn statements.</p></div>
+        <div class="card service reveal tilt"><h3>Copy Certifications*</h3><p>Where permitted by NY law.</p></div>
+        <div class="card service reveal tilt"><h3>Real Estate Docs</h3><p>Individual documents (no full loan packages).</p></div>
+        <div class="card service reveal tilt"><h3>Hospitals & Care</h3><p>ID/competency checks, witness options.</p></div>
+        <div class="card service reveal tilt"><h3>Corporate / HR</h3><p>I‑9, employment, and vendor forms.</p></div>
+      </div>
+      <p class="muted" style="margin-top:8px">*Always subject to NYS notary statutes and request details.</p>
+    </div>
+  </section>
+
+  <!-- PRICING & AVAILABILITY -->
+  <section id="pricing" class="section section-light">
+    <div class="container">
+      <h2 class="reveal">Pricing & Availability</h2>
+      <div class="split">
+        <div class="card reveal">
+          <table class="table">
+            <thead>
+              <tr><th>Region</th><th>Towns/Cities Covered</th><th>Travel Fee</th></tr>
+            </thead>
+            <tbody>
+              <tr class="note"><td colspan="3">💡 Travel fee includes <em>one notarized signature</em> (e.g., $23 travel + $2 notarization).</td></tr>
+              <tr><td>Local Zone</td><td>Yonkers, Dobbs Ferry, Hastings-on-Hudson, Ardsley, Tuckahoe, Bronxville</td><td>$25</td></tr>
+              <tr><td>Mid‑Westchester / Bronx</td><td>White Plains, Scarsdale, Mount Vernon, New Rochelle, Pelham, The Bronx</td><td>$35</td></tr>
+              <tr><td>North & West Counties</td><td>Ossining, Peekskill, Yorktown, Rockland County, Putnam County</td><td>$45</td></tr>
+              <tr><td>NYC (Manhattan, Brooklyn, Queens)</td><td>Harlem, Midtown, Brooklyn Hts, LIC, Astoria, etc.</td><td>$55</td></tr>
+              <tr><td>Extended Area</td><td>Staten Island, Long Island (Nassau/Western Suffolk)</td><td>$65</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card reveal slideR" style="padding:18px">
+          <h3>Availability</h3>
+          <ul class="list">
+            <li><strong>Mon–Fri:</strong> Before 12:30 PM</li>
+            <li><strong>Mon–Fri evenings:</strong> After 7:30 PM <span class="pill">+$15 late fee</span></li>
+            <li><strong>Sat–Sun:</strong> Open availability <span class="pill">No extra fee</span></li>
+          </ul>
+          <hr>
+          <p><strong>Additional signature:</strong> $2 per signature (per NYS law). Travel fee applies in addition.</p>
+          <p><strong>Loan documents:</strong> Individual docs only; no full loan‑signing packages.</p>
+          <p class="badge warn">No remote notarizations offered.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE -->
+  <section id="schedule" class="section section-dark">
+    <div class="container">
+      <h2 class="reveal">Schedule an Appointment</h2>
+      <p class="reveal">Pick a time that works for you. If you need something sooner, text or call.</p>
+      <div class="card reveal" style="overflow:hidden">
+        <div style="height:min(70vh,680px)">
+          <iframe src="https://calendly.com/YOUR_USERNAME_HERE" width="100%" height="100%" frameborder="0" scrolling="no" title="Calendly scheduler"></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section section-light">
+    <div class="container">
+      <div class="split">
+        <div class="reveal slideL">
+          <h2>About Me</h2>
+          <p class="muted">Commissioned New York State Notary Public. Member of the National Notary Association.</p>
+          <ul class="list">
+            <li>Mobile Notary Public — 2024–Present</li>
+            <li>UPS Store — Notary + Design Support — 2024–Present</li>
+            <li>Freelance Graphic Design — 2021–Present</li>
+            <li>FAA TRUST Certified Drone Operator — 2025</li>
+          </ul>
+        </div>
+        <div class="card reveal slideR" style="padding:18px">
+          <h3>Skills</h3>
+          <ul class="list">
+            <li>Power of Attorney & jurats</li>
+            <li><strong>In‑person</strong> notarizations at your location</li>
+            <li>Document layout & design</li>
+            <li>Clear client communication</li>
+          </ul>
+          <p class="muted" style="margin-top:8px"><strong>No remote/online notarizations.</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section section-light">
+    <div class="container">
+      <h2 class="reveal">Contact</h2>
+      <div class="grid cols-2">
+        <div class="card reveal" style="padding:18px">
+          <p><strong>Email:</strong> <a href="mailto:you@example.com">you@example.com</a></p>
+          <p><strong>Phone:</strong> <a href="tel:+1">(xxx) xxx‑xxxx</a></p>
+          <p class="muted">Serving Yonkers, Westchester, the Bronx, and nearby NYC.</p>
+        </div>
+        <div class="card reveal slideR" style="padding:18px">
+          <form action="#" method="post" onsubmit="event.preventDefault(); alert('Thanks! I\'ll be in touch shortly.');">
+            <label>Name<br><input required type="text" placeholder="Your name" class="input"></label><br><br>
+            <label>Email<br><input required type="email" placeholder="you@example.com" class="input"></label><br><br>
+            <label>Message<br><textarea required rows="4" placeholder="How can I help?" class="input"></textarea></label><br><br>
+            <button class="btn primary" type="submit">Send</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section section-dark">
+    <div class="container">
+      <h2 class="reveal">FAQ</h2>
+      <div class="grid cols-2">
+        <div class="card reveal" style="padding:18px"><h3>What IDs do you accept?</h3><p>Government‑issued photo ID (state ID/driver license, passport, military ID). Expired IDs may be refused.</p></div>
+        <div class="card reveal" style="padding:18px"><h3>Do you offer remote notarizations?</h3><p><strong>No.</strong> I only provide in‑person, mobile notarizations.</p></div>
+        <div class="card reveal" style="padding:18px"><h3>Can you print/scan?</h3><p>No full printing/scanning. Basic digital capture on request.</p></div>
+        <div class="card reveal" style="padding:18px"><h3>Do you provide legal advice?</h3><p>No — I’m not an attorney and cannot draft/select forms or provide legal advice.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p class="muted">Disclaimer: I am not an attorney licensed to practice law and may not provide legal advice, select forms, or prepare documents.</p>
+      <p class="muted">© <span id="y"></span> Traveling Notary — Yonkers, NY</p>
+    </div>
+  </footer>
+
+  <script src="nscript.js"></script>
+</body>
+</html>
