@@ -37,3 +37,60 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+// Interactive tilt for service cards (desktop / precision pointers only)
+(function(){
+  const cards = Array.from(document.querySelectorAll('.card.service'));
+  if (!cards.length) return;
+
+  // Skip on touch/coarse pointers (prevents jitter while scrolling)
+  const isCoarse = window.matchMedia('(pointer:coarse)').matches;
+  if (isCoarse) return;
+
+  const MAX = 12;        // max tilt degrees
+  const DAMP = 24;       // easing factor (higher = smoother/laggier)
+
+  const lerp = (a, b, t) => a + (b - a) * t;
+
+  cards.forEach(card => {
+    let rx = 0, ry = 0;  // rendered rotation
+    let tx = 0, ty = 0;  // target rotation
+    let raf = null;
+
+    const rect = () => card.getBoundingClientRect();
+
+    function onMove(e){
+      const r = rect();
+      const x = (e.clientX - r.left) / r.width;   // 0..1
+      const y = (e.clientY - r.top)  / r.height;  // 0..1
+
+      // set CSS variables for the glow hotspot
+      card.style.setProperty('--mx', (x * 100) + '%');
+      card.style.setProperty('--my', (y * 100) + '%');
+
+      // map to -MAX..MAX and invert X for natural feel
+      tx = lerp(-MAX, MAX, x);
+      ty = lerp( MAX,-MAX, y);
+
+      if (!raf) raf = requestAnimationFrame(update);
+    }
+
+    function onLeave(){
+      tx = 0; ty = 0;                   // settle back to flat
+      if (!raf) raf = requestAnimationFrame(update);
+    }
+
+    function update(){
+      rx += (ty - rx) / DAMP;           // ease toward target
+      ry += (tx - ry) / DAMP;
+      card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
+      if (Math.abs(rx - ty) > 0.01 || Math.abs(ry - tx) > 0.01){
+        raf = requestAnimationFrame(update);
+      } else {
+        raf = null;
+      }
+    }
+
+    card.addEventListener('mousemove', onMove);
+    card.addEventListener('mouseleave', onLeave);
+  });
+})();

@@ -61,6 +61,13 @@
     </div>
   </header>
 
+  <a class="to-top" href="#top" aria-label="Back to top" title="Back to top">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M18 15L12 9 6 15" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </a>
+
   <!-- FULL-PAGE VIDEO SECTION (drone footage) -->
   <section id="reel" class="video-hero">
     <div class="video-wrap">
@@ -79,16 +86,16 @@
   <!-- SERVICES -->
   <section id="services" class="section section-light">
     <div class="container">
-      <h2 class="reveal">Services</h2>
+      <h2 class="servicetext reveal">Services</h2>
       <p class="subhead">On-site notarizations for your convenience.</p>
       <p class="mooted reveal">Common notarizations handled on‑site: homes, offices, hospitals, and more.</p>
       <div class="grid cols-3">
-        <div class="card service reveal tilt"><h3>Acknowledgments</h3><p>Deeds, POAs, and general documents.</p></div>
-        <div class="card service reveal tilt"><h3>Jurats / Oaths</h3><p>Affidavits and sworn statements.</p></div>
-        <div class="card service reveal tilt"><h3>Copy Certifications*</h3><p>Where permitted by NY law.</p></div>
-        <div class="card service reveal tilt"><h3>Real Estate Docs</h3><p>Individual documents (no full loan packages).</p></div>
-        <div class="card service reveal tilt"><h3>Hospitals & Care</h3><p>ID/competency checks, witness options.</p></div>
-        <div class="card service reveal tilt"><h3>Corporate / HR</h3><p>I‑9, employment, and vendor forms.</p></div>
+        <div class="card service reveal tilt" tabindex="0"><h3>Acknowledgments</h3><p>Deeds, POAs, and general documents.</p></div>
+        <div class="card service reveal tilt" tabindex="0"><h3>Jurats / Oaths</h3><p>Affidavits and sworn statements.</p></div>
+        <div class="card service reveal tilt" tabindex="0"><h3>Copy Certifications*</h3><p>Where permitted by NY law.</p></div>
+        <div class="card service reveal tilt" tabindex="0"><h3>Real Estate Docs</h3><p>Individual documents (no full loan packages).</p></div>
+        <div class="card service reveal tilt" tabindex="0"><h3>Hospitals & Care</h3><p>ID/competency checks, witness options.</p></div>
+        <div class="card service reveal tilt" tabindex="0"><h3>Corporate / HR</h3><p>I‑9, employment, and vendor forms.</p></div>
       </div>
       <p class="muted">*Always subject to NYS notary statutes and request details.</p>
     </div>
@@ -97,9 +104,9 @@
   <!-- PRICING & AVAILABILITY -->
   <section id="pricing" class="section section-light">
     <div class="container">
-      <h2 class="reveal">Pricing & Availability</h2>
+      <h2 class="pricingtext reveal">Pricing & Availability</h2><br>
       <div class="split">
-        <div class="card reveal">
+        <div class="card table-card reveal">
           <table class="table">
             <thead>
               <tr><th>Region</th><th>Towns/Cities Covered</th><th>Travel Fee</th></tr>
@@ -114,16 +121,16 @@
             </tbody>
           </table>
         </div>
-        <div class="card reveal slideR" style="padding:18px">
-          <h3>Availability</h3>
+        <div class="card availability reveal">
+          <h3 class="availabilitytext">Availability</h3><br>
           <ul class="list">
-            <li><strong>Mon–Fri:</strong> Before 12:30 PM</li>
-            <li><strong>Mon–Fri evenings:</strong> After 7:30 PM <span class="pill">+$15 late fee</span></li>
-            <li><strong>Sat–Sun:</strong> Open availability <span class="pill">No extra fee</span></li>
+            <li><strong>Mon–Fri Mornings:</strong> Before 12:30 PM</li>
+            <li><strong>Mon–Fri Evenings:</strong> After 7:30 PM <span class="pill">+$15 late fee</span></li>
+            <li><strong>Sat–Sun:</strong> Open Booking <span class="pill">No extra fee </span></li>
           </ul>
           <hr>
           <p><strong>Additional signature:</strong> $2 per signature (per NYS law). Travel fee applies in addition.</p>
-          <p><strong>Loan documents:</strong> Individual docs only; no full loan‑signing packages.</p>
+          <p><strong>Loan documents:</strong> Individual docs only; no full loan‑signing packages.</p><br>
           <p class="badge warn">No remote notarizations offered.</p>
         </div>
       </div>
@@ -144,54 +151,114 @@
   </section>
 
   <!-- ABOUT -->
-  <section id="about" class="section section-light">
+    <section id="about" class="section section-light">
     <div class="container">
-      <div class="split">
-        <div class="reveal slideL">
-          <h2>About Me</h2>
-          <p class="muted">Commissioned New York State Notary Public. Member of the National Notary Association.</p>
-          <ul class="list">
-            <li>Mobile Notary Public — 2024–Present</li>
-            <li>UPS Store — Notary + Design Support — 2024–Present</li>
-            <li>Freelance Graphic Design — 2021–Present</li>
-            <li>FAA TRUST Certified Drone Operator — 2025</li>
-          </ul>
+        <h2 class="about-title reveal">About & Credentials</h2>
+        <div class="about-grid">
+        <!-- Bio + Trust -->
+        <article class="card about-card reveal">
+            <div class="about-hero">
+            <img src="notaryassets/portrait.jpg" alt="Notary Public Portrait" class="about-portrait">
+
+            <div class="about-identity">
+                <h3>Larry — Mobile Notary Public</h3>
+                <p class="about-sub muted">Commissioned in New York State  •  2025 — 2029  •  Member of the National Notary Association</p>
+                <ul class="about-badges" aria-label="Highlights">
+                <li class="pilla">Background Screened</li>
+                <li class="pilla">E&O Insured</li>
+                <li class="pilla">ID Verified on Arrival</li>
+                </ul>
+            </div>
+            </div>
+            <ul class="about-facts">
+            <li><strong>Coverage:</strong> Yonkers, Westchester, The Bronx, nearby NYC</li>
+            <li><strong>Availability:</strong> Weekday mornings, late evenings, weekends</li>
+            <li><strong>On-site:</strong> Homes, offices, hospitals, cafés</li>
+            </ul>
+        </article>
+
+        <!-- Right: Credentials / Timeline / Skills -->
+        <article class="card creds-card reveal">
+            <h3 class="creds-title">Working Experience</h3><br>
+
+            <ul class="timeline">
+            <li>
+                <span class="t-year">2025 — Present</span>
+                <div class="t-body">
+                <strong>Traveling Notary Public — NYS</strong>
+                <p class="muted">In-person notarizations only; clear guidance on ID, witnesses, and readiness.</p>
+                </div>
+            </li>
+            <li>
+                <span class="t-year">2024 — Present</span>
+                <div class="t-body">
+                <strong>The UPS Store&reg; — Notary Public &amp; Graphic Designer</strong>
+                <p class="muted">High-volume walk-ins; efficient document prep and customer wayfinding. High retention of repeat clients.</p>
+                </div>
+            </li>
+            </ul>
+
+            <hr class="soft">
         </div>
-        <div class="card reveal slideR" style="padding:18px">
-          <h3>Skills</h3>
-          <ul class="list">
-            <li>Power of Attorney & jurats</li>
-            <li><strong>In‑person</strong> notarizations at your location</li>
-            <li>Document layout & design</li>
-            <li>Clear client communication</li>
-          </ul>
-          <p class="muted" style="margin-top:8px"><strong>No remote/online notarizations.</strong></p>
+
+        <!-- Optional trust strip -->
+        <div class="trust-row reveal">
+        <div class="trust-item"><span class="trust-kpi">900+</span><span>Documents Notarized</span></div>
+        <div class="trust-item"><span class="trust-kpi">15–30 min</span><span>Typical Turnaround Time</span></div>
+        <div class="trust-item"><span class="trust-kpi">5 ★★★★★</span><span>Client Communication</span></div>
         </div>
-      </div>
     </div>
-  </section>
+    </section>
 
   <!-- CONTACT -->
   <section id="contact" class="section section-light">
-    <div class="container">
-      <h2 class="reveal">Contact</h2>
-      <div class="grid cols-2">
-        <div class="card reveal" style="padding:18px">
-          <p><strong>Email:</strong> <a href="mailto:you@example.com">you@example.com</a></p>
-          <p><strong>Phone:</strong> <a href="tel:+1">(xxx) xxx‑xxxx</a></p>
-          <p class="muted">Serving Yonkers, Westchester, the Bronx, and nearby NYC.</p>
+        <div class="container">
+            <h2 class="contact-title reveal">Get in Touch</h2>
+            <p class="contact-tagline reveal">
+            Have documents to notarize or questions about availability?  
+            Reach out directly or use the quick form below.
+            </p>
+
+            <div class="contact-grid">
+            <!-- Left: direct contact details -->
+            <div class="card contact-card reveal" style="justify-content:center; text-align: center;">
+                <h3>Direct Contact</h3><br>
+                <p><strong>Email:</strong><br>
+                <a href="mailto:you@example.com">you@example.com</a>
+                </p>
+                <p><strong>Phone / Text:</strong><br>
+                <a href="tel:+1xxx">(+1) xxx-xxx-xxxx</a>
+                </p>
+                <p class="muted">Serving Yonkers, Westchester, the Bronx, and nearby NYC.</p><br>
+                <ul class="contact-badges" style="justify-content: center;">
+                <li class="pill">Email Strongly Preferred</li>
+                </ul><br>
+                <hr class="soft">
+            </div>
+
+            <!-- Right: form -->
+            <div class="card contact-form-card reveal">
+                <h3>Send a Message</h3>
+                <form action="#" method="post" onsubmit="event.preventDefault(); alert('Thanks! I\'ll be in touch shortly.');">
+                <label>
+                    Name
+                    <input required type="text" placeholder="Your name" class="input">
+                </label>
+                <label>
+                    Email
+                    <input required type="email" placeholder="you@example.com" class="input">
+                </label>
+                <label>
+                    Message
+                    <textarea required rows="4" placeholder="How can I help?" class="input"></textarea>
+                </label>
+                <button class="btn primary" type="submit">Send Message</button>
+                </form>
+            </div>
+            </div>
         </div>
-        <div class="card reveal slideR" style="padding:18px">
-          <form action="#" method="post" onsubmit="event.preventDefault(); alert('Thanks! I\'ll be in touch shortly.');">
-            <label>Name<br><input required type="text" placeholder="Your name" class="input"></label><br><br>
-            <label>Email<br><input required type="email" placeholder="you@example.com" class="input"></label><br><br>
-            <label>Message<br><textarea required rows="4" placeholder="How can I help?" class="input"></textarea></label><br><br>
-            <button class="btn primary" type="submit">Send</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
+
 
   <!-- FAQ -->
   <section id="faq" class="section section-dark">
