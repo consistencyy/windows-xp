@@ -798,3 +798,93 @@ footer{ background:#0b1220; color:#a3aabd; padding:28px 0 24px }
 }
 /* end contact sheet styles */
 
+/*begin faq styles */
+.faqtitle {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin: 0 0 10px;
+    margin-bottom: 24px;
+    text-align: center;
+    font-family: 'Libre Caslon Text', serif;
+}
+
+.faqq:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,.12);
+}
+/* end faq styles */
+/*footer styles*/
+
+/* ===== Footer Revamp ===== */
+.site-footer{
+  background: linear-gradient(180deg, var(--bg-navy), var(--bg-dark));
+  color:#e5eef8;
+  padding-top:32px;
+  font-size:.95rem;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns: 1fr auto auto;
+  gap:24px;
+  align-items:center;
+}
+@media (max-width:900px){
+  .footer-grid{ grid-template-columns:1fr; text-align:center; }
+  .footer-brand{ justify-content:center; }
+  .footer-nav, .footer-badges, .footer-social{ justify-content:center; }
+}
+
+.footer-brand{ display:flex; align-items:center; gap:12px; }
+.footer-logo{
+  width:64px; height:64px;
+  border-radius:12px;
+  background:linear-gradient(135deg,#0ea5e9,#0369a1);
+  color:#fff; font-weight:700; font-size:1.1rem;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.3);
+  margin: 0 12px;
+  padding: 2px;
+}
+
+.footer-nav{
+  display:flex; gap:16px;
+}
+.footer-nav a{
+  color:#cfe8ff;
+  text-decoration:none;
+  position:relative;
+  padding-bottom:2px;
+}
+.footer-nav a::after{
+  content:""; position:absolute; left:0; bottom:0;
+  width:0; height:2px; background:var(--brand);
+  transition:width .25s;
+}
+.footer-nav a:hover::after{ width:100%; }
+
+.footer-badges{
+  display:flex; gap:10px; flex-wrap:wrap;
+  list-style:none; padding:0; margin:0;
+}
+.footer-badges .pill{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:999px;
+  padding:5px 10px;
+  font-size:.8rem;
+  font-weight:600;
+  color:#cfe8ff;
+  transition:background .2s;
+}
+.footer-badges .pill:hover{
+  background:rgba(255,255,255,.18);
+}
+
+.footer-disclaimer{
+  margin-top: 32px;
+  padding:16px 0;
+  text-align:center;
+  font-size:.85rem;
+  background:rgba(0,0,0,.25);
+  color:#a0b9d6;
+}
