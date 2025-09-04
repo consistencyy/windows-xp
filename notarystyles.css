@@ -930,3 +930,92 @@ footer{ background:#0b1220; color:#a3aabd; padding:28px 0 24px }
   background:rgba(0,0,0,.25);
   color:#a0b9d6;
 }
+
+/* ===== Responsive table: stack rows into labeled cards on mobile ===== */
+@media (max-width: 720px){
+  /* Hide the header row, we’ll inject labels per cell */
+  .table thead { 
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px; width: 1px;
+    margin: -1px; overflow: hidden; padding: 0; position: absolute;
+  }
+
+  .table {
+    border-collapse: separate;      /* keep rounded corners/shadow intact */
+    border-spacing: 0;
+    background: transparent;
+  }
+
+  .table tbody { display: grid; gap: 12px; }
+
+  .table tr {
+    display: grid;
+    grid-template-columns: 1fr;     /* one column card */
+    background: #fff;
+    border: 1px solid #e5eaf1;
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.06);
+    overflow: hidden;
+  }
+
+  /* keep the note row as a single full-width banner card */
+  .table tr.note {
+    background: #004080;
+    color: #fff;
+    border-color: #004080;
+  }
+  .table tr.note td {
+    border: 0;
+    padding: 12px 14px;
+    font-style: italic;
+    font-size: 0.85rem;
+  }
+
+  .table tr.note td {
+  display: flex;
+  align-items: center;   /* vertical centering */
+  gap: 8px;              /* space between icon and text */
+}
+
+  .table td {
+    display: grid;
+    grid-template-columns: 140px 1fr; /* label | value */
+    gap: 10px;
+    align-items: start;
+    border: 0;                        /* remove row dividers */
+    padding: 12px 14px;
+    border-bottom: 1px solid #eef2f7; /* light divider within the card */
+  }
+
+  .table td:last-child { border-bottom: 0; }
+
+  /* Inject readable labels for each cell via :before */
+  .table td:nth-child(1)::before { content: "Region"; font-weight: 700; color:#003366; }
+  .table td:nth-child(2)::before { content: "Towns/Cities Covered"; font-weight: 700; color:#003366; }
+  .table td:nth-child(3)::before { content: "Travel Fee"; font-weight: 700; color:#003366; }
+
+  /* Make “Towns/Cities” breathe on small screens */
+  .table td:nth-child(2) { line-height: 1.35; }
+
+  /* Slight hover polish on touch too (optional) */
+  .table tr:hover { background: #fff; }
+}
+
+/* default: inline with spacing */
+.lead.features span {
+  margin-right: 1.5rem; /* gap between items */
+  white-space: nowrap;  /* keep each phrase intact */
+}
+
+/* stack vertically on mobile */
+@media (max-width: 720px){
+  .lead.features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;        /* space between rows */
+  }
+  .lead.features span {
+    margin-right: 0;    /* reset the desktop spacing */
+  }
+}
