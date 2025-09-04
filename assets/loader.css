@@ -1,57 +1,137 @@
-body {
-    background-color: black;
-    color: #EFEFEF;
-    position: relative;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
-    cursor: none;
+/* ---------- Base ---------- */
+:root{
+  --bg:#000;
+  --fg:#efefef;
+  --accent:#708CF1;      /* XP-ish bar */
+  --accent-dark:#2838C7;
+  --xp:#e8641c;          /* your 3.0 color */
+  --frame:#efefef;
+  --scanline: rgba(255,255,255,.04);
 }
 
-.centred {
-    width: 50%;
-    max-width: 380px;
-    height: auto;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+*{ box-sizing:border-box; }
+
+html,body{
+  height:100%;
 }
 
+body{
+  background: var(--bg);
+  color: var(--fg);
+  margin:0;
+  overflow:hidden;
+  /* subtle vignette */
+  background-image:
+    radial-gradient(1200px 600px at 50% 45%, rgba(255,255,255,.06), transparent 60%),
+    radial-gradient(1200px 600px at 50% 70%, rgba(0,0,0,.35), transparent 70%);
+  /* ultra subtle scanlines */
+  position:relative;
+}
+
+body::after{
+  content:"";
+  position:fixed; inset:0;
+  pointer-events:none;
+  background:
+    repeating-linear-gradient(to bottom, var(--scanline) 0 2px, transparent 2px 4px);
+  mix-blend-mode:soft-light;
+  opacity:.25;
+}
+
+.boot-wrap{
+  width:min(420px, 86vw);
+  margin:0 auto;
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-54%);
+  text-align:center;
+  user-select:none;
+}
+
+/* ---------- Logo ---------- */
 .logo {
-    overflow: hidden;
-    line-height: 1;
+  line-height: 1;
+  filter: drop-shadow(0 2px 0 rgba(255,255,255,.04))
+          drop-shadow(0 10px 30px rgba(32,64,255,.18));
+}
+
+.logo-mark {
+  width: 66.67%;
+  display: block;
+  margin: 0 auto -28px;
+}
+
+/* New flex wrapper for text + version */
+.lockup {
+  display: flex;
+  align-items: stretch;  /* ensures .xp matches .ms+.win height */
+  gap: 10px;
+  justify-content: center;
+}
+
+.text-block {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* left-align conor. and style */
 }
 
 .logo .ms {
-    font-size: 150%;
-}
-
-.logo .ms sup {
-    font-size: 40%;
-    font-weight: bold;
+  font-family: "Tahoma", "Verdana", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: clamp(18px, 2.2vw, 24px);
+  letter-spacing: .2px;
+  text-align: left;
 }
 
 .logo .win {
-    font-size: 400%;
-    font-weight: bold;
-    float: left;
-    margin-right: 10px;
-    margin-top: -10px;
+  font-family: "Tahoma", "Verdana", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: clamp(48px, 7.5vw, 72px);
+  line-height: .9;
 }
 
 .logo .xp {
-    font-size: 300%;
-    font-weight: bold;
-    color: #e8641c;
-    float: left;
-    margin-top: -20px;
+  font-family: "Tahoma", "Verdana", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(56px, 8vw, 68px);
+  color: var(--xp);
+  display: flex;
+  padding: 0 6px;
+  align-items: flex-end;
 }
 
-.logo img {
-    width: 66.67%;
-    display: block;
-    margin: 0 auto -30px;
+/* Crisp-ish edges on big type for that 90s feel */
+.ms, .win, .xp {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
+}
+
+/* ---------- Status text ---------- */
+.status{
+  font-family:"Tahoma","Verdana",system-ui,sans-serif;
+  font-size: 12.5px;
+  letter-spacing:.2px;
+  opacity:.85;
+  margin: 10px 0 0;
+}
+
+/* ---------- Footer meta ---------- */
+.meta{
+  position:fixed;
+  left:0; right:0; bottom:5.5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding: 0 20%;
+  pointer-events:none;
+  font-family:"Tahoma","Verdana",system-ui,sans-serif;
+  font-size: 12px;
+  opacity:.9;
+}
+
+.copy{ opacity:.8; }
+.title{
+  font-weight: 900;
+  font-style: italic;
 }
 
 .loader {
@@ -77,17 +157,16 @@ body {
     background: linear-gradient(#708CF1 0%, #708CF1 40%, #2838C7 70%, #2838C7 100%);
 }
 
-.title {
-    font-family: 'arial-black', serif;
-    position: absolute;
-    bottom: 6%;
-    right: 20%;
-    font-weight: bold;
-    font-style: italic;
+
+/* ---------- Prefers-reduced-motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  .cap{ animation: none; }
+  .status::after{
+    content:" (animation reduced)";
+  }
 }
 
-.copy {
-    position: absolute;
-    bottom: 6%;
-    left: 20%;
+/* ---------- Small screens ---------- */
+@media (max-width:520px){
+  .meta{ padding: 0 8%; font-size: 11px; }
 }
