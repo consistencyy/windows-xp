@@ -11,6 +11,27 @@
   <link rel="stylesheet" href="notarystyles.css" />
 </head>
 <body>
+
+<!-- PRELOADER -->
+<div id="preloader" role="status" aria-live="polite" aria-label="Loading site">
+  <div class="preloader-inner">
+        <!-- Your logo -->
+    <img class="pre-logo" src="notaryassets/logo.png" alt="Traveling Notary logo" />
+    <!-- Ring/Seal -->
+    <div class="seal">
+      <span class="seal-text">Notary Public • NY</span>
+    </div>
+    <!-- Progress / tagline -->
+    <div class="precopy">
+      <p class="loading-line"><span class="dot dot1"></span><span class="dot dot2"></span><span class="dot dot3"></span></p>
+      <div class="progress-wrap" aria-hidden="true">
+        <div class="progress-bar"><span class="progress"></span></div>
+        <span class="progress-label">Preparing availability & pricing…</span>
+      </div>
+    </div>
+  </div>
+</div>
+
   <!-- NAVBAR (with mobile hamburger; stays clean + responsive) -->
   <nav class="navbar">
     <div class="container nav-inner">
@@ -312,5 +333,57 @@
 </footer>
 
   <script src="nscript.js"></script>
+  <script>
+/* Preloader logic: simulate progress, then close on full load */
+(function () {
+  const body = document.body;
+  const pre = document.getElementById('preloader');
+  const prog = pre?.querySelector('.progress');
+  let pct = 0, done = false;
+
+  // Accessibility: mark busy
+  body.setAttribute('aria-busy', 'true');
+
+  // Smooth simulated progress while assets load
+  const tick = () => {
+    if (done) return;
+    // approach 85% until real load event fires
+    pct = Math.min(85, pct + Math.random() * 5 + 1);
+    if (prog) prog.style.width = pct + '%';
+    requestAnimationFrame(tick);
+  };
+  tick();
+
+  // When everything is loaded, complete + fade out
+  window.addEventListener('load', () => {
+    done = true;
+    if (prog) prog.style.width = '100%';
+    setTimeout(() => {
+      body.classList.add('preloader-done');
+      body.removeAttribute('aria-busy');
+      setTimeout(() => pre?.remove(), 650); // remove from DOM after fade
+    }, 250);
+  });
+
+  // If prefers-reduced-motion, skip the long animation
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (mq.matches) {
+    pct = 100;
+    if (prog) prog.style.width = '100%';
+    body.classList.add('preloader-done');
+    setTimeout(() => pre?.remove(), 10);
+  }
+
+  // Mobile menu toggle still works during preloader (optional)
+  document.querySelector('.nav-toggle')?.addEventListener('click', (e) => {
+    const btn = e.currentTarget;
+    const links = document.getElementById('primary-navigation');
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    links?.classList.toggle('open', !open);
+  });
+})();
+</script>
+
 </body>
 </html>
