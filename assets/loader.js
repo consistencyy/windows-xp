@@ -11,11 +11,11 @@ let int = setInterval(() => {
 const statusEl = document.querySelector('.status');
 const lines = [
   'Loading personal settings…',
-  'Applying visual styles…',
-  'Initializing display drivers…',
-  'Starting networking services…',
-  'Preparing desktop…',
-  'Optimizing memory…'
+  'Making modern things look retro…',
+  'Loading pixelated background…',
+  'Applying for funding…',
+  'Fixing things last minute…',
+  'Preparing desktop…'
 ];
 
 let i = 0;
