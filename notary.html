@@ -6,25 +6,36 @@
   <title>Traveling Notary — Yonkers, NY</title>
   <meta name="description" content="Mobile Notary Public services in Yonkers & Westchester. In‑person only — no remote notarizations.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Libre+Caslon+Text" rel="stylesheet">
   <!-- Note your filename change -->
   <link rel="stylesheet" href="notarystyles.css" />
 </head>
 <body>
-  <!-- NAVBAR (no mobile hamburger; stays clean + responsive) -->
+  <!-- NAVBAR (with mobile hamburger; stays clean + responsive) -->
   <nav class="navbar">
     <div class="container nav-inner">
-      <a href="#top" class="brand" aria-label="Home">
+        <a href="#top" class="brand" aria-label="Home">
         <img class="logo" src="notaryassets/logo.png" alt="Your Logo" />
-        <span>Traveling Notary — Yonkers</span>
-      </a>
-      <div class="nav-links" aria-label="Primary">
+        <span>Traveling Notary Public</span>
+        </a>
+
+        <!-- Add this button -->
+        <button class="nav-toggle" aria-expanded="false"
+                aria-controls="primary-navigation" aria-label="Open menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        </button>
+
+        <!-- Add this id -->
+        <div class="nav-links" id="primary-navigation" aria-label="Primary">
         <a href="#services">Services</a>
         <a href="#pricing">Pricing</a>
         <a href="#schedule">Schedule</a>
         <a href="#about">About</a>
         <a href="#contact">Contact</a>
         <a href="#faq">FAQ</a>
-      </div>
+        </div>
     </div>
   </nav>
 
@@ -32,15 +43,14 @@
   <header id="top" class="hero-section">
     <div class="container hero-inner">
       <div class="hero-copy reveal slideL">
-        <span class="badge success">✔ In‑person notarizations</span>
-        <h1>Professional Notary Public — Yonkers & Westchester</h1>
-        <p class="lead">I come to you for acknowledgments, jurats, POAs, affidavits, and more.
-          <br><strong class="pill">No remote notarizations (RON).</strong>
-        </p>
+        <h1 class="siteheading">Professional Notary Public in the State of New York</h1>
+        <p class="lead">I come to you for acknowledgments, jurats, POAs, affidavits, and more.</p>
+        <p class="lead">✔ In‑person notarizations</p>
         <div class="cta">
           <a class="btn primary" href="#schedule">Book an Appointment</a>
           <a class="btn ghost" href="#pricing">See Pricing</a>
         </div>
+        <br><strong class="pill">No remote notarizations (RON)</strong>
       </div>
       <!-- Right side: optional hero visual slot. Replace with an image OR keep logo space. Full-height control via CSS. -->
       <div class="hero-visual reveal slideR" aria-hidden="true">
@@ -70,7 +80,8 @@
   <section id="services" class="section section-light">
     <div class="container">
       <h2 class="reveal">Services</h2>
-      <p class="muted reveal">Common notarizations handled on‑site: homes, offices, hospitals, and more.</p>
+      <p class="subhead">On-site notarizations for your convenience.</p>
+      <p class="mooted reveal">Common notarizations handled on‑site: homes, offices, hospitals, and more.</p>
       <div class="grid cols-3">
         <div class="card service reveal tilt"><h3>Acknowledgments</h3><p>Deeds, POAs, and general documents.</p></div>
         <div class="card service reveal tilt"><h3>Jurats / Oaths</h3><p>Affidavits and sworn statements.</p></div>
@@ -79,7 +90,7 @@
         <div class="card service reveal tilt"><h3>Hospitals & Care</h3><p>ID/competency checks, witness options.</p></div>
         <div class="card service reveal tilt"><h3>Corporate / HR</h3><p>I‑9, employment, and vendor forms.</p></div>
       </div>
-      <p class="muted" style="margin-top:8px">*Always subject to NYS notary statutes and request details.</p>
+      <p class="muted">*Always subject to NYS notary statutes and request details.</p>
     </div>
   </section>
 

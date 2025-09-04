@@ -17,3 +17,23 @@ if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth',block:'
 
 // Year in footer
 const yEl=document.getElementById('y'); if(yEl) yEl.textContent=new Date().getFullYear();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const toggle = document.querySelector('.nav-toggle');
+  const menu = document.querySelector('#primary-navigation');
+  if (!toggle || !menu) return;
+
+  toggle.addEventListener('click', () => {
+    const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!isOpen));
+    menu.classList.toggle('open', !isOpen);
+  });
+
+  // close after tapping a link (mobile nicety)
+  menu.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      menu.classList.remove('open');
+    });
+  });
+});
