@@ -1808,6 +1808,7 @@ body {
   border: 2px solid #999;
 }
 
+/* -- begin internal docs window -- */
 .internaldocs-window {
   background: #dcdcdc;
   padding: 1.5rem;
@@ -1894,4 +1895,57 @@ body {
   .internaldocs-card {
     flex: 1 1 100%;
   }
+}
+
+/* Opera Photography (small helpers that match existing look) */
+.ops-note {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin-top: 0.4rem;
+  color: #222;
+}
+
+.ops-caption {
+  font-size: 0.85rem;
+  line-height: 1.35;
+  margin-top: 0.35rem;
+  color: #222;
+  opacity: 0.95;
+}
+
+/* Optional: if EDDM images are tall, keep them tidy inside the existing cards */
+.stmarks-card img[alt*="EDDM"],
+.stmarks-card img[alt*="Flyer"] {
+  object-fit: cover;
+  max-height: 360px;
+}
+/* Light intro paragraph for case blurbs */
+.internaldocs-intro {
+  margin: 0.35rem 0 0.9rem 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #222;
+  opacity: 0.95;
+}
+
+/* Optional tighter grids for 2-wide layouts when needed */
+.internaldocs-grid.grid-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* Keep images neat in cards regardless of aspect ratios */
+.internaldocs-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* Reuse existing caption tone */
+.ops-caption {
+  font-size: 0.85rem;
+  line-height: 1.35;
+  margin-top: 0.35rem;
+  color: #222;
+  opacity: 0.95;
 }

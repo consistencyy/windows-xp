@@ -177,17 +177,13 @@ Thanks for checking it out.
 
   <!-- Root Folder -->
 <div class="fwindow-content explorer-view" id="file-explorer-root">
-        <div class="explorer-intro">
-          <h2>My Project Categories</h2>
-          <p>Browse through three main sections. Each category contains real client work, creative concepts, and professional projects across mediums.</p>
-        </div>
       <div class="project-grid file-page">
         <div class="ficon" onclick="openCategory('design')">
-          <img src="assets/gdicon.png" />
-          <div class="ficon-name"><strong>Graphic Design</strong></div>
+          <img src="assets/webdicon.png" />
+          <div class="ficon-name"><strong>Graphic & Web Design</strong></div>
         </div>
         <div class="ficon" onclick="openCategory('motion')">
-          <img src="assets/filmicon.png" />
+          <img src="assets/videoediticon.png" />
           <div class="ficon-name"><strong>Video Editing</strong></div>
         </div>
         <div class="ficon" onclick="openCategory('film')">
@@ -210,10 +206,6 @@ Thanks for checking it out.
     <div class="ficon" onclick="openProject('design-2')">
       <img src="assets/prodpackicon.png" />
       <div class="ficon-name">Storyboarding & Process</div>
-    </div>
-    <div class="ficon" onclick="openProject('design-3')">
-      <img src="assets/typeicon.png" />
-      <div class="ficon-name">Package & Typography Studies</div>
     </div>
   </div>
 </div>
@@ -268,7 +260,7 @@ Thanks for checking it out.
     <!-- ✅ Insert summary here -->
   <div class="project-summary">
     <p>
-      These branding pieces were created as part of my design work at The UPS Store, where I collaborated directly with clients to develop business cards, menus, promotional graphics, and logos tailored to their businesses. Each project reflects a unique brand voice, while maintaining clarity, structure, and print-readiness.
+      Description.
     </p>
   </div>
 
@@ -279,7 +271,7 @@ Thanks for checking it out.
     </div>
     <div class="ficon" onclick="openProjectFWindow('project-clover')">
       <img src="assets/internald.png" />
-      <div class="ficon-name">Internal Documents</div>
+      <div class="ficon-name">Opera Photography Studio</div>
     </div>
     <div class="ficon" onclick="openProjectFWindow('project-cookies')">
       <img src="assets/cookieicon.png" />
@@ -319,36 +311,6 @@ Thanks for checking it out.
   </div>
 </div>
 
-<div class="fwindow-content explorer-view project-view has-body" id="project-design-3" style="display: none;">
-  <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
-  <h2>Typography-Driven Experiments</h2>
-
-  <div class="project-summary">
-    <p>
-      A collection of kinetic, experimental, and layout-focused projects centered around expressive and functional use of type. These projects span motion, print, and digital — each one emphasizing form, rhythm, and the emotional power of letterforms.
-    </p>
-  </div>
-
-  <div class="project-grid">
-    <!-- Music Video Typography -->
-    <div class="ficon" onclick="openProjectFWindow('project-musictype')">
-      <img src="assets/lyricvideo.png" />
-      <div class="ficon-name">Lyrics in Motion</div>
-    </div>
-
-    <!-- Original Project: Gridded Editorial Poster -->
-    <div class="ficon" onclick="openProjectFWindow('project-editorialgrid')">
-      <img src="assets/editorialicon.png" />
-      <div class="ficon-name">Typo:Editorial</div>
-    </div>
-
-    <!-- Original Project: Typeface Personality Booklet -->
-    <div class="ficon" onclick="openProjectFWindow('project-typefacezine')">
-      <img src="assets/typezineicon.png" />
-      <div class="ficon-name">TypeMood Zine</div>
-    </div>
-  </div>
-</div> <!--end graphic design project 3-->
 </div> <!-- END FILE EXPLORER WINDOW -->
 <!-- BEGIN PROJECTS WINDOW -->
  <!-- FULLSCREEN PROJECT WINDOW -->
@@ -395,7 +357,7 @@ Thanks for checking it out.
       <!-- Bottom two images -->
       <div class="stmarks-logo-bottom">
         <img src="assets/churchicon.png" alt="Logo Icon 1">
-        <img src="assets/stmarks-icon2.png" alt="Logo Icon 2">
+        <img src="assets/Ark.png" alt="Logo Icon 2">
       </div>
     </div>
   </section>
@@ -408,11 +370,11 @@ Thanks for checking it out.
         <div class="stmarks-print-left">
           <div class="stmarks-card">
             <h4>Front BC</h4>
-            <img src="assets/stmarks-front-layout.png" alt="Business Card Front">
+            <img src="assets/smamezabcfront2.png" alt="Business Card Front">
           </div>
           <div class="stmarks-card">
             <h4>Back BC</h4>
-            <img src="assets/stmarks-back-layout.png" alt="Business Card Back">
+            <img src="assets/smamezabcback.png" alt="Business Card Back">
           </div>
         </div>
         <div class="stmarks-letterhead">
@@ -445,18 +407,280 @@ Thanks for checking it out.
 <!-- END St. Mark Baptist Project Window -->
 
 <!--begin project clover carpentry-->
+<!-- begin project opera photography studio -->
 <div class="project-fwindow hidden" id="project-clover">
   <div class="project-fwindow-header">
-    <span>Internal Documents & Systems — Case Study</span>
+    <span>Opera Photography Studio — Brand Identity Case Study</span>
     <div class="fwindow-controls">
       <button class="red-close" onclick="closeProjectFWindow('project-clover')">✕</button>
     </div>
   </div>
 
+  <!-- Reuse St. Mark visual style -->
+  <div class="project-fwindow-content stmarks-window">
+    <div class="stmarks-nav">
+      <button onclick="switchProjectFWindow('project-stmarks')" class="stmarks-btn">← Previous</button>
+      <button onclick="switchProjectFWindow('project-cookies')" class="stmarks-btn">Next →</button>
+    </div>
+
+    <h1 class="stmarks-title">Opera Photography Studio</h1>
+    <p class="stmarks-subtitle">Brand Identity · Collateral · Print Production</p>
+
+    <!-- LOGO -->
+    <section class="stmarks-logo-section">
+      <div class="stmarks-logo-block">
+        <h3>Primary Logo</h3>
+        <img src="assets/opera-logo-primary.png" alt="Opera Photography Studio Logo">
+        <p class="ops-note">Clean wordmark with lens/aria accent — designed for legibility across small formats.</p>
+      </div>
+      <div class="stmarks-logo-block">
+        <h3>Alternates & Marks</h3>
+        <img src="assets/opera-logo-alts.png" alt="Opera Photography Studio Alternate Marks">
+        <p class="ops-note">Horizontal, stacked, and monogram variations for social, watermarking, and signage.</p>
+      </div>
+    </section>
+
+    <hr class="stmarks-divider">
+
+    <!-- BUSINESS CARDS + LETTERHEAD -->
+    <section class="stmarks-print-section">
+      <h2>Business Cards & Letterhead</h2>
+      <div class="stmarks-print-grid">
+        <div class="stmarks-card">
+          <h4>Business Card — Front</h4>
+          <img src="assets/opera-bc-front.png" alt="Opera Photography Studio Business Card Front">
+          <p class="ops-caption">High-contrast front with mark; soft stock for a tactile first impression.</p>
+        </div>
+        <div class="stmarks-card">
+          <h4>Business Card — Back</h4>
+          <img src="assets/opera-bc-back.png" alt="Opera Photography Studio Business Card Back">
+          <p class="ops-caption">Contact details set on grid; micro-type aligns with logo geometry.</p>
+        </div>
+        <div class="stmarks-letterhead">
+          <h4>Letterhead</h4>
+          <img src="assets/opera-letterhead.png" alt="Opera Photography Studio Letterhead">
+          <p class="ops-caption">A4/US-Letter master with 12-pt baseline; printer-friendly margin system.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="stmarks-divider">
+
+    <!-- EDDM FLYER -->
+    <section class="stmarks-print-section">
+      <h2>EDDM® Flyer</h2>
+      <div class="stmarks-print-grid">
+        <div class="stmarks-card">
+          <h4>Front — Hero Offer</h4>
+          <img src="assets/opera-eddm-front.png" alt="Opera Photography Studio EDDM Flyer Front">
+          <p class="ops-caption">Bold seasonal promo with portfolio grid; USPS EDDM safe-area respected.</p>
+        </div>
+        <div class="stmarks-card">
+          <h4>Back — Details & CTA</h4>
+          <img src="assets/opera-eddm-back.png" alt="Opera Photography Studio EDDM Flyer Back">
+          <p class="ops-caption">Service list, booking QR, and route-targeted tracking code for ROI.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<!-- end project opera photography studio -->
+<!-- END Clover Carpentry Project Window -->
+
+<!--begin third project, cookies & beyond-->
+<!-- Cookies & Beyond Project Window -->
+<!-- begin project various client works (5 mini cases) -->
+<div class="project-fwindow hidden" id="project-cookies">
+  <div class="project-fwindow-header">
+    <span>Various Client Works — Five Mini Cases</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-cookies')">✕</button>
+    </div>
+  </div>
+
   <div class="project-fwindow-content internaldocs-window">
     <div class="internaldocs-nav">
-      <button onclick="switchProjectFWindow('project-stmarks')" class="internaldocs-btn">← Previous</button>
-      <button onclick="switchProjectFWindow('project-cookies')" class="internaldocs-btn">Next →</button>
+      <button onclick="switchProjectFWindow('project-clover')" class="internaldocs-btn">← Previous</button>
+      <button onclick="switchProjectFWindow('project-stmarks')" class="internaldocs-btn">Next →</button>
+    </div>
+
+    <h1 class="internaldocs-title">Various Client Works</h1>
+    <p class="internaldocs-subtitle">Five quick studies across menu, logo, letterhead, and business card design</p>
+
+    <!-- 1) Cookies & Beyond -->
+    <section class="internaldocs-section">
+      <h2>Cookies &amp; Beyond — Mini Brand Set</h2>
+      <p class="internaldocs-intro">
+        A playful micro-identity system for a dessert shop. Deliverables include a dine-in menu, primary logo,
+        and a two-sided business card. The tone balances fun with readability for small formats.
+      </p>
+      <div class="internaldocs-grid">
+        <div class="internaldocs-card">
+          <h4>Menu</h4>
+          <img src="assets/cb-menu.png" alt="Cookies &amp; Beyond Menu">
+          <p class="ops-caption">Category color coding; allergen icons; 8.5×11 and tabloid variants.</p>
+        </div>
+        <div class="internaldocs-card">
+          <h4>Logo</h4>
+          <img src="assets/cb-logo.png" alt="Cookies &amp; Beyond Logo">
+          <p class="ops-caption">Wordmark with crumb motif; single-color and full-color options.</p>
+        </div>
+        <div class="internaldocs-card">
+          <h4>Business Card — Front</h4>
+          <img src="assets/cb-bc-front.png" alt="Cookies &amp; Beyond Business Card Front">
+          <p class="ops-caption">Bold mark with high-contrast background for quick recognition.</p>
+        </div>
+        <div class="internaldocs-card">
+          <h4>Business Card — Back</h4>
+          <img src="assets/cb-bc-back.png" alt="Cookies &amp; Beyond Business Card Back">
+          <p class="ops-caption">Contact grid and social handles; print-safe margins for trim.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="internaldocs-divider">
+
+    <!-- 2) Electrical Company Business Card -->
+    <section class="internaldocs-section">
+      <h2>Voltwise Electric — Business Card</h2>
+      <div class="internaldocs-grid grid-2">
+        <div class="internaldocs-card">
+          <h4>Front</h4>
+          <img src="assets/volt-bc-front.png" alt="Voltwise Electric Business Card Front">
+          <p class="ops-caption">Clean hierarchy with bold signal stripe; easy field readability.</p>
+        </div>
+        <div class="internaldocs-card">
+          <h4>Back</h4>
+          <img src="assets/volt-bc-back.png" alt="Voltwise Electric Business Card Back">
+          <p class="ops-caption">Service icons and license numbers; QR to booking form.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="internaldocs-divider">
+
+    <!-- 3) Carpentry Company Logo -->
+    <section class="internaldocs-section">
+      <h2>Heritage Carpentry — Logo</h2>
+      <div class="internaldocs-grid grid-2">
+        <div class="internaldocs-card">
+          <h4>Primary Mark</h4>
+          <img src="assets/carp-logo-primary.png" alt="Heritage Carpentry Primary Logo">
+          <p class="ops-caption">Classic badge with dovetail motif; suited for signage and apparel.</p>
+        </div>
+        <div class="internaldocs-card">
+          <h4>Monogram / Seal</h4>
+          <img src="assets/carp-logo-seal.png" alt="Heritage Carpentry Monogram Seal">
+          <p class="ops-caption">Single-color seal for engraving, stamps, and small-scale uses.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="internaldocs-divider">
+
+    <!-- 4) NYC Contracting Company Letterhead + Logo -->
+    <section class="internaldocs-section">
+      <h2>Gotham City Contracting — Letterhead &amp; Logo</h2>
+      <div class="internaldocs-grid">
+        <div class="internaldocs-card">
+          <h4>Letterhead</h4>
+          <img src="assets/gcc-letterhead.png" alt="Gotham City Contracting Letterhead">
+          <p class="ops-caption">US-Letter template with clear zones for estimates, RFIs, and invoices.</p>
+        </div>
+        <div class="internaldocs-card">
+          <h4>Logo</h4>
+          <img src="assets/gcc-logo.png" alt="Gotham City Contracting Logo">
+          <p class="ops-caption">Structural logotype with skyline accent; black/white and spot options.</p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="internaldocs-divider">
+
+    <!-- 5) Tattoo Shop Business Card + Logo -->
+    <section class="internaldocs-section">
+      <h2>Blackline Tattoo — Business Card &amp; Logo</h2>
+      <div class="internaldocs-grid">
+        <div class="internaldocs-card">
+          <h4>Logo</h4>
+          <img src="assets/blt-logo.png" alt="Blackline Tattoo Logo">
+          <p class="ops-caption">Bold, high-contrast mark optimized for signage and merch.</p>
+        </div>
+        <div class="internaldocs-card">
+          <h4>Business Card — Front</h4>
+          <img src="assets/blt-bc-front.png" alt="Blackline Tattoo Business Card Front">
+          <p class="ops-caption">Studio mark with heavy type and ample negative space.</p>
+        </div>
+        <div class="internaldocs-card">
+          <h4>Business Card — Back</h4>
+          <img src="assets/blt-bc-back.png" alt="Blackline Tattoo Business Card Back">
+          <p class="ops-caption">Artist roster, booking QR, and aftercare link.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+<!-- end project various client works (5 mini cases) -->
+
+<!-- END Cookies & Beyond Project Window -->
+ <!--begin project emerald bud-->
+ <div class="project-fwindow hidden" id="project-emerald">
+  <div class="project-fwindow-header">
+    <span>Emerald Bud – Cannabis Packaging</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-emerald')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study">
+      <h1>Emerald Bud</h1>
+      <p class="cs-subtitle">Luxury Packaging for a Boutique Cannabis Brand</p>
+
+      <h2>🌿 Project Overview</h2>
+      <p></p>
+
+      <div class="project-nav">
+        <button onclick="switchProjectFWindow('project-socks')">← Previous</button>
+        <button onclick="switchProjectFWindow('project-cereal')">Next →</button>
+      </div>
+    </section>
+  </div>
+</div>
+<!--end emerald bud project-->
+<!--begin project cereal box-->
+<div class="project-fwindow hidden" id="project-cereal">
+  <div class="project-fwindow-header">
+    <span>Pow Pow Crunch – Cereal Box</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-cereal')">✕</button>
+    </div>
+  </div>
+  <div class="project-fwindow-content">
+    <section class="case-study">
+      <h1>Pow Pow Crunch</h1>
+      <p class="cs-subtitle">Conceptual Cereal Box for a Fictional Sugar Bomb</p>
+
+      <div class="project-nav">
+        <button onclick="switchProjectFWindow('project-emerald')">← Previous</button>
+        <button onclick="switchProjectFWindow('project-socks')">Next →</button>
+      </div>
+    </section>
+  </div>
+</div>
+<!--end cereal box project-->
+<!--begin project socktube-->
+<div class="project-fwindow hidden" id="project-socks">
+  <div class="project-fwindow-header">
+    <span>Internal Documents & Systems — Case Study</span>
+    <div class="fwindow-controls">
+      <button class="red-close" onclick="closeProjectFWindow('project-socks')">✕</button>
+    </div>
+  </div>
+
+  <div class="project-fwindow-content internaldocs-window">
+    <div class="internaldocs-nav">
+      <button onclick="switchProjectFWindow('project-cereal')" class="internaldocs-btn">← Previous</button>
+      <button onclick="switchProjectFWindow('project-emerald')" class="internaldocs-btn">Next →</button>
     </div>
 
     <h1 class="internaldocs-title">Internal Documents & Systems</h1>
@@ -529,99 +753,6 @@ Thanks for checking it out.
         Originally started as a data visualization project in school, this interactive map evolved into a prototype for a live,
         dynamic traffic mapping system — a blend of design, analytics, and technical curiosity.
       </p>
-    </section>
-  </div>
-</div>
-<!-- END Clover Carpentry Project Window -->
-
-<!--begin third project, cookies & beyond-->
-<!-- Cookies & Beyond Project Window -->
-<div class="project-fwindow hidden" id="project-cookies">
-  <div class="project-fwindow-header">
-    <span>Cookies & Beyond – Brand Identity</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-cookies')">✕</button>
-    </div>
-  </div>
-  <div class="project-fwindow-content">
-    <section class="case-study cookies-case">
-        <div class="project-nav">
-          <button onclick="switchProjectFWindow('project-clover')">← Previous</button>
-          <button onclick="switchProjectFWindow('project-stmarks')">Next →</button>
-        </div>
-      <div class="hero-banner">
-        <img src="assets/cookiesbeyond-logo.png" alt="Cookies & Beyond Logo">
-        <h1>Cookies & Beyond</h1>
-        <p class="cs-subtitle">Complete Brand System for a Boutique Dessert Business</p>
-      </div>
-
-    </section>
-  </div>
-</div>
-<!-- END Cookies & Beyond Project Window -->
- <!--begin project emerald bud-->
- <div class="project-fwindow hidden" id="project-emerald">
-  <div class="project-fwindow-header">
-    <span>Emerald Bud – Cannabis Packaging</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-emerald')">✕</button>
-    </div>
-  </div>
-  <div class="project-fwindow-content">
-    <section class="case-study">
-      <h1>Emerald Bud</h1>
-      <p class="cs-subtitle">Luxury Packaging for a Boutique Cannabis Brand</p>
-
-      <h2>🌿 Project Overview</h2>
-      <p></p>
-
-      <div class="project-nav">
-        <button onclick="switchProjectFWindow('project-socks')">← Previous</button>
-        <button onclick="switchProjectFWindow('project-cereal')">Next →</button>
-      </div>
-    </section>
-  </div>
-</div>
-<!--end emerald bud project-->
-<!--begin project cereal box-->
-<div class="project-fwindow hidden" id="project-cereal">
-  <div class="project-fwindow-header">
-    <span>Pow Pow Crunch – Cereal Box</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-cereal')">✕</button>
-    </div>
-  </div>
-  <div class="project-fwindow-content">
-    <section class="case-study">
-      <h1>Pow Pow Crunch</h1>
-      <p class="cs-subtitle">Conceptual Cereal Box for a Fictional Sugar Bomb</p>
-
-      <div class="project-nav">
-        <button onclick="switchProjectFWindow('project-emerald')">← Previous</button>
-        <button onclick="switchProjectFWindow('project-socks')">Next →</button>
-      </div>
-    </section>
-  </div>
-</div>
-<!--end cereal box project-->
-<!--begin project socktube-->
-<div class="project-fwindow hidden" id="project-socks">
-  <div class="project-fwindow-header">
-    <span>Gimmick Packaging</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-socks')">✕</button>
-    </div>
-  </div>
-  <div class="project-fwindow-content">
-    <section class="case-study">
-      <h1>Package</h1>
-      <p class="cs-subtitle">Package</p>
-
-
-      <div class="project-nav">
-        <button onclick="switchProjectFWindow('project-cereal')">← Previous</button>
-        <button onclick="switchProjectFWindow('project-emerald')">Next →</button>
-      </div>
     </section>
   </div>
 </div>
