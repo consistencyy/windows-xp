@@ -12,7 +12,36 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("resize", scaleDesktop);
   scaleDesktop();
 
-  // START MENU TOGGLE
+  // ==============================
+  // WINDOW FOCUS MANAGEMENT
+  // bringToFront() raises the clicked/opened window above all others.
+  // Taskbar = 50000, Start menu = 99999 — permanently above.
+  // ==============================
+  let zTop = 200;
+
+  window.bringToFront = function(el) {
+    if (!el) return;
+    el.style.zIndex = ++zTop;
+  };
+
+  // Wire mousedown on every managed window so clicking anywhere
+  // on it promotes it instantly to the front.
+  [
+    "#browser-window",
+    "#file-explorer-window",
+    "#music-player",
+    "#readme-window",
+    "#snake-window",
+  ].forEach(sel => {
+    const el = document.querySelector(sel);
+    if (el) el.addEventListener("mousedown", () => bringToFront(el), true);
+  });
+
+  // Project fwindows are multiple — wire them individually
+  document.querySelectorAll(".project-fwindow").forEach(el => {
+    el.addEventListener("mousedown", () => bringToFront(el), true);
+  });
+
   const startButton = document.querySelector(".start-button");
   const startMenu = document.getElementById("start-menu");
 
@@ -37,6 +66,22 @@ let browserInitialized = false;
   setInterval(updateClock, 1000);
   updateClock();
 
+  // MUTE TOGGLE — fore.webm background video
+  const foreVideo = document.getElementById("fore-video");
+  const muteBtn = document.getElementById("mute-toggle");
+
+  if (foreVideo && muteBtn) {
+    // Browsers block autoplay with sound until user interaction.
+    // Start muted so the video plays, then unmute on first click.
+    foreVideo.muted = true;
+    muteBtn.textContent = "🔇";
+
+    muteBtn.addEventListener("click", () => {
+      foreVideo.muted = !foreVideo.muted;
+      muteBtn.textContent = foreVideo.muted ? "🔇" : "🔊";
+    });
+  }
+
 });
 
   // MUSIC PLAYER FUNCTIONALITY
@@ -52,6 +97,12 @@ let browserInitialized = false;
   const volumeSlider = document.getElementById("volume-slider");
   const prevBtn = document.getElementById("prev-btn");
   const nextBtn = document.getElementById("next-btn");
+  const mpMinBtn = document.getElementById("mp-minimize-btn");
+  const mpStatusText = document.getElementById("mp-status-text");
+  const mpCurrentTime = document.getElementById("mp-current-time");
+  const mpDuration = document.getElementById("mp-duration");
+  const mpSeekFill = document.getElementById("mp-seek-fill");
+  const mpPlaylist = document.getElementById("mp-playlist");
 
 const tracks = [
   {
@@ -80,13 +131,62 @@ const tracks = [
   let isMinimized = false;
   let hasPositioned = false;
 
+  // Build playlist UI
+  function buildPlaylist() {
+    if (!mpPlaylist) return;
+    mpPlaylist.innerHTML = "";
+    tracks.forEach((t, i) => {
+      const item = document.createElement("div");
+      item.className = "mp-playlist-item" + (i === current ? " active" : "");
+      item.innerHTML = `<span class="mp-playlist-num">${i + 1}</span><span class="mp-playlist-title">${t.title}</span>`;
+      item.onclick = () => { loadTrack(i); playTrack(); };
+      mpPlaylist.appendChild(item);
+    });
+  }
+
+  function updatePlaylistHighlight() {
+    if (!mpPlaylist) return;
+    mpPlaylist.querySelectorAll(".mp-playlist-item").forEach((el, i) => {
+      el.classList.toggle("active", i === current);
+    });
+  }
+
+  function formatTime(s) {
+    if (isNaN(s)) return "0:00";
+    const m = Math.floor(s / 60);
+    const sec = Math.floor(s % 60).toString().padStart(2, "0");
+    return `${m}:${sec}`;
+  }
+
+  audio.addEventListener("timeupdate", () => {
+    if (!audio.duration) return;
+    const pct = (audio.currentTime / audio.duration) * 100;
+    if (mpSeekFill) mpSeekFill.style.width = pct + "%";
+    if (mpCurrentTime) mpCurrentTime.textContent = formatTime(audio.currentTime);
+  });
+
+  audio.addEventListener("loadedmetadata", () => {
+    if (mpDuration) mpDuration.textContent = formatTime(audio.duration);
+  });
+
+  if (mpSeekFill && mpSeekFill.parentElement) {
+    mpSeekFill.parentElement.addEventListener("click", (e) => {
+      if (!audio.duration) return;
+      const rect = mpSeekFill.parentElement.getBoundingClientRect();
+      const pct = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = pct * audio.duration;
+    });
+  }
+
   function openPlayer() {
+    bringToFront(playerWin);
     playerWin.style.display = 'flex';
     playerWin.classList.add('show');
     if (isMinimized) {
       isMinimized = false;
       return;
     }
+    buildPlaylist();
     loadTrack(current);
     playTrack();
     if (musicTab) musicTab.style.display = 'inline-flex';
@@ -96,7 +196,8 @@ function loadTrack(i) {
   current = (i + tracks.length) % tracks.length;
   const t = tracks[current];
   audio.src = t.src;
-  title.textContent = t.title;
+  if (title) title.textContent = t.title;
+  if (mpStatusText) mpStatusText.textContent = "Playing: " + t.title;
 
   const img = document.getElementById("track-cover-img");
   const video = document.getElementById("track-cover-video");
@@ -112,18 +213,21 @@ function loadTrack(i) {
     img.style.display = "none";
     video.play();
   }
+  updatePlaylistHighlight();
 }
 
   function playTrack() {
     audio.play();
-    playBtn.textContent = '⏸';
+    if (playBtn) playBtn.classList.add('is-playing');
+    if (mpStatusText) mpStatusText.textContent = "Playing: " + tracks[current].title;
   }
 
   function togglePlay() {
     if (audio.paused) playTrack();
     else {
       audio.pause();
-      playBtn.textContent = '▶';
+      if (playBtn) playBtn.classList.remove('is-playing');
+      if (mpStatusText) mpStatusText.textContent = "Paused";
     }
   }
 
@@ -138,7 +242,12 @@ function closePlayer() {
   audio.currentTime = 0;
   audio.src = '';
   current = 0;
-  title.textContent = 'Track Title';
+  if (title) title.textContent = 'Track Title';
+  if (mpStatusText) mpStatusText.textContent = 'Ready';
+  if (playBtn) playBtn.classList.remove('is-playing');
+  if (mpSeekFill) mpSeekFill.style.width = '0%';
+  if (mpCurrentTime) mpCurrentTime.textContent = '0:00';
+  if (mpDuration) mpDuration.textContent = '0:00';
 
   const img = document.getElementById("track-cover-img");
   const video = document.getElementById("track-cover-video");
@@ -156,25 +265,31 @@ function closePlayer() {
   if (musicTab) musicTab.style.display = 'none';
 }
 
-  // Dragging logic
-  dragHandle.addEventListener("mousedown", (e) => {
-    const rootRect = document.getElementById("desktop-root").getBoundingClientRect();
-    const winRect = playerWin.getBoundingClientRect();
-    offsetX = e.clientX - winRect.left;
-    offsetY = e.clientY - winRect.top;
-    isDragging = true;
+  // Scale-aware dragging
+  function getPlayerScale() {
+    const root = document.getElementById("desktop-root");
+    if (!root) return 1;
+    return (new DOMMatrix(getComputedStyle(root).transform)).a || 1;
+  }
 
+  dragHandle.addEventListener("mousedown", (e) => {
+    if (e.target.closest(".mp-win-btns")) return;
+    const scale = getPlayerScale();
+    const rect = playerWin.getBoundingClientRect();
+    offsetX = (e.clientX - rect.left) / scale;
+    offsetY = (e.clientY - rect.top) / scale;
+    isDragging = true;
     document.addEventListener("mousemove", onDrag);
     document.addEventListener("mouseup", stopDrag);
+    e.preventDefault();
   });
 
   function onDrag(e) {
     if (!isDragging) return;
+    const scale = getPlayerScale();
     const rootRect = document.getElementById("desktop-root").getBoundingClientRect();
-    const newLeft = e.clientX - rootRect.left - offsetX;
-    const newTop = e.clientY - rootRect.top - offsetY;
-    playerWin.style.left = `${newLeft}px`;
-    playerWin.style.top = `${newTop}px`;
+    playerWin.style.left = `${(e.clientX - rootRect.left) / scale - offsetX}px`;
+    playerWin.style.top  = `${(e.clientY - rootRect.top)  / scale - offsetY}px`;
   }
 
   function stopDrag() {
@@ -185,21 +300,24 @@ function closePlayer() {
 
   recycleBin.ondblclick = openPlayer;
   closeBtn.onclick = closePlayer;
+  if (mpMinBtn) mpMinBtn.onclick = minimizePlayer;
+
   musicTab.onclick = () => {
     if (isMinimized) {
       playerWin.style.display = 'flex';
       requestAnimationFrame(() => playerWin.classList.add('show'));
       isMinimized = false;
+      bringToFront(playerWin);
     } else {
       minimizePlayer();
     }
   };
 
-  playBtn.onclick = togglePlay;
-  volumeSlider.oninput = () => audio.volume = volumeSlider.value;
-  audio.onended = () => nextBtn.click();
-  prevBtn.onclick = () => { loadTrack(current - 1); playTrack(); };
-  nextBtn.onclick = () => { loadTrack(current + 1); playTrack(); };
+  if (playBtn) playBtn.onclick = togglePlay;
+  if (volumeSlider) volumeSlider.oninput = () => audio.volume = volumeSlider.value;
+  audio.onended = () => { loadTrack(current + 1); playTrack(); };
+  if (prevBtn) prevBtn.onclick = () => { loadTrack(current - 1); playTrack(); };
+  if (nextBtn) nextBtn.onclick = () => { loadTrack(current + 1); playTrack(); };
 
 // ==============================
 // CONSISTENCYY BROWSER WINDOW
@@ -210,15 +328,24 @@ const mockYoutube = document.getElementById("mock-youtube");
 const internetHome = document.getElementById("internet-home");
 const fakeLoading = document.getElementById("fake-loading");
 const browserHeader = document.querySelector("#browser-window .window-header");
-const tabs = document.querySelectorAll(".yt-tab");
+const tabs = document.querySelectorAll(".cyt-tab");
 const sections = document.querySelectorAll(".yt-section");
 const backButton = document.getElementById("ie-back-button");
 const wikipediaBookmark = document.getElementById("wikipedia-bookmark");
 
+// Links bar bookmarks
 if (wikipediaBookmark) {
-  wikipediaBookmark.addEventListener("click", () => {
-    updateBrowserView("wikipedia");
-  });
+  wikipediaBookmark.addEventListener("click", () => { updateBrowserView("wikipedia"); });
+}
+
+// Homepage bookmark tiles (duplicate IDs avoided by using -2 suffix)
+const wikipediaBookmark2 = document.getElementById("wikipedia-bookmark-2");
+const projectsBookmark2  = document.getElementById("projects-bookmark-2");
+if (wikipediaBookmark2) {
+  wikipediaBookmark2.addEventListener("click", () => { updateBrowserView("wikipedia"); });
+}
+if (projectsBookmark2) {
+  projectsBookmark2.addEventListener("click", () => { openFileExplorer(); });
 }
 
 let browserMinimized = false;
@@ -229,6 +356,7 @@ let currentView = "home";
 let parallaxPaused = false;
 
 function openBrowserWindow() {
+  bringToFront(browserWindow);
   if (browserWindow.style.display === "flex") {
     minimizeBrowser();
     return;
@@ -284,6 +412,7 @@ function minimizeBrowser() {
 
 function updateBrowserView(view) {
   const mockWikipedia = document.getElementById("mock-wikipedia");
+  const addrText = document.getElementById("ie-addr-text");
 
   // Hide all views first
   mockYoutube.style.display = "none";
@@ -296,21 +425,25 @@ function updateBrowserView(view) {
   mockVideoPlayer.classList.add("hidden");
   if (mockWikipedia) mockWikipedia.classList.add("hidden");
 
-  // Show the appropriate view
+  // Show the appropriate view and update address bar
   if (view === "channel") {
     mockYoutube.style.display = "flex";
     mockYoutube.classList.remove("hidden");
+    if (addrText) addrText.textContent = "www.youtube.com/@Consistencyy";
   } else if (view === "wikipedia") {
     if (mockWikipedia) {
       mockWikipedia.style.display = "flex";
       mockWikipedia.classList.remove("hidden");
     }
+    if (addrText) addrText.textContent = "www.wakapedia.org/wiki/Conor_McCutcheon";
   } else if (view === "video") {
     mockVideoPlayer.style.display = "flex";
     mockVideoPlayer.classList.remove("hidden");
+    if (addrText) addrText.textContent = "www.youtube.com/watch?v=...";
   } else {
     internetHome.style.display = "flex";
     internetHome.classList.remove("hidden");
+    if (addrText) addrText.textContent = "about:home";
   }
 
   currentView = view;
@@ -321,8 +454,7 @@ if (consistencyTab) {
   consistencyTab.addEventListener("click", openBrowserWindow);
 }
 
-// Draggable Internet Explorer window
-// === Simplified Dragging Logic for Internet Explorer Window ===
+// Draggable Internet Explorer window — scale-aware dragging
 (function() {
   const browserHeader = document.querySelector("#browser-window .window-header");
   const browserWindow = document.getElementById("browser-window");
@@ -331,24 +463,35 @@ if (consistencyTab) {
   let offsetX = 0;
   let offsetY = 0;
 
+  function getScale() {
+    const root = document.getElementById("desktop-root");
+    if (!root) return 1;
+    const m = new DOMMatrix(getComputedStyle(root).transform);
+    return m.a || 1;
+  }
+
   if (browserHeader && browserWindow) {
-browserHeader.addEventListener("mousedown", (e) => {
-  if (e.target.closest(".spoof-search")) return;
-
-  const rect = browserWindow.getBoundingClientRect();
-  offsetX = e.clientX - rect.left;
-  offsetY = e.clientY - rect.top;
-  isDragging = true;
-
-  document.addEventListener("mousemove", onDrag);
-  document.addEventListener("mouseup", stopDrag);
-});
+    browserHeader.addEventListener("mousedown", (e) => {
+      if (e.target.closest(".window-controls")) return;
+      const scale = getScale();
+      const rect = browserWindow.getBoundingClientRect();
+      offsetX = (e.clientX - rect.left) / scale;
+      offsetY = (e.clientY - rect.top) / scale;
+      isDragging = true;
+      document.addEventListener("mousemove", onDrag);
+      document.addEventListener("mouseup", stopDrag);
+      e.preventDefault();
+    });
   }
 
   function onDrag(e) {
     if (!isDragging) return;
-    browserWindow.style.left = `${e.clientX - offsetX}px`;
-    browserWindow.style.top = `${e.clientY - offsetY}px`;
+    const scale = getScale();
+    const rootRect = document.getElementById("desktop-root").getBoundingClientRect();
+    const newLeft = (e.clientX - rootRect.left) / scale - offsetX;
+    const newTop  = (e.clientY - rootRect.top)  / scale - offsetY;
+    browserWindow.style.left = `${newLeft}px`;
+    browserWindow.style.top  = `${newTop}px`;
   }
 
   function stopDrag() {
@@ -446,6 +589,7 @@ let hasReadmePositioned = false;
 
 
 function openReadme() {
+  bringToFront(readmeWin);
   readmeWin.style.display = "flex";
   if (readmeTab) readmeTab.style.display = "inline-flex";
 }
@@ -507,6 +651,7 @@ if (readmeIcon) {
 }
 
 function openConsistency() {
+  bringToFront(document.getElementById("browser-window"));
   const browserWindow = document.getElementById("browser-window");
   const fakeLoading = document.getElementById("fake-loading");
   const internetHome = document.getElementById("internet-home");
@@ -533,132 +678,104 @@ function openConsistency() {
   }, 3200);
 }
 
-// FILE EXPLORER FUNCTIONALITY
+// ==============================
+// FILE EXPLORER — My Projects
+// ==============================
 const fileExplorerWin = document.getElementById("file-explorer-window");
-const prodIcon = document.querySelector(".icon.my-computer");
-const motionIcon = document.querySelector(".icon.my-network");
-const designIcon = document.querySelector(".icon.note-pad");
 const fileExplorerTab = document.getElementById("mixed-tab");
 const fileExplorerClose = document.getElementById("file-explorer-close");
 const fileExplorerDragHandle = document.getElementById("file-explorer-drag-handle");
-
 const rootView = document.getElementById("file-explorer-root");
-const categoryViews = {
-  design: document.getElementById("category-design"),
-  motion: document.getElementById("category-motion"),
-  film: document.getElementById("category-film"),
-  
-};
 
 let isFileExplorerDragging = false;
 let explorerOffsetX = 0, explorerOffsetY = 0;
 let isFileExplorerMinimized = false;
-let hasFileExplorerPositioned = false;
 
-// Show file explorer window (initial or restore)
+// Open the Projects window
 function openFileExplorer() {
+  bringToFront(fileExplorerWin);
   fileExplorerWin.style.display = "flex";
   fileExplorerTab.style.display = "inline-flex";
+  isFileExplorerMinimized = false;
 }
 
+// Taskbar tab click — toggle minimize/restore
 fileExplorerTab.onclick = () => {
   const isHidden = fileExplorerWin.style.display === "none" || fileExplorerWin.classList.contains("hidden");
-
   if (isHidden || isFileExplorerMinimized) {
     fileExplorerWin.style.display = "flex";
-    fileExplorerWin.classList.add("show");
     isFileExplorerMinimized = false;
+    bringToFront(fileExplorerWin);
   } else {
     fileExplorerWin.style.display = "none";
     isFileExplorerMinimized = true;
   }
 };
 
-// Close button
+// Close button — hides window, keeps tab
 fileExplorerClose.onclick = () => {
   fileExplorerWin.style.display = "none";
-  // DO NOT hide tab — keep it visible so user can reopen
-  isFileExplorerMinimized = true; // act like minimize
-  // Keep position so it's restored where it was
-  backToRoot();
+  isFileExplorerMinimized = true;
 };
 
-// Open category folder
-function openCategory(category) {
-  rootView.style.display = "none";
-  Object.values(categoryViews).forEach(view => view.style.display = "none");
-  const view = categoryViews[category];
-  if (view) view.style.display = "flex";
+// ==============================
+// MY WORK — Tab Switcher
+// ==============================
+function showWorkPanel(panelId, btn) {
+  document.querySelectorAll('.mywork-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.mywork-tab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById(panelId);
+  if (panel) panel.style.display = 'block';
+  if (btn) btn.classList.add('active');
+
+  // When switching to Graphic Design, always land on BDR tab
+  if (panelId === 'work-gfx') {
+    const firstGfxBtn = panel.querySelector('.gfx-subtab');
+    showGfxPanel('gfx-bdr', firstGfxBtn);
+  }
+
+  // When switching to Motion Graphics, always land on FASTSIGNS tab
+  if (panelId === 'work-motion') {
+    const firstMotionBtn = panel.querySelector('.gfx-subtab');
+    showMotionPanel('motion-fastsigns', firstMotionBtn);
+  }
 }
 
-// Go back to root folder
-function backToRoot() {
-  rootView.style.display = "flex";
-  Object.values(categoryViews).forEach(view => view.style.display = "none");
+function showGfxPanel(panelId, btn) {
+  document.querySelectorAll('.gfx-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.gfx-subtab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById(panelId);
+  if (panel) panel.style.display = 'block';
+  if (btn) btn.classList.add('active');
 }
 
-// Project Navigation State
-const projectMap = {
-  design: ['design-1', 'design-2', 'design-3'],
-  motion: ['motion-1', 'motion-2', 'motion-3'],
-  film: ['film-1', 'film-2', 'film-3']
-};
-
-let currentProject = null;
-let currentCategory = null;
-
-function openProject(projectId) {
-  // Hide everything else
-  rootView.style.display = "none";
-  Object.values(categoryViews).forEach(v => v.style.display = "none");
-
-  // ✅ This now works reliably
-  document.querySelectorAll(".project-view").forEach(v => v.style.display = "none");
-
-  const projectView = document.getElementById(`project-${projectId}`);
-  if (projectView) projectView.style.display = "flex";
-
-  currentProject = projectId;
-  currentCategory = Object.keys(projectMap).find(cat => projectMap[cat].includes(projectId));
+function showMotionPanel(panelId, btn) {
+  document.querySelectorAll('.motion-panel').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.gfx-subtab').forEach(t => t.classList.remove('active'));
+  const panel = document.getElementById(panelId);
+  if (panel) panel.style.display = 'block';
+  if (btn) btn.classList.add('active');
 }
 
-function closeProject(projectId) {
-  const view = document.getElementById(`project-${projectId}`);
-  if (view) view.style.display = "none";
-}
-
-function backToCategory() {
-  if (!currentCategory || !currentProject) return;
-
-  // ✅ Actually hide the current project view
-  const view = document.getElementById(`project-${currentProject}`);
-  if (view) view.style.display = "none";
-
-  // ✅ Show the category view again
-  openCategory(currentCategory);
-
-  currentProject = null;
-}
-
-// DRAGGING LOGIC
+// DRAGGING LOGIC — scale-aware
 fileExplorerDragHandle.addEventListener("mousedown", (e) => {
-  const rootRect = document.getElementById("desktop-root").getBoundingClientRect();
-  const winRect = fileExplorerWin.getBoundingClientRect();
-  explorerOffsetX = e.clientX - winRect.left;
-  explorerOffsetY = e.clientY - winRect.top;
+  if (e.target.closest(".fwindow-controls")) return;
+  const scale = (new DOMMatrix(getComputedStyle(document.getElementById("desktop-root")).transform)).a || 1;
+  const rect = fileExplorerWin.getBoundingClientRect();
+  explorerOffsetX = (e.clientX - rect.left) / scale;
+  explorerOffsetY = (e.clientY - rect.top)  / scale;
   isFileExplorerDragging = true;
-
   document.addEventListener("mousemove", dragFileExplorer);
   document.addEventListener("mouseup", stopDragFileExplorer);
+  e.preventDefault();
 });
 
 function dragFileExplorer(e) {
   if (!isFileExplorerDragging) return;
+  const scale = (new DOMMatrix(getComputedStyle(document.getElementById("desktop-root")).transform)).a || 1;
   const rootRect = document.getElementById("desktop-root").getBoundingClientRect();
-  const newLeft = e.clientX - rootRect.left - explorerOffsetX;
-  const newTop = e.clientY - rootRect.top - explorerOffsetY;
-  fileExplorerWin.style.left = `${newLeft}px`;
-  fileExplorerWin.style.top = `${newTop}px`;
+  fileExplorerWin.style.left = `${(e.clientX - rootRect.left) / scale - explorerOffsetX}px`;
+  fileExplorerWin.style.top  = `${(e.clientY - rootRect.top)  / scale - explorerOffsetY}px`;
 }
 
 function stopDragFileExplorer() {
@@ -928,7 +1045,7 @@ document.addEventListener("click", (event) => {
   }
 });
 
-// === ADDITIONAL START MENU BUTTONS ===
+// === START MENU BUTTONS ===
 document.getElementById("open-my-files")?.addEventListener("click", () => {
   openFileExplorer();
   closeStartMenu();
@@ -945,12 +1062,17 @@ document.getElementById("open-media-player")?.addEventListener("click", () => {
 });
 
 document.getElementById("open-youtube")?.addEventListener("click", () => {
-  openConsistency();  // Shows mock YT channel view
+  openConsistency();
   closeStartMenu();
 });
 
-document.getElementById("open-projects")?.addEventListener("click", () => {
-  openFileExplorer();
+document.getElementById("open-photos")?.addEventListener("click", () => {
+  window.open("https://www.consistency.ink/", "_blank");
+  closeStartMenu();
+});
+
+document.getElementById("open-snake")?.addEventListener("click", () => {
+  openSnake();
   closeStartMenu();
 });
 
@@ -959,10 +1081,9 @@ document.getElementById("open-readme")?.addEventListener("click", () => {
   closeStartMenu();
 });
 
-// Placeholder: Later implementation
-document.getElementById("open-latest-work")?.addEventListener("click", () => {
-  alert("Latest Work feature not implemented yet.");
+document.getElementById("open-logout")?.addEventListener("click", () => {
   closeStartMenu();
+  setTimeout(() => location.reload(), 200);
 });
 
 document.getElementById("open-profile-wikipedia")?.addEventListener("click", () => {
@@ -975,7 +1096,6 @@ document.getElementById("open-profile-wikipedia")?.addEventListener("click", () 
   browserWindow.classList.remove("hidden");
   browserWindow.style.display = "flex";
 
-  // Hide everything else
   fakeLoading.style.display = "flex";
   internetHome.style.display = "none";
   mockYoutube.style.display = "none";
@@ -983,7 +1103,6 @@ document.getElementById("open-profile-wikipedia")?.addEventListener("click", () 
 
   setTimeout(() => {
     fakeLoading.style.display = "none";
-    if (mockWikipedia) mockWikipedia.style.display = "flex";
     updateBrowserView("wikipedia");
   }, 4500);
 
@@ -993,16 +1112,271 @@ document.getElementById("open-profile-wikipedia")?.addEventListener("click", () 
 // END OF START MENU BUTTONS
 // ==========================
 
+// ==============================
+// SNAKE GAME
+// ==============================
+const snakeWin     = document.getElementById("snake-window");
+const snakeDrag    = document.getElementById("snake-drag-handle");
+const snakeTab     = document.getElementById("snake-tab");
+const snakeClose   = document.getElementById("snake-close");
+const snakeMinBtn  = document.getElementById("snake-minimize");
+const snakeCanvas  = document.getElementById("snake-canvas");
+const snakeCtx     = snakeCanvas ? snakeCanvas.getContext("2d") : null;
+const snakeScore   = document.getElementById("snake-score");
+const snakeHigh    = document.getElementById("snake-high");
+const snakeStatus  = document.getElementById("snake-status-text");
+const snakeStart   = document.getElementById("snake-start-btn");
+const snakePause   = document.getElementById("snake-pause-btn");
+const snakeReset   = document.getElementById("snake-reset-btn");
+
+const CELL = 20;
+const COLS = 20;
+const ROWS = 20;
+
+let snake, dir, nextDir, food, snakeScoreVal, snakeHighVal, snakeRunning, snakePaused, snakeInterval;
+let snakeMinimized = false;
+
+function snakeInit() {
+  snake = [{ x: 10, y: 10 }, { x: 9, y: 10 }, { x: 8, y: 10 }];
+  dir = { x: 1, y: 0 };
+  nextDir = { x: 1, y: 0 };
+  snakeScoreVal = 0;
+  snakeRunning = false;
+  snakePaused = false;
+  if (snakeScore) snakeScore.textContent = "0";
+  if (snakeStatus) snakeStatus.textContent = "Press Start";
+  if (snakeStart) { snakeStart.textContent = "▶ Start"; snakeStart.disabled = false; }
+  if (snakePause) { snakePause.textContent = "⏸ Pause"; snakePause.disabled = true; }
+  spawnFood();
+  snakeDraw();
+}
+
+function spawnFood() {
+  let pos;
+  do {
+    pos = { x: Math.floor(Math.random() * COLS), y: Math.floor(Math.random() * ROWS) };
+  } while (snake.some(s => s.x === pos.x && s.y === pos.y));
+  food = pos;
+}
+
+function snakeDraw() {
+  if (!snakeCtx) return;
+  // Background
+  snakeCtx.fillStyle = "#001800";
+  snakeCtx.fillRect(0, 0, COLS * CELL, ROWS * CELL);
+
+  // Grid lines (subtle)
+  snakeCtx.strokeStyle = "#002800";
+  snakeCtx.lineWidth = 0.5;
+  for (let x = 0; x <= COLS; x++) {
+    snakeCtx.beginPath(); snakeCtx.moveTo(x * CELL, 0); snakeCtx.lineTo(x * CELL, ROWS * CELL); snakeCtx.stroke();
+  }
+  for (let y = 0; y <= ROWS; y++) {
+    snakeCtx.beginPath(); snakeCtx.moveTo(0, y * CELL); snakeCtx.lineTo(COLS * CELL, y * CELL); snakeCtx.stroke();
+  }
+
+  // Food
+  snakeCtx.fillStyle = "#ff3333";
+  snakeCtx.shadowColor = "#ff0000";
+  snakeCtx.shadowBlur = 8;
+  snakeCtx.fillRect(food.x * CELL + 2, food.y * CELL + 2, CELL - 4, CELL - 4);
+  snakeCtx.shadowBlur = 0;
+
+  // Snake
+  snake.forEach((seg, i) => {
+    const isHead = i === 0;
+    snakeCtx.fillStyle = isHead ? "#00ff44" : `hsl(${130 - i * 2}, 100%, ${45 - i * 0.5}%)`;
+    snakeCtx.shadowColor = isHead ? "#00ff44" : "transparent";
+    snakeCtx.shadowBlur = isHead ? 6 : 0;
+    snakeCtx.fillRect(seg.x * CELL + 1, seg.y * CELL + 1, CELL - 2, CELL - 2);
+    snakeCtx.shadowBlur = 0;
+  });
+
+  // Game-over overlay
+  if (!snakeRunning && snakeScoreVal > 0) {
+    snakeCtx.fillStyle = "rgba(0,0,0,0.6)";
+    snakeCtx.fillRect(0, 0, COLS * CELL, ROWS * CELL);
+    snakeCtx.fillStyle = "#ff3333";
+    snakeCtx.font = "bold 24px 'Courier New'";
+    snakeCtx.textAlign = "center";
+    snakeCtx.fillText("GAME OVER", COLS * CELL / 2, ROWS * CELL / 2 - 10);
+    snakeCtx.fillStyle = "#fff";
+    snakeCtx.font = "14px 'Courier New'";
+    snakeCtx.fillText(`Score: ${snakeScoreVal}`, COLS * CELL / 2, ROWS * CELL / 2 + 14);
+    snakeCtx.textAlign = "left";
+  }
+}
+
+function snakeTick() {
+  dir = { ...nextDir };
+  const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+  // Wall collision
+  if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) {
+    return snakeGameOver();
+  }
+  // Self collision
+  if (snake.some(s => s.x === head.x && s.y === head.y)) {
+    return snakeGameOver();
+  }
+
+  snake.unshift(head);
+
+  if (head.x === food.x && head.y === food.y) {
+    snakeScoreVal += 10;
+    if (snakeScore) snakeScore.textContent = snakeScoreVal;
+    if (!snakeHighVal || snakeScoreVal > snakeHighVal) {
+      snakeHighVal = snakeScoreVal;
+      if (snakeHigh) snakeHigh.textContent = snakeHighVal;
+    }
+    spawnFood();
+  } else {
+    snake.pop();
+  }
+
+  snakeDraw();
+}
+
+function snakeGameOver() {
+  clearInterval(snakeInterval);
+  snakeRunning = false;
+  snakePaused = false;
+  if (snakeStatus) snakeStatus.textContent = "Game Over!";
+  if (snakeStart) { snakeStart.textContent = "▶ Restart"; snakeStart.disabled = false; }
+  if (snakePause) snakePause.disabled = true;
+  snakeDraw();
+}
+
+function startSnakeGame() {
+  snakeInit();
+  snakeRunning = true;
+  snakePaused = false;
+  if (snakeStatus) snakeStatus.textContent = "Running";
+  if (snakeStart) snakeStart.disabled = true;
+  if (snakePause) { snakePause.disabled = false; snakePause.textContent = "⏸ Pause"; }
+  clearInterval(snakeInterval);
+  snakeInterval = setInterval(snakeTick, 120);
+}
+
+function toggleSnakePause() {
+  if (!snakeRunning) return;
+  if (snakePaused) {
+    snakePaused = false;
+    snakeInterval = setInterval(snakeTick, 120);
+    if (snakeStatus) snakeStatus.textContent = "Running";
+    if (snakePause) snakePause.textContent = "⏸ Pause";
+  } else {
+    snakePaused = true;
+    clearInterval(snakeInterval);
+    if (snakeStatus) snakeStatus.textContent = "Paused";
+    if (snakePause) snakePause.textContent = "▶ Resume";
+  }
+}
+
+function openSnake() {
+  bringToFront(snakeWin);
+  snakeWin.style.display = "flex";
+  if (snakeTab) snakeTab.style.display = "inline-flex";
+  snakeMinimized = false;
+  if (!snakeRunning && snakeScoreVal === undefined) snakeInit();
+}
+
+function closeSnakeWindow() {
+  clearInterval(snakeInterval);
+  snakeRunning = false;
+  snakeMinimized = false;
+  snakeWin.style.display = "none";
+  if (snakeTab) snakeTab.style.display = "none";
+}
+
+function minimizeSnake() {
+  snakeWin.style.display = "none";
+  snakeMinimized = true;
+  if (snakeTab) snakeTab.style.display = "inline-flex";
+}
+
+if (snakeClose)  snakeClose.onclick  = closeSnakeWindow;
+if (snakeMinBtn) snakeMinBtn.onclick = minimizeSnake;
+
+if (snakeTab) {
+  snakeTab.onclick = () => {
+    if (snakeMinimized || snakeWin.style.display === "none") {
+      snakeWin.style.display = "flex";
+      snakeMinimized = false;
+      bringToFront(snakeWin);
+    } else {
+      minimizeSnake();
+    }
+  };
+}
+
+if (snakeStart)  snakeStart.onclick  = startSnakeGame;
+if (snakePause)  snakePause.onclick  = toggleSnakePause;
+if (snakeReset)  snakeReset.onclick  = () => { clearInterval(snakeInterval); snakeInit(); };
+
+// Keyboard input — only when snake window is visible
+document.addEventListener("keydown", (e) => {
+  if (snakeWin.style.display === "none") return;
+  const map = {
+    ArrowUp: { x: 0, y: -1 }, w: { x: 0, y: -1 }, W: { x: 0, y: -1 },
+    ArrowDown: { x: 0, y: 1 }, s: { x: 0, y: 1 }, S: { x: 0, y: 1 },
+    ArrowLeft: { x: -1, y: 0 }, a: { x: -1, y: 0 }, A: { x: -1, y: 0 },
+    ArrowRight: { x: 1, y: 0 }, d: { x: 1, y: 0 }, D: { x: 1, y: 0 },
+  };
+  const newDir = map[e.key];
+  if (newDir) {
+    // Prevent reversing direction
+    if (newDir.x !== -dir.x || newDir.y !== -dir.y) {
+      nextDir = newDir;
+    }
+    e.preventDefault();
+  }
+  if (e.key === " ") { toggleSnakePause(); e.preventDefault(); }
+});
+
+// Dragging for snake window
+(function() {
+  let isDragging = false, offX = 0, offY = 0;
+  function getScale() {
+    const root = document.getElementById("desktop-root");
+    return root ? (new DOMMatrix(getComputedStyle(root).transform)).a || 1 : 1;
+  }
+  snakeDrag.addEventListener("mousedown", (e) => {
+    if (e.target.closest(".snake-title-btns")) return;
+    const scale = getScale();
+    const rect = snakeWin.getBoundingClientRect();
+    offX = (e.clientX - rect.left) / scale;
+    offY = (e.clientY - rect.top)  / scale;
+    isDragging = true;
+    document.addEventListener("mousemove", onDrag);
+    document.addEventListener("mouseup", stopDrag);
+    e.preventDefault();
+  });
+  function onDrag(e) {
+    if (!isDragging) return;
+    const scale = getScale();
+    const rootRect = document.getElementById("desktop-root").getBoundingClientRect();
+    snakeWin.style.left = `${(e.clientX - rootRect.left) / scale - offX}px`;
+    snakeWin.style.top  = `${(e.clientY - rootRect.top)  / scale - offY}px`;
+  }
+  function stopDrag() { isDragging = false; document.removeEventListener("mousemove", onDrag); document.removeEventListener("mouseup", stopDrag); }
+})();
+
+// Draw initial state
+if (snakeCtx) snakeInit();
+// ==============================
+// END SNAKE GAME
+// ==============================
+
 // === PROJECT FWINDOW LOGIC ===
 const projectWindows = document.querySelectorAll(".project-fwindow");
-const stmarksWindow = document.getElementById("project-stmarks");
-const cloverWindow = document.getElementById("project-clover");
 const projectsTab = document.getElementById("projects-tab");
 
 let lastOpenedProjectId = null;
 
 function openProjectFWindow(id) {
   // Close all other project windows
+  // bringToFront called after win is identified below
   projectWindows.forEach(win => {
     win.classList.remove("show");
     win.classList.add("hidden");
@@ -1013,6 +1387,7 @@ function openProjectFWindow(id) {
 
   win.classList.remove("hidden");
   win.classList.add("show");
+  bringToFront(win);
 
   lastOpenedProjectId = id;
 
@@ -1050,7 +1425,7 @@ if (projectsTab) {
   };
 }
 
-// When closing File Explorer, also hide project windows and reset view
+// When closing File Explorer, also close any open project fwindows
 fileExplorerClose.addEventListener("click", () => {
   projectWindows.forEach(win => {
     win.classList.remove("show");
@@ -1060,14 +1435,6 @@ fileExplorerClose.addEventListener("click", () => {
     projectsTab.style.display = "none";
   }
   lastOpenedProjectId = null;
-
-  // Reset File Explorer to root view
-  document.getElementById("file-explorer-root").style.display = "flex";
-  document.querySelectorAll(".explorer-view").forEach(view => {
-    if (view.id !== "file-explorer-root") {
-      view.style.display = "none";
-    }
-  });
 });
 
 function switchProjectFWindow(nextId) {

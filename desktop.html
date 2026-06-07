@@ -18,7 +18,7 @@
   <video src="assets/mid.webm" autoplay loop muted playsinline></video>
 </div>
 <div class="parallax fore">
-  <video src="assets/fore.webm" autoplay loop muted playsinline></video>
+  <video id="fore-video" src="assets/fore.webm" autoplay loop playsinline></video>
 </div>
     <!-- ICONS -->
     <div class="desktop">
@@ -55,32 +55,66 @@
         start
       </div>
 
-      <!-- START MENU -->
+      <!-- START MENU — Win95 Style -->
       <div id="start-menu" class="start-menu">
-        <div class="menu-left">
-          <div class="menu-item" id="open-my-files"><img src="assets/folder.png" />My Files</div>
-          <div class="menu-item" id="open-browser"><img src="assets/ie.png" />Internet Explorer</div>
-          <div class="menu-item" id="open-photos"><img src="assets/photoapp.png" />Photos</div>
-          <div class="menu-item" id="open-videos"><img src="assets/videoapp.png" />Videos</div>
-          <div class="menu-item" id="open-media-player"><img src="assets/music.png" />Media Player</div>
+
+        <!-- Left sidebar banner -->
+        <div class="sm-sidebar">
+          <span class="sm-sidebar-text">Conor<span class="sm-sidebar-dot">.</span>style</span>
         </div>
 
-        <div class="menu-right">
-          <div class="menu-item" id="open-youtube"><img src="assets/youtube.png" />Youtube Channel</div>
-          <div class="menu-item" id="open-projects"><img src="assets/openfile.png" />Portfolio Projects</div>
-          <div class="menu-item" id="open-latest-work"><img src="assets/filmmaking.png" />Latest Work</div>
+        <!-- Menu items -->
+        <div class="sm-items">
 
-
-          <div class="menu-subrow">
-            <div class="menu-item small" id="open-readme"><img src="assets/help.png" />Help</div>
-            <div class="menu-item small" id="open-settings"><img src="assets/settings.png" />Settings</div>
-            <div class="menu-item small" id="open-logout"><img src="assets/logoff.png" />Logoff</div>
+          <!-- User strip at top -->
+          <div class="sm-user" id="open-profile-wikipedia">
+            <img src="assets/user.png" class="sm-user-img" alt="" />
+            <div class="sm-user-info">
+              <div class="sm-user-name">Conor</div>
+              <div class="sm-user-sub">Portfolio</div>
+            </div>
           </div>
 
-          <div class="menu-profile" id="open-profile-wikipedia">
-            <img src="assets/user.png" alt="User profile" />
-            <span>Conor</span>
+          <div class="sm-separator"></div>
+
+          <!-- Main items -->
+          <div class="sm-item" id="open-browser">
+            <img src="assets/ie.png" class="sm-item-icon" alt="" />
+            <div class="sm-item-label">Internet Explorer</div>
           </div>
+          <div class="sm-item" id="open-my-files">
+            <img src="assets/folder.png" class="sm-item-icon" alt="" />
+            <div class="sm-item-label">My Files &amp; Projects</div>
+          </div>
+          <div class="sm-item" id="open-media-player">
+            <img src="assets/music.png" class="sm-item-icon" alt="" />
+            <div class="sm-item-label">Media Player</div>
+          </div>
+          <div class="sm-item" id="open-youtube">
+            <img src="assets/youtube.png" class="sm-item-icon" alt="" />
+            <div class="sm-item-label">YouTube Channel</div>
+          </div>
+          <div class="sm-item" id="open-photos">
+            <img src="assets/photoapp.png" class="sm-item-icon" alt="" />
+            <div class="sm-item-label">Photography</div>
+          </div>
+          <div class="sm-item" id="open-snake">
+            <img src="assets/videoapp.png" class="sm-item-icon" alt="" />
+            <div class="sm-item-label">Snake</div>
+          </div>
+
+          <div class="sm-separator"></div>
+
+          <!-- Bottom items -->
+          <div class="sm-item" id="open-readme">
+            <img src="assets/help.png" class="sm-item-icon" alt="" />
+            <div class="sm-item-label">Help</div>
+          </div>
+          <div class="sm-item sm-item-logoff" id="open-logout">
+            <img src="assets/logoff.png" class="sm-item-icon" alt="" />
+            <div class="sm-item-label">Log Off</div>
+          </div>
+
         </div>
       </div>
       <!-- END START MENU -->
@@ -101,11 +135,44 @@
   <div class="open-tab" id="projects-tab" style="display: none;">
   <img src="assets/project.png" />Projects
   </div>
+  <div class="open-tab" id="snake-tab" style="display: none;">
+    <img src="assets/videoapp.png" />Snake
+  </div>
 </div>
 <!-- END TASKBAR TABS -->
+      <button id="mute-toggle" title="Toggle sound">🔊</button>
       <div class="time">11:20 PM</div>
     </div>
 <!-- END TASKBAR -->
+
+<!-- SNAKE WINDOW -->
+<div class="snake-window" id="snake-window" style="display:none;">
+  <div class="snake-titlebar" id="snake-drag-handle">
+    <div class="snake-title-left">
+      <img src="assets/videoapp.png" class="snake-title-icon" alt="" />
+      <span>Snake</span>
+    </div>
+    <div class="snake-title-btns">
+      <button class="snake-win-btn snake-min-btn" id="snake-minimize">─</button>
+      <button class="snake-win-btn snake-close-btn" id="snake-close">✕</button>
+    </div>
+  </div>
+  <div class="snake-body">
+    <div class="snake-info-bar">
+      <span>Score: <strong id="snake-score">0</strong></span>
+      <span>High: <strong id="snake-high">0</strong></span>
+      <span id="snake-status-text">Press Start</span>
+    </div>
+    <canvas id="snake-canvas" width="400" height="400"></canvas>
+    <div class="snake-controls-bar">
+      <button class="snake-btn" id="snake-start-btn">▶ Start</button>
+      <button class="snake-btn" id="snake-pause-btn" disabled>⏸ Pause</button>
+      <button class="snake-btn" id="snake-reset-btn">↺ Reset</button>
+    </div>
+    <div class="snake-hint">Arrow keys or WASD to move</div>
+  </div>
+</div>
+<!-- END SNAKE WINDOW -->
 
 <!-- README.TXT WINDOW -->
 <div class="readme-window window" id="readme-window" style="display: flex;">
@@ -136,1019 +203,897 @@ Thanks for stopping by :3
 
 <!-- MUSIC PLAYER WINDOW -->
 <div class="music-player" id="music-player" style="display: none;">
-  <div class="title-bar music-title-bar" id="music-drag-handle">
-    <span class="drag-title">Windows Media Player</span>
-    <button class="close-button" id="close-player">✕</button>
-  </div>
-  <div class="music-body">
-    <div id="track-cover-container">
-      <img id="track-cover-img" src="assets/cover-placeholder.png" style="display: block;" />
-      <video id="track-cover-video" muted autoplay loop style="display: none;"></video>
+
+  <!-- TITLE BAR -->
+  <div class="music-title-bar" id="music-drag-handle">
+    <div class="mp-titlebar-left">
+      <img src="assets/music.png" class="mp-title-icon" alt="" />
+      <span>Windows Media Player</span>
     </div>
-    <div id="track-title">Track Title</div>
-    <audio id="audio-player"></audio>
-    <div class="controls">
-      <button id="prev-btn">⏮</button>
-      <button id="play-btn">▶</button>
-      <button id="next-btn">⏭</button>
-    </div>
-    <div class="volume-control">
-      <label for="volume-slider">Volume</label>
-      <input id="volume-slider" max="1" min="0" step="0.01" type="range" value="1" />
+    <div class="mp-win-btns">
+      <button class="mp-win-btn mp-min-btn" id="mp-minimize-btn">─</button>
+      <button class="mp-win-btn mp-max-btn">□</button>
+      <button class="mp-win-btn mp-close-btn" id="close-player">✕</button>
     </div>
   </div>
+
+  <!-- MENU BAR -->
+  <div class="mp-menubar">
+    <span class="mp-menu-item">File</span>
+    <span class="mp-menu-item">View</span>
+    <span class="mp-menu-item">Play</span>
+    <span class="mp-menu-item">Tools</span>
+    <span class="mp-menu-item">Help</span>
+  </div>
+
+  <!-- MAIN BODY: visualiser left, track list right -->
+  <div class="mp-body">
+
+    <!-- LEFT: artwork + now playing -->
+    <div class="mp-left">
+      <div class="mp-now-playing-label">Now Playing</div>
+      <div class="mp-artwork-wrap" id="track-cover-container">
+        <img id="track-cover-img" src="assets/cover-placeholder.png" class="mp-artwork" />
+        <video id="track-cover-video" muted autoplay loop class="mp-artwork" style="display:none;"></video>
+      </div>
+      <div class="mp-track-name" id="track-title">Track Title</div>
+    </div>
+
+    <!-- RIGHT: track list -->
+    <div class="mp-right">
+      <div class="mp-playlist-heading">Playlist</div>
+      <div class="mp-playlist" id="mp-playlist"></div>
+    </div>
+
+  </div>
+
+  <!-- TRANSPORT BAR -->
+  <div class="mp-transport">
+    <div class="mp-seek-row">
+      <span class="mp-time" id="mp-current-time">0:00</span>
+      <div class="mp-seek-track">
+        <div class="mp-seek-fill" id="mp-seek-fill"></div>
+      </div>
+      <span class="mp-time" id="mp-duration">0:00</span>
+    </div>
+    <div class="mp-controls-row">
+      <button class="mp-ctrl-btn" id="prev-btn" title="Previous"><span class="mp-icon-prev"></span></button>
+      <button class="mp-ctrl-btn mp-play-btn" id="play-btn" title="Play / Pause">
+        <span class="mp-play-icon">
+          <span class="mp-play-shape"></span>
+          <span class="mp-pause-bar mp-pause-bar-1"></span>
+          <span class="mp-pause-bar mp-pause-bar-2"></span>
+        </span>
+      </button>
+      <button class="mp-ctrl-btn" id="next-btn" title="Next"><span class="mp-icon-next"></span></button>
+      <div class="mp-vol-wrap">
+        <span class="mp-vol-icon">🔈</span>
+        <input id="volume-slider" type="range" min="0" max="1" step="0.01" value="1" class="mp-vol-slider" />
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="mp-statusbar">
+    <span id="mp-status-text">Ready</span>
+  </div>
+
+  <audio id="audio-player"></audio>
 </div>
+<!-- END MUSIC PLAYER WINDOW -->
 
 <!-- FILE EXPLORER WINDOW -->
 <div class="fwindow" id="file-explorer-window" style="display: none;">
+
+  <!-- TITLE BAR -->
   <div class="fwindow-header" id="file-explorer-drag-handle">
-    <span>My Files (Portfolio Projects)</span>
+    <div class="fwindow-title-left">
+      <img src="assets/folder.png" class="fwindow-title-icon" alt="" />
+      <span>My Projects</span>
+    </div>
     <div class="fwindow-controls">
-      <button id="file-explorer-close" class="red-close">✕</button>
+      <button class="fwin-btn fwin-min">─</button>
+      <button class="fwin-btn fwin-max">□</button>
+      <button class="fwin-btn fwin-close" id="file-explorer-close">✕</button>
     </div>
   </div>
 
-  <!-- FILE EXPLORER CONTENT (all inside the same window) -->
+  <!-- MENU BAR -->
+  <div class="fwindow-menubar">
+    <span class="fwin-menu-item">File</span>
+    <span class="fwin-menu-item">Edit</span>
+    <span class="fwin-menu-item">View</span>
+    <span class="fwin-menu-item">Favorites</span>
+    <span class="fwin-menu-item">Help</span>
+  </div>
 
-  <!-- Root Folder -->
-<div class="fwindow-content explorer-view" id="file-explorer-root">
-      <div class="project-grid file-page">
-        <div class="ficon" onclick="openCategory('design')">
-          <img src="assets/webdicon.png" />
-          <div class="ficon-name"><strong>Graphic & Web Design</strong></div>
-        </div>
-        <div class="ficon" onclick="openCategory('motion')">
-          <img src="assets/videoediticon.png" />
-          <div class="ficon-name"><strong>Video Editing</strong></div>
-        </div>
-        <div class="ficon" onclick="openCategory('film')">
-          <img src="assets/reelicon.png" />
-          <div class="ficon-name"><strong>Film Reel</strong></div>
+  <!-- ADDRESS BAR -->
+  <div class="fwindow-addressbar">
+    <span class="fwin-addr-label">Address</span>
+    <div class="fwin-addr-field">
+      <img src="assets/folder.png" class="fwin-addr-icon" alt="" />
+      <span>C:\Users\Conor\My Projects</span>
+    </div>
+    <button class="fwin-addr-go">Go</button>
+  </div>
+
+  <!-- BODY: sidebar + content -->
+  <div class="fwindow-body">
+
+    <!-- LEFT SIDEBAR -->
+    <div class="fwindow-sidebar">
+      <div class="fwin-sidebar-section">
+        <div class="fwin-sidebar-heading">File and Folder Tasks</div>
+        <ul class="fwin-sidebar-links">
+          <li>📁 Make a new folder</li>
+          <li>📤 Publish this folder</li>
+          <li>📧 Share this folder</li>
+        </ul>
+      </div>
+      <div class="fwin-sidebar-section">
+        <div class="fwin-sidebar-heading">Other Places</div>
+        <ul class="fwin-sidebar-links">
+          <li>🖥 My Computer</li>
+          <li>📄 My Documents</li>
+          <li>🌐 My Network Places</li>
+        </ul>
+      </div>
+      <div class="fwin-sidebar-section">
+        <div class="fwin-sidebar-heading">Details</div>
+        <div class="fwin-sidebar-detail">
+          <strong>My Projects</strong><br/>
+          <span>File Folder</span><br/>
+          <span>3 items</span>
         </div>
       </div>
-</div>
-<!-- END Root Folder -->
-
-  <!-- Categories -->
-<div class="fwindow-content explorer-view" id="category-design" style="display: none;">
-  <button class="fback-button" onclick="backToRoot()">⬅ Back</button>
-  <h3>Graphic Design</h3>
-  <div class="project-grid">
-    <div class="ficon" onclick="openProject('design-1')">
-      <img src="assets/brandidicon.png" />
-      <div class="ficon-name">Brand ID & Client Work</div>
-    </div>
-    <div class="ficon" onclick="openProject('design-2')">
-      <img src="assets/prodpackicon.png" />
-      <div class="ficon-name">Storyboarding & Process</div>
-    </div>
-  </div>
-</div>
-
-<div class="fwindow-content explorer-view project-view has-body" id="category-motion" style="display: none;">
-  <button class="fback-button" onclick="backToRoot()">⬅ Back</button>
-  <h2>Video Editing</h2>
-
-  <div class="project-grid">
-    <!-- Motion 1: Commercial Ad -->
-    <div class="ficon" onclick="openProjectFWindow('project-motion-ad')">
-      <img src="assets/adicon.png" />
-      <div class="ficon-name">Client Advertisement</div>
     </div>
 
-    <!-- Motion 2: Title Sequence -->
-    <div class="ficon" onclick="openProjectFWindow('project-motion-titles')">
-      <img src="assets/titleseqicon.png" />
-      <div class="ficon-name">TikTok Video Edits</div>
-    </div>
+    <!-- MAIN CONTENT AREA -->
+    <div class="fwindow-content explorer-view" id="file-explorer-root">
+      <div class="fwin-folder-grid">
 
-    <!-- Motion 3: Conceptual Edit (Original Idea) -->
-    <div class="ficon" onclick="openProjectFWindow('project-motion-fracture')">
-      <img src="assets/fractureicon.png" />
-      <div class="ficon-name">Editing Challenge</div>
-    </div>
-  </div>
-</div>
+        <!-- Folder: My Work -->
+        <div class="fwin-folder" onclick="openProjectFWindow('project-mywork')">
+          <div class="fwin-folder-icon-wrap">
+            <img src="assets/brandidicon.png" class="fwin-folder-img" alt="" />
+          </div>
+          <div class="fwin-folder-meta">
+            <div class="fwin-folder-name">My Work</div>
+            <div class="fwin-folder-desc">Graphic Design · Motion · About</div>
+          </div>
+        </div>
 
-<div class="fwindow-content explorer-view project-view has-body" id="category-film" style="display: none;">
-  <button class="fback-button" onclick="backToRoot()">⬅ Back</button>
-  <h2>Film Reel</h2>
+        <!-- Folder: Photography -->
+        <div class="fwin-folder" onclick="window.open('https://www.consistency.ink/', '_blank')">
+          <div class="fwin-folder-icon-wrap">
+            <img src="assets/photoapp.png" class="fwin-folder-img" alt="" />
+          </div>
+          <div class="fwin-folder-meta">
+            <div class="fwin-folder-name">Photography</div>
+            <div class="fwin-folder-desc">Opens consistency.ink ↗</div>
+          </div>
+        </div>
 
-  <div class="project-summary">
-    <p>
-      <strong>Creative Film Reel</strong><br>
-      A curated reel featuring narrative work, cinematography, and editing. Includes short film highlights, branded sequences, and original visuals — demonstrating visual storytelling, pacing, and camera work across multiple genres.
-    </p>
-  </div>
+        <!-- Folder: Latest Video -->
+        <div class="fwin-folder" onclick="openProjectFWindow('project-directorscut')">
+          <div class="fwin-folder-icon-wrap">
+            <img src="assets/filmmaking.png" class="fwin-folder-img" alt="" />
+          </div>
+          <div class="fwin-folder-meta">
+            <div class="fwin-folder-name">Latest Video</div>
+            <div class="fwin-folder-desc">Consistencyy · YouTube</div>
+          </div>
+        </div>
 
-  <div class="film-reel-container">
-    <!-- Replace the src with your actual YouTube video ID -->
-    <iframe width="720" height="480" src="https://www.youtube.com/embed/BqZYoVnPVSM?si=w7nQl19JRauRKvec" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-  </div>
-</div>
-
-  <!-- Project Views (inside same container) -->
-<div class="fwindow-content explorer-view project-view has-body" id="project-design-1" style="display: none;">
-  <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
-  <h2>Brand Identity Projects</h2>
-
-    <!-- ✅ Insert summary here -->
-  <div class="project-summary">
-    <p>
-      Description.
-    </p>
-  </div>
-
-  <div class="project-grid">
-    <div class="ficon" onclick="openProjectFWindow('project-stmarks')">
-      <img src="assets/smamezlogo.png" />
-      <div class="ficon-name">St. Mark AMEZ Church</div>
-    </div>
-    <div class="ficon" onclick="openProjectFWindow('project-clover')">
-      <img src="assets/internald.png" />
-      <div class="ficon-name">Opera Photography Studio</div>
-    </div>
-    <div class="ficon" onclick="openProjectFWindow('project-cookies')">
-      <img src="assets/cookieicon.png" />
-      <div class="ficon-name">Various Client Works</div>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="fwindow-content explorer-view project-view has-body" id="project-design-2" style="display: none;">
-  <button class="fback-button" onclick="backToCategory()">⬅ Back</button>
-  <h2>Storyboarding & Process</h2>
-
-  <div class="project-summary">
-    <p>
-      A look into my process and some examples of my storyboarding work.
-    </p>
+  <!-- STATUS BAR -->
+  <div class="fwindow-statusbar">
+    <span>3 objects</span>
+    <span class="fwin-status-right">🖥 My Computer</span>
   </div>
-
-  <div class="project-grid">
-    <!-- Weed Brand -->
-    <div class="ficon" onclick="openProjectFWindow('project-emerald')">
-      <img src="assets/ediblepackicon.png" />
-      <div class="ficon-name">Inspiration</div>
-    </div>
-
-    <!-- Cereal Box -->
-    <div class="ficon" onclick="openProjectFWindow('project-cereal')">
-      <img src="assets/cerealicon.png" />
-      <div class="ficon-name">Storyboards</div>
-    </div>
-
-    <!-- Third fun one -->
-    <div class="ficon" onclick="openProjectFWindow('project-socks')">
-      <img src="assets/planticon.png" />
-      <div class="ficon-name">Process</div>
-    </div>
-  </div>
-</div>
 
 </div> <!-- END FILE EXPLORER WINDOW -->
 <!-- BEGIN PROJECTS WINDOW -->
- <!-- FULLSCREEN PROJECT WINDOW -->
-  <!-- St. Mark Baptist Project Window -->
-<div class="project-fwindow hidden" id="project-stmarks">
+<!-- FULLSCREEN PROJECT WINDOW -->
+
+<!-- ══════════════════════════════
+     PROJECT 1: MY WORK
+     ══════════════════════════════ -->
+<div class="project-fwindow hidden" id="project-mywork">
   <div class="project-fwindow-header">
-    <span>St. Mark AMEZ — Brand Identity Case Study</span>
+    <span>My Work — Featured Projects</span>
     <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-stmarks')">✕</button>
+      <button class="red-close" onclick="closeProjectFWindow('project-mywork')">✕</button>
     </div>
   </div>
+  <div class="project-fwindow-content mywork-window">
 
-  <div class="project-fwindow-content stmarks-window">
-    <div class="stmarks-nav">
-      <button onclick="switchProjectFWindow('project-cookies')" class="stmarks-btn">← Previous</button>
-      <button onclick="switchProjectFWindow('project-clover')" class="stmarks-btn">Next →</button>
+    <!-- NAV TABS -->
+    <div class="mywork-tabs">
+      <button class="mywork-tab active" onclick="showWorkPanel('work-about', this)">About My Work</button>
+      <button class="mywork-tab" onclick="showWorkPanel('work-gfx', this)">Graphic Design</button>
+      <button class="mywork-tab" onclick="showWorkPanel('work-motion', this)">Motion Graphics</button>
     </div>
 
-    <h1 class="stmarks-title">St. Mark AMEZ</h1>
-    <p class="stmarks-subtitle">Brand Identity · Typography & Layout Design</p>
-    <h2 class="stmarks-section-title">Project Brief</h2>
-    <p class="stmarks-text">
-      A full visual identity redesign for St. Mark AMEZ, including logo, business cards, letterhead, website, and web ad.
-      The project aimed to modernize their presence while honoring their community heritage.
-    </p>
-
-    <hr class="stmarks-divider">
-
-    <section class="stmarks-logo-section">
-    <div class="stmarks-logo-block">
-      <h3>Logo (Before)</h3>
-      <img src="assets/stmarks-logo-before.png" alt="Old Logo - Version 1">
-      <img src="assets/smoldicon.png" alt="Old Logo - Alternate Version">
+    <!-- ═══════════════════════════════════════
+         PANEL 1: ABOUT MY WORK
+         ═══════════════════════════════════════ -->
+    <div class="mywork-panel about-panel" id="work-about">
+      <div class="about-inner">
+        <div class="about-tag">DESIGN · PRODUCTION · INSTALLATION</div>
+        <h1 class="about-title">The Work is Real.</h1>
+        <p class="about-lead">
+          Most designers stop at the screen. I don't.
+        </p>
+        <div class="about-divider"></div>
+        <p class="about-body">
+          [Replace with your own words — something like: I'm a graphic designer and production specialist with a hands-on approach that goes beyond the file. From concept to client-ready, I handle the full pipeline: identity systems, print collateral, wide-format production, vinyl plotting, lamination, and on-site installation.]
+        </p>
+        <p class="about-body">
+          [Replace: Whether I'm building a brand in Illustrator or mounting a finished window graphic to a storefront in the rain, the standard doesn't change. The Adobe suite is home base — but the real world is where the work lives.]
+        </p>
+        <div class="about-pills">
+          <span class="about-pill">Wide-Format Print</span>
+          <span class="about-pill">Vinyl & Plotter</span>
+          <span class="about-pill">Brand Identity</span>
+          <span class="about-pill">Lamination</span>
+          <span class="about-pill">Installation</span>
+          <span class="about-pill">Motion Graphics</span>
+          <span class="about-pill">Prepress & File Prep</span>
+          <span class="about-pill">Adobe CC</span>
+        </div>
+      </div>
+      <!-- Decorative grid lines -->
+      <div class="about-grid-overlay"></div>
     </div>
 
-    <div class="stmarks-logo-block stmarks-logo-after">
-      <h3>Logo Elements (After)</h3>
+    <!-- ═══════════════════════════════════════
+         PANEL 2: GRAPHIC DESIGN
+         (sub-tabs for each project)
+         ═══════════════════════════════════════ -->
+    <div class="mywork-panel" id="work-gfx" style="display:none; padding:0;">
 
-      <!-- Top image -->
-      <div class="stmarks-logo-top">
-        <img src="assets/smamezlogo.png" alt="New Logo Main">
+      <!-- SUB-TABS -->
+      <div class="gfx-subtabs">
+        <button class="gfx-subtab active" onclick="showGfxPanel('gfx-bdr', this)">Blanks Done Right</button>
+        <button class="gfx-subtab" onclick="showGfxPanel('gfx-jewel', this)">Jewel-Art Inc.</button>
+        <button class="gfx-subtab" onclick="showGfxPanel('gfx-laststop', this)">LAST STOP</button>
+        <button class="gfx-subtab" onclick="showGfxPanel('gfx-various', this)">Various Work</button>
       </div>
 
-      <!-- Bottom two images -->
-      <div class="stmarks-logo-bottom">
-        <img src="assets/churchicon.png" alt="Logo Icon 1">
-        <img src="assets/Ark.png" alt="Logo Icon 2">
-      </div>
-    </div>
-  </section>
+      <!-- ─────────────────────────────────────
+           GFX SUB-PANEL: BLANKS DONE RIGHT
+           Dark · Nebula · Space · Full-bleed
+           ───────────────────────────────────── -->
+      <div class="gfx-panel" id="gfx-bdr">
+        <div class="bdr-bg">
+          <div class="bdr-nebula"></div>
+          <div class="bdr-stars"></div>
 
-    <hr class="stmarks-divider">
+          <div class="bdr-content">
+            <!-- TOP: Logo + title + blurb side by side -->
+            <div class="bdr-top">
+              <div class="bdr-top-left">
+                <img src="assets/bdr-logo.png" alt="Blanks Done Right Logo" class="bdr-logo" />
+                <div class="bdr-title-block">
+                  <h1 class="bdr-title">Blanks Done Right</h1>
+                  <p class="bdr-subtitle">Logo Design · Vinyl Graphics · Wide-Format Production · Installation</p>
+                </div>
+              </div>
+              <p class="bdr-blurb">
+                [Replace: Blanks Done Right came to me needing more than a logo — they needed a presence. I designed their identity from the ground up, then brought it into the physical world: printing, laminating, cutting, and installing the vinyl window graphics myself. Every edge, every corner, placed by hand.]
+              </p>
+            </div>
 
-    <section class="stmarks-print-section">
-      <h2>Business Cards & Letterhead</h2>
-      <div class="stmarks-print-grid">
-        <div class="stmarks-print-left">
-          <div class="stmarks-card">
-            <h4>Front BC</h4>
-            <img src="assets/smamezabcfront2.png" alt="Business Card Front">
+            <!-- MIDDLE: Logo full + Production photo side by side -->
+            <div class="bdr-mid">
+              <div class="bdr-img-block">
+                <div class="bdr-img-label">LOGO</div>
+                <img src="assets/bdr-logo-full.png" alt="BDR Logo" class="bdr-img" />
+              </div>
+              <div class="bdr-img-block">
+                <div class="bdr-img-label">PRODUCTION</div>
+                <img src="assets/bdr-production.jpg" alt="BDR Production Photo" class="bdr-img" />
+              </div>
+            </div>
+
+            <!-- BOTTOM: Full-width installed photo -->
+            <div class="bdr-installed-wrap">
+              <div class="bdr-img-label">INSTALLED</div>
+              <img src="assets/bdr-installed.jpg" alt="BDR Installed Vinyl" class="bdr-installed-img" />
+            </div>
           </div>
-          <div class="stmarks-card">
-            <h4>Back BC</h4>
-            <img src="assets/smamezabcback.png" alt="Business Card Back">
+        </div>
+      </div>
+
+      <!-- ─────────────────────────────────────
+           GFX SUB-PANEL: JEWEL-ART INC.
+           White · Gold · Black
+           ───────────────────────────────────── -->
+      <div class="gfx-panel" id="gfx-jewel" style="display:none;">
+        <div class="jewel-bg">
+          <div class="jewel-content">
+
+            <div class="jewel-header">
+              <img src="assets/jewel-logo.png" alt="Jewel-Art Inc. Logo" class="jewel-logo" />
+              <div class="jewel-title-block">
+                <h1 class="jewel-title">Jewel-Art Inc.</h1>
+                <p class="jewel-subtitle">Logo Design · Window Graphics · Wide-Format Production · Installation</p>
+              </div>
+            </div>
+
+            <p class="jewel-blurb">
+              [Replace: Jewel-Art Inc. needed a refined presence worthy of their storefront. I designed their logo and two window graphics for the front of their store — balancing elegance with visibility. As with all my production work, I handled the full process: print, laminate, cut, and install.]
+            </p>
+
+            <div class="jewel-gallery">
+              <div class="jewel-top-row">
+                <div class="jewel-img-block">
+                  <div class="jewel-img-label">WINDOW GRAPHIC 1</div>
+                  <img src="assets/jewel-window1.jpg" alt="Jewel-Art Window Graphic 1" class="jewel-img" />
+                </div>
+                <div class="jewel-img-block">
+                  <div class="jewel-img-label">WINDOW GRAPHIC 2</div>
+                  <img src="assets/jewel-window2.jpg" alt="Jewel-Art Window Graphic 2" class="jewel-img" />
+                </div>
+              </div>
+              <div class="jewel-installed-wrap">
+                <div class="jewel-img-label">INSTALLED</div>
+                <img src="assets/jewel-installed.jpg" alt="Jewel-Art Installed" class="jewel-installed-img" />
+              </div>
+            </div>
           </div>
         </div>
-        <div class="stmarks-letterhead">
-          <h4>Letterhead</h4>
-          <img src="assets/stmarks-letterhead.png" alt="Letterhead Design">
-        </div>
       </div>
-    </section>
 
-    <hr class="stmarks-divider">
+      <!-- ─────────────────────────────────────
+           GFX SUB-PANEL: LAST STOP
+           Dark · Street Art · Sophisticated
+           ───────────────────────────────────── -->
+      <div class="gfx-panel" id="gfx-laststop" style="display:none;">
+        <div class="ls-bg">
+          <div class="ls-texture"></div>
+          <div class="ls-content">
 
-    <section class="stmarks-digital-section">
-      <h2>Web & Digital</h2>
-      <div class="stmarks-digital-grid">
-        <div class="stmarks-website">
-          <h4>Website Preview</h4>
-          <img src="assets/stmarks-website-preview.png" alt="Website Preview">
-        </div>
-        <div class="stmarks-webad">
-          <h4>Play Web Ad</h4>
-          <div class="stmarks-video-frame">
-            <img src="assets/stmarks-webad-thumbnail.png" alt="Web Ad Preview">
-            <button class="stmarks-play-btn">▶</button>
+            <div class="ls-header">
+              <h1 class="ls-title">LAST<span class="ls-stop">STOP</span></h1>
+              <p class="ls-subtitle">Concept Project · Cocktail Bar Identity System</p>
+              <p class="ls-tagline">[ Fictional brand — full identity suite ]</p>
+            </div>
+
+            <p class="ls-blurb">
+              [Replace: LAST STOP is a concept project for a fictional cocktail bar where sophisticated craft meets raw urban energy. The identity system spans everything from the logo and menu design to loyalty cards, wayfinding signage, window graphics, and an external sign — built to feel like a real place you'd want to find.]
+            </p>
+
+            <div class="ls-deliverables">
+              <div class="ls-item">
+                <div class="ls-item-label">LOGO</div>
+                <img src="assets/ls-logo.png" alt="LAST STOP Logo" class="ls-img" />
+              </div>
+              <div class="ls-item">
+                <div class="ls-item-label">MENU</div>
+                <img src="assets/ls-menu.png" alt="LAST STOP Menu" class="ls-img" />
+              </div>
+              <div class="ls-item">
+                <div class="ls-item-label">LOYALTY CARD</div>
+                <img src="assets/ls-loyaltycard.png" alt="LAST STOP Loyalty Card" class="ls-img" />
+              </div>
+              <div class="ls-item">
+                <div class="ls-item-label">WAYFINDING 1</div>
+                <img src="assets/ls-wayfinding1.png" alt="LAST STOP Wayfinding Sign 1" class="ls-img" />
+              </div>
+              <div class="ls-item">
+                <div class="ls-item-label">WAYFINDING 2</div>
+                <img src="assets/ls-wayfinding2.png" alt="LAST STOP Wayfinding Sign 2" class="ls-img" />
+              </div>
+              <div class="ls-item">
+                <div class="ls-item-label">WINDOW GRAPHICS</div>
+                <img src="assets/ls-windowgraphics.png" alt="LAST STOP Window Graphics" class="ls-img" />
+              </div>
+              <div class="ls-item ls-item-wide">
+                <div class="ls-item-label">EXTERNAL SIGN</div>
+                <img src="assets/ls-externalsign.png" alt="LAST STOP External Sign" class="ls-img" />
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
-    </section>
+
+      <!-- ─────────────────────────────────────
+           GFX SUB-PANEL: VARIOUS WORK
+           Dark · Elegant · Grid
+           ───────────────────────────────────── -->
+      <div class="gfx-panel" id="gfx-various" style="display:none;">
+        <div class="various-bg">
+          <div class="various-content">
+
+            <div class="various-header">
+              <h1 class="various-title">Various Work</h1>
+              <p class="various-subtitle">Logos · Marks · Collateral</p>
+            </div>
+
+            <p class="various-blurb">
+              [Replace: A selection of logos, marks, and design work from across different clients and contexts. Each piece is built around the client's identity — no templates, no shortcuts.]
+            </p>
+
+            <!-- 4×4 logo grid -->
+            <div class="various-grid">
+              <div class="various-cell"><img src="assets/various-logo-01.png" alt="Logo 01" /></div>
+              <div class="various-cell"><img src="assets/various-logo-02.png" alt="Logo 02" /></div>
+              <div class="various-cell"><img src="assets/various-logo-03.png" alt="Logo 03" /></div>
+              <div class="various-cell"><img src="assets/various-logo-04.png" alt="Logo 04" /></div>
+              <div class="various-cell"><img src="assets/various-logo-05.png" alt="Logo 05" /></div>
+              <div class="various-cell"><img src="assets/various-logo-06.png" alt="Logo 06" /></div>
+              <div class="various-cell"><img src="assets/various-logo-07.png" alt="Logo 07" /></div>
+              <div class="various-cell"><img src="assets/various-logo-08.png" alt="Logo 08" /></div>
+              <div class="various-cell"><img src="assets/various-logo-09.png" alt="Logo 09" /></div>
+              <div class="various-cell"><img src="assets/various-logo-10.png" alt="Logo 10" /></div>
+              <div class="various-cell"><img src="assets/various-logo-11.png" alt="Logo 11" /></div>
+              <div class="various-cell"><img src="assets/various-logo-12.png" alt="Logo 12" /></div>
+              <div class="various-cell"><img src="assets/various-logo-13.png" alt="Logo 13" /></div>
+              <div class="various-cell"><img src="assets/various-logo-14.png" alt="Logo 14" /></div>
+              <div class="various-cell"><img src="assets/various-logo-15.png" alt="Logo 15" /></div>
+              <div class="various-cell"><img src="assets/various-logo-16.png" alt="Logo 16" /></div>
+            </div>
+
+            <!-- 3 wide rectangular showcase pieces -->
+            <div class="various-rects">
+              <div class="various-rect-item">
+                <img src="assets/various-rect-01.png" alt="Design Piece 1" />
+              </div>
+              <div class="various-rect-item">
+                <img src="assets/various-rect-02.png" alt="Design Piece 2" />
+              </div>
+              <div class="various-rect-item">
+                <img src="assets/various-rect-03.png" alt="Design Piece 3" />
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- END GRAPHIC DESIGN PANEL -->
+
+    <!-- ═══════════════════════════════════════
+         PANEL 3: MOTION GRAPHICS
+         ═══════════════════════════════════════ -->
+    <div class="mywork-panel" id="work-motion" style="display:none; padding:0;">
+
+      <!-- SUB-TABS -->
+      <div class="gfx-subtabs">
+        <button class="gfx-subtab active" onclick="showMotionPanel('motion-fastsigns', this)">FASTSIGNS Digital Ads</button>
+        <button class="gfx-subtab" onclick="showMotionPanel('motion-vhs', this)">VHS Graphics</button>
+      </div>
+
+      <!-- ─────────────────────────────────────
+           MOTION SUB-PANEL: FASTSIGNS DIGITAL ADS
+           ───────────────────────────────────── -->
+      <div class="motion-panel" id="motion-fastsigns">
+        <div class="fastsigns-bg">
+          <div class="fastsigns-content">
+
+            <div class="fastsigns-header">
+              <h1 class="fastsigns-title">FASTSIGNS<span class="fastsigns-accent"> Digital Screen Ads</span></h1>
+              <p class="fastsigns-subtitle">Motion Design · Digital Signage · Wide-Format Display</p>
+            </div>
+
+            <p class="fastsigns-blurb">
+              [Replace: Created and produced for display on FASTSIGNS New Rochelle's digital signage screens. These advertisements were designed to cycle in-store, combining motion graphics with branded messaging — built for attention in a high-traffic environment.]
+            </p>
+
+            <div class="fastsigns-videos">
+              <div class="fastsigns-vid-block">
+                <div class="fastsigns-vid-label">AD SPOT 01</div>
+                <video class="fastsigns-vid" src="assets/fastsigns-ad-01.mp4" controls></video>
+              </div>
+              <div class="fastsigns-vid-block">
+                <div class="fastsigns-vid-label">AD SPOT 02</div>
+                <video class="fastsigns-vid" src="assets/fastsigns-ad-02.mp4" controls></video>
+              </div>
+              <div class="fastsigns-vid-block">
+                <div class="fastsigns-vid-label">AD SPOT 03</div>
+                <video class="fastsigns-vid" src="assets/fastsigns-ad-03.mp4" controls></video>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ─────────────────────────────────────
+           MOTION SUB-PANEL: VHS GRAPHICS
+           ───────────────────────────────────── -->
+      <div class="motion-panel" id="motion-vhs" style="display:none;">
+        <div class="vhs-bg">
+          <div class="vhs-scanlines"></div>
+          <div class="vhs-content">
+
+            <div class="vhs-header">
+              <h1 class="vhs-title">VHS<span class="vhs-accent"> Graphics</span></h1>
+              <p class="vhs-subtitle">Custom Overlays · Analog Aesthetics · Motion Design</p>
+            </div>
+
+            <!-- TOP: Blurb + hero video side by side -->
+            <div class="vhs-top">
+              <p class="vhs-blurb">
+                [Replace: Custom VHS-style graphic overlays built from scratch — tracking lines, tape noise, color bleeding, and analog artifacts, all designed as reusable motion assets. Built for use in edits to add texture, era, and character to any footage.]
+              </p>
+              <div class="vhs-hero-vid-block">
+                <div class="vhs-vid-label">OVERVIEW</div>
+                <video class="vhs-hero-vid" src="assets/vhs-overview.mp4" controls></video>
+              </div>
+            </div>
+
+            <!-- MIDDLE: Two effect showcase videos -->
+            <div class="vhs-vid-label vhs-section-label">EFFECTS SHOWCASE</div>
+            <div class="vhs-showcase">
+              <div class="vhs-showcase-block">
+                <div class="vhs-vid-label">EFFECT 01</div>
+                <video class="vhs-showcase-vid" src="assets/vhs-effect-01.mp4" controls></video>
+              </div>
+              <div class="vhs-showcase-block">
+                <div class="vhs-vid-label">EFFECT 02</div>
+                <video class="vhs-showcase-vid" src="assets/vhs-effect-02.mp4" controls></video>
+              </div>
+            </div>
+
+            <!-- BOTTOM: Datamosh section -->
+            <div class="vhs-datamosh">
+              <div class="vhs-datamosh-left">
+                <div class="vhs-datamosh-label">DATAMOSH</div>
+                <p class="vhs-datamosh-blurb">
+                  [Replace: Datamoshing is a glitch technique that corrupts video compression data to create painterly, melting frame transitions. I built this effect by hand — no plugins, just frame manipulation and intentional codec abuse.]
+                </p>
+              </div>
+              <div class="vhs-datamosh-vid-block">
+                <video class="vhs-datamosh-vid" src="assets/vhs-datamosh.mp4" controls></video>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- END MOTION GRAPHICS PANEL -->
+
   </div>
 </div>
-<!-- END St. Mark Baptist Project Window -->
+<!-- END project-mywork -->
 
-<!--begin project clover carpentry-->
-<!-- begin project opera photography studio -->
-<div class="project-fwindow hidden" id="project-clover">
+
+<!-- ══════════════════════════════
+     PROJECT 2: LATEST VIDEO
+     ══════════════════════════════ -->
+<div class="project-fwindow hidden" id="project-directorscut">
   <div class="project-fwindow-header">
-    <span>Opera Photography Studio — Brand Identity Case Study</span>
+    <span>Latest Video</span>
     <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-clover')">✕</button>
+      <button class="red-close" onclick="closeProjectFWindow('project-directorscut')">✕</button>
     </div>
   </div>
+  <div class="project-fwindow-content directorscut-window">
 
-  <!-- Reuse St. Mark visual style -->
-  <div class="project-fwindow-content stmarks-window">
-    <div class="stmarks-nav">
-      <button onclick="switchProjectFWindow('project-stmarks')" class="stmarks-btn">← Previous</button>
-      <button onclick="switchProjectFWindow('project-cookies')" class="stmarks-btn">Next →</button>
+    <div class="dc-hero">
+      <h1 class="dc-title">Latest Video</h1>
+      <p class="dc-subtitle">My latest video — unfiltered and fully realized.</p>
     </div>
 
-    <h1 class="stmarks-title">Opera Photography Studio</h1>
-    <p class="stmarks-subtitle">Brand Identity · Collateral · Print Production</p>
+    <div class="dc-embed">
+      <!-- ⬇ Replace with your actual latest YouTube video ID -->
+      <iframe
+        id="dc-iframe"
+        width="100%"
+        height="420"
+        src="https://www.youtube.com/embed/BqZYoVnPVSM?si=w7nQl19JRauRKvec"
+        title="Director's Cut — Latest Work"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen>
+      </iframe>
+    </div>
 
-    <!-- LOGO -->
-    <section class="stmarks-logo-section">
-      <div class="stmarks-logo-block">
-        <h3>Primary Logo</h3>
-        <img src="assets/opera-logo-primary.png" alt="Opera Photography Studio Logo">
-        <p class="ops-note">Clean wordmark with lens/aria accent — designed for legibility across small formats.</p>
-      </div>
-      <div class="stmarks-logo-block">
-        <h3>Alternates & Marks</h3>
-        <img src="assets/opera-logo-alts.png" alt="Opera Photography Studio Alternate Marks">
-        <p class="ops-note">Horizontal, stacked, and monogram variations for social, watermarking, and signage.</p>
-      </div>
-    </section>
+    <div class="dc-meta">
+      <p class="dc-description">This is the piece I'm most proud of right now. Watch it full-screen.</p>
+      <a class="dc-yt-link" href="https://www.youtube.com/@Consistencyy" target="_blank">▶ View Full Channel on YouTube</a>
+    </div>
 
-    <hr class="stmarks-divider">
-
-    <!-- BUSINESS CARDS + LETTERHEAD -->
-    <section class="stmarks-print-section">
-      <h2>Business Cards & Letterhead</h2>
-      <div class="stmarks-print-grid">
-        <div class="stmarks-card">
-          <h4>Business Card — Front</h4>
-          <img src="assets/opera-bc-front.png" alt="Opera Photography Studio Business Card Front">
-          <p class="ops-caption">High-contrast front with mark; soft stock for a tactile first impression.</p>
-        </div>
-        <div class="stmarks-card">
-          <h4>Business Card — Back</h4>
-          <img src="assets/opera-bc-back.png" alt="Opera Photography Studio Business Card Back">
-          <p class="ops-caption">Contact details set on grid; micro-type aligns with logo geometry.</p>
-        </div>
-        <div class="stmarks-letterhead">
-          <h4>Letterhead</h4>
-          <img src="assets/opera-letterhead.png" alt="Opera Photography Studio Letterhead">
-          <p class="ops-caption">A4/US-Letter master with 12-pt baseline; printer-friendly margin system.</p>
-        </div>
-      </div>
-    </section>
-
-    <hr class="stmarks-divider">
-
-    <!-- EDDM FLYER -->
-    <section class="stmarks-print-section">
-      <h2>EDDM® Flyer</h2>
-      <div class="stmarks-print-grid">
-        <div class="stmarks-card">
-          <h4>Front — Hero Offer</h4>
-          <img src="assets/opera-eddm-front.png" alt="Opera Photography Studio EDDM Flyer Front">
-          <p class="ops-caption">Bold seasonal promo with portfolio grid; USPS EDDM safe-area respected.</p>
-        </div>
-        <div class="stmarks-card">
-          <h4>Back — Details & CTA</h4>
-          <img src="assets/opera-eddm-back.png" alt="Opera Photography Studio EDDM Flyer Back">
-          <p class="ops-caption">Service list, booking QR, and route-targeted tracking code for ROI.</p>
-        </div>
-      </div>
-    </section>
   </div>
 </div>
-<!-- end project opera photography studio -->
-<!-- END Clover Carpentry Project Window -->
+<!-- END project-directorscut -->
 
-<!--begin third project, cookies & beyond-->
-<!-- Cookies & Beyond Project Window -->
-<!-- begin project various client works (5 mini cases) -->
-<div class="project-fwindow hidden" id="project-cookies">
-  <div class="project-fwindow-header">
-    <span>Various Client Works — Five Mini Cases</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-cookies')">✕</button>
-    </div>
-  </div>
-
-  <div class="project-fwindow-content internaldocs-window">
-    <div class="internaldocs-nav">
-      <button onclick="switchProjectFWindow('project-clover')" class="internaldocs-btn">← Previous</button>
-      <button onclick="switchProjectFWindow('project-stmarks')" class="internaldocs-btn">Next →</button>
-    </div>
-
-    <h1 class="internaldocs-title">Various Client Works</h1>
-    <p class="internaldocs-subtitle">Five quick studies across menu, logo, letterhead, and business card design</p>
-
-    <!-- 1) Cookies & Beyond -->
-    <section class="internaldocs-section">
-      <h2>Cookies &amp; Beyond — Mini Brand Set</h2>
-      <p class="internaldocs-intro">
-        A playful micro-identity system for a dessert shop. Deliverables include a dine-in menu, primary logo,
-        and a two-sided business card. The tone balances fun with readability for small formats.
-      </p>
-      <div class="internaldocs-grid">
-        <div class="internaldocs-card">
-          <h4>Menu</h4>
-          <img src="assets/cb-menu.png" alt="Cookies &amp; Beyond Menu">
-          <p class="ops-caption">Category color coding; allergen icons; 8.5×11 and tabloid variants.</p>
-        </div>
-        <div class="internaldocs-card">
-          <h4>Logo</h4>
-          <img src="assets/cb-logo.png" alt="Cookies &amp; Beyond Logo">
-          <p class="ops-caption">Wordmark with crumb motif; single-color and full-color options.</p>
-        </div>
-        <div class="internaldocs-card">
-          <h4>Business Card — Front</h4>
-          <img src="assets/cb-bc-front.png" alt="Cookies &amp; Beyond Business Card Front">
-          <p class="ops-caption">Bold mark with high-contrast background for quick recognition.</p>
-        </div>
-        <div class="internaldocs-card">
-          <h4>Business Card — Back</h4>
-          <img src="assets/cb-bc-back.png" alt="Cookies &amp; Beyond Business Card Back">
-          <p class="ops-caption">Contact grid and social handles; print-safe margins for trim.</p>
-        </div>
-      </div>
-    </section>
-
-    <hr class="internaldocs-divider">
-
-    <!-- 2) Electrical Company Business Card -->
-    <section class="internaldocs-section">
-      <h2>Voltwise Electric — Business Card</h2>
-      <div class="internaldocs-grid grid-2">
-        <div class="internaldocs-card">
-          <h4>Front</h4>
-          <img src="assets/volt-bc-front.png" alt="Voltwise Electric Business Card Front">
-          <p class="ops-caption">Clean hierarchy with bold signal stripe; easy field readability.</p>
-        </div>
-        <div class="internaldocs-card">
-          <h4>Back</h4>
-          <img src="assets/volt-bc-back.png" alt="Voltwise Electric Business Card Back">
-          <p class="ops-caption">Service icons and license numbers; QR to booking form.</p>
-        </div>
-      </div>
-    </section>
-
-    <hr class="internaldocs-divider">
-
-    <!-- 3) Carpentry Company Logo -->
-    <section class="internaldocs-section">
-      <h2>Heritage Carpentry — Logo</h2>
-      <div class="internaldocs-grid grid-2">
-        <div class="internaldocs-card">
-          <h4>Primary Mark</h4>
-          <img src="assets/carp-logo-primary.png" alt="Heritage Carpentry Primary Logo">
-          <p class="ops-caption">Classic badge with dovetail motif; suited for signage and apparel.</p>
-        </div>
-        <div class="internaldocs-card">
-          <h4>Monogram / Seal</h4>
-          <img src="assets/carp-logo-seal.png" alt="Heritage Carpentry Monogram Seal">
-          <p class="ops-caption">Single-color seal for engraving, stamps, and small-scale uses.</p>
-        </div>
-      </div>
-    </section>
-
-    <hr class="internaldocs-divider">
-
-    <!-- 4) NYC Contracting Company Letterhead + Logo -->
-    <section class="internaldocs-section">
-      <h2>Gotham City Contracting — Letterhead &amp; Logo</h2>
-      <div class="internaldocs-grid">
-        <div class="internaldocs-card">
-          <h4>Letterhead</h4>
-          <img src="assets/gcc-letterhead.png" alt="Gotham City Contracting Letterhead">
-          <p class="ops-caption">US-Letter template with clear zones for estimates, RFIs, and invoices.</p>
-        </div>
-        <div class="internaldocs-card">
-          <h4>Logo</h4>
-          <img src="assets/gcc-logo.png" alt="Gotham City Contracting Logo">
-          <p class="ops-caption">Structural logotype with skyline accent; black/white and spot options.</p>
-        </div>
-      </div>
-    </section>
-
-    <hr class="internaldocs-divider">
-
-    <!-- 5) Tattoo Shop Business Card + Logo -->
-    <section class="internaldocs-section">
-      <h2>Blackline Tattoo — Business Card &amp; Logo</h2>
-      <div class="internaldocs-grid">
-        <div class="internaldocs-card">
-          <h4>Logo</h4>
-          <img src="assets/blt-logo.png" alt="Blackline Tattoo Logo">
-          <p class="ops-caption">Bold, high-contrast mark optimized for signage and merch.</p>
-        </div>
-        <div class="internaldocs-card">
-          <h4>Business Card — Front</h4>
-          <img src="assets/blt-bc-front.png" alt="Blackline Tattoo Business Card Front">
-          <p class="ops-caption">Studio mark with heavy type and ample negative space.</p>
-        </div>
-        <div class="internaldocs-card">
-          <h4>Business Card — Back</h4>
-          <img src="assets/blt-bc-back.png" alt="Blackline Tattoo Business Card Back">
-          <p class="ops-caption">Artist roster, booking QR, and aftercare link.</p>
-        </div>
-      </div>
-    </section>
-  </div>
-</div>
-<!-- end project various client works (5 mini cases) -->
-
-<!-- END Cookies & Beyond Project Window -->
- <!--begin project emerald bud-->
- <div class="project-fwindow hidden" id="project-emerald">
-  <div class="project-fwindow-header">
-    <span>Emerald Bud – Cannabis Packaging</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-emerald')">✕</button>
-    </div>
-  </div>
-  <div class="project-fwindow-content">
-    <section class="case-study">
-      <h1>Emerald Bud</h1>
-      <p class="cs-subtitle">Luxury Packaging for a Boutique Cannabis Brand</p>
-
-      <h2>🌿 Project Overview</h2>
-      <p></p>
-
-      <div class="project-nav">
-        <button onclick="switchProjectFWindow('project-socks')">← Previous</button>
-        <button onclick="switchProjectFWindow('project-cereal')">Next →</button>
-      </div>
-    </section>
-  </div>
-</div>
-<!--end emerald bud project-->
-<!--begin project cereal box-->
-<div class="project-fwindow hidden" id="project-cereal">
-  <div class="project-fwindow-header">
-    <span>Pow Pow Crunch – Cereal Box</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-cereal')">✕</button>
-    </div>
-  </div>
-  <div class="project-fwindow-content">
-    <section class="case-study">
-      <h1>Pow Pow Crunch</h1>
-      <p class="cs-subtitle">Conceptual Cereal Box for a Fictional Sugar Bomb</p>
-
-      <div class="project-nav">
-        <button onclick="switchProjectFWindow('project-emerald')">← Previous</button>
-        <button onclick="switchProjectFWindow('project-socks')">Next →</button>
-      </div>
-    </section>
-  </div>
-</div>
-<!--end cereal box project-->
-<!--begin project socktube-->
-<div class="project-fwindow hidden" id="project-socks">
-  <div class="project-fwindow-header">
-    <span>Internal Documents & Systems — Case Study</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-socks')">✕</button>
-    </div>
-  </div>
-
-  <div class="project-fwindow-content internaldocs-window">
-    <div class="internaldocs-nav">
-      <button onclick="switchProjectFWindow('project-cereal')" class="internaldocs-btn">← Previous</button>
-      <button onclick="switchProjectFWindow('project-emerald')" class="internaldocs-btn">Next →</button>
-    </div>
-
-    <h1 class="internaldocs-title">Internal Documents & Systems</h1>
-    <p class="internaldocs-subtitle">Operations Design · Internal Tools · Data Visualization</p>
-
-    <p class="internaldocs-text">
-      Beyond client-facing design, I develop internal systems that keep everything running smoothly — from pricing databases
-      and digital tools to organized training resources. These behind-the-scenes projects enhance efficiency, ensure consistency,
-      and let creative ideas move faster from concept to completion.
-    </p>
-
-    <hr class="internaldocs-divider">
-
-    <!-- UPS INTERNAL DOCS -->
-    <section class="internaldocs-section">
-      <h2>UPS Internal Documents</h2>
-      <div class="internaldocs-grid">
-        <div class="internaldocs-card">
-          <h4>Private Mailbox Price Sheet</h4>
-          <img src="assets/ups-mailbox-sheet.png" alt="UPS Mailbox Pricing Sheet">
-        </div>
-        <div class="internaldocs-card">
-          <h4>Internal Printing Price Sheet</h4>
-          <img src="assets/ups-print-prices.png" alt="UPS Print Pricing Sheet">
-        </div>
-        <div class="internaldocs-card">
-          <h4>Passport Photo Digitization Tool</h4>
-          <img src="assets/ups-passport-tool.png" alt="Passport Photo Training Tool">
-        </div>
-      </div>
-    </section>
-
-    <hr class="internaldocs-divider">
-
-    <!-- PERSONAL SYSTEMS -->
-    <section class="internaldocs-section">
-      <h2>Personal Systems & Training</h2>
-      <div class="internaldocs-grid">
-        <div class="internaldocs-card">
-          <h4>Excel Print Pricing Sheets</h4>
-          <img src="assets/excel-pricing-sheets.png" alt="Excel Pricing Sheets">
-        </div>
-        <div class="internaldocs-card">
-          <h4>Staff Business Card Sketches</h4>
-          <img src="assets/staff-bc-sketches.png" alt="Business Card Sketches">
-        </div>
-        <div class="internaldocs-card">
-          <h4>Job Application Template</h4>
-          <img src="assets/job-application.png" alt="Job Application Template">
-        </div>
-      </div>
-    </section>
-
-    <hr class="internaldocs-divider">
-
-    <!-- CUSTOM TOOLS & MAPS -->
-    <section class="internaldocs-section">
-      <h2>Custom Tools & Maps</h2>
-      <div class="internaldocs-grid">
-        <div class="internaldocs-card">
-          <h4>Custom Excel Notary Journal</h4>
-          <img src="assets/notary-journal.png" alt="Excel Notary Journal System">
-        </div>
-        <div class="internaldocs-card">
-          <h4>Greater NYC Traffic Map</h4>
-          <img src="assets/nyc-traffic-map.png" alt="NYC Metro Area Traffic Map Visualization">
-        </div>
-      </div>
-      <p class="internaldocs-text">
-        Originally started as a data visualization project in school, this interactive map evolved into a prototype for a live,
-        dynamic traffic mapping system — a blend of design, analytics, and technical curiosity.
-      </p>
-    </section>
-  </div>
-</div>
-<!--end socktube project-->
-<!--begin project musictype-->
-<div class="project-fwindow hidden" id="project-musictype">
-  <div class="project-fwindow-header">
-    <span>Lyrics in Motion – Kinetic Typography</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-musictype')">✕</button>
-    </div>
-  </div>
-  <div class="project-fwindow-content">
-    <section class="case-study">
-      <h1>Lyrics in Motion</h1>
-      <p class="cs-subtitle">Kinetic Type · Motion Design · Sound-Responsive Layout</p>
-
-      <h2>🎧 Project Overview</h2>
-      <p>
-        This motion graphics study syncs dynamic typography with a vocal performance — transforming each beat, pause, and word into a rhythmic visual pulse. Each lyric reacts with scale, timing, and motion to mirror the delivery and tone of the verse.
-      </p>
-
-      <div class="img-block">
-        <img src="assets/musictype-frame1.png" alt="Intro Typography Frame">
-        <img src="assets/musictype-frame2.png" alt="Beat Synced Impact Frame">
-      </div>
-
-      <h2>Techniques & Tools</h2>
-      <ul>
-        <li>After Effects (3D camera + text animation)</li>
-        <li>Font: Monospaced + Condensed Sans</li>
-        <li>Timing manually matched to waveform</li>
-        <li>Visual accents hit on beat drops + vocal emphasis</li>
-      </ul>
-
-      <div class="img-block">
-        <img src="assets/musictype-overlay.png" alt="Overlay Example with Song Visualizer">
-      </div>
-
-      <div class="project-nav">
-        <button onclick="switchProjectFWindow('project-typefacezine')">← Previous</button>
-        <button onclick="switchProjectFWindow('project-editorialgrid')">Next →</button>
-      </div>
-    </section>
-  </div>
-</div>
-<!--end project musictype-->
-<!--begin project editorial grid-->
-<div class="project-fwindow hidden" id="project-editorialgrid">
-  <div class="project-fwindow-header">
-    <span>Typo:Editorial – Poster Grid Study</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-editorialgrid')">✕</button>
-    </div>
-  </div>
-  <div class="project-fwindow-content">
-    <section class="case-study">
-      <h1>Typo:Editorial</h1>
-      <p class="cs-subtitle">Swiss-Style Layout · Poster System · Visual Hierarchy</p>
-
-      <h2>📐 The Concept</h2>
-      <p>
-        This is a modular poster system built on strict grid structure — inspired by editorial layouts and Swiss International Style. Each poster explores a different typographic technique while sticking to a strict column and baseline rhythm.
-      </p>
-
-      <div class="img-block">
-        <img src="assets/editorialgrid-layout1.png" alt="Poster Layout A">
-        <img src="assets/editorialgrid-layout2.png" alt="Poster Layout B">
-      </div>
-
-      <h2>Design Principles</h2>
-      <ul>
-        <li>Grid: 8-column system, modular baseline spacing</li>
-        <li>Typefaces: Neue Haas Grotesk + Bodoni</li>
-        <li>Color: One accent per composition, rest in grayscale</li>
-        <li>Each poster acts as a “lesson” in balance, contrast, and space</li>
-      </ul>
-
-      <div class="img-block">
-        <img src="assets/editorialgrid-posterwall.png" alt="Posters Displayed Together">
-      </div>
-
-      <div class="project-nav">
-        <button onclick="switchProjectFWindow('project-musictype')">← Previous</button>
-        <button onclick="switchProjectFWindow('project-typefacezine')">Next →</button>
-      </div>
-    </section>
-  </div>
-</div>
-<!--end project editorial grid-->
-<!--begin project typeface zine-->
-<div class="project-fwindow hidden" id="project-typefacezine">
-  <div class="project-fwindow-header">
-    <span>TypeMood Zine – Font Personality Study</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-typefacezine')">✕</button>
-    </div>
-  </div>
-  <div class="project-fwindow-content">
-    <section class="case-study">
-      <h1>TypeMood Zine</h1>
-      <p class="cs-subtitle">Print & Web Zine · Typeface Personality Showcase</p>
-
-      <h2>🧠 Overview</h2>
-      <p>
-        TypeMood is a conceptual mini-zine exploring the moods and personalities behind different typefaces. Each spread is dedicated to a single font and its visual “voice,” using original phrases and layout styles that embody its identity.
-      </p>
-
-      <div class="img-block">
-        <img src="assets/typezine-page1.png" alt="Zine Spread – Elegant Serif">
-        <img src="assets/typezine-page2.png" alt="Zine Spread – Tech Sans">
-      </div>
-
-      <h2>Features</h2>
-      <ul>
-        <li>Hand-assembled spreads in InDesign</li>
-        <li>Each font shown in real-world usage: ads, menus, web UIs</li>
-        <li>Distributed as both PDF + vertical scroll site</li>
-      </ul>
-
-      <div class="img-block">
-        <img src="assets/typezine-covers.png" alt="Printed Zine Mockup">
-      </div>
-
-      <div class="project-nav">
-        <button onclick="switchProjectFWindow('project-editorialgrid')">← Previous</button>
-        <button onclick="switchProjectFWindow('project-musictype')">Next →</button>
-      </div>
-    </section>
-  </div>
-</div>
-<!--end project typeface zine-->
-<!--new video project 1-->
-<div class="project-fwindow hidden" id="project-motion-ad">
-  <div class="project-fwindow-header">
-    <span>Product Ad Cut – Commercial Editing</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-motion-ad')">✕</button>
-    </div>
-  </div>
-  <div class="project-fwindow-content">
-    <section class="case-study">
-      <h1>Product Ad Cut</h1>
-      <p class="cs-subtitle">Commercial Editing · Promo Spot · Visual Rhythm</p>
-
-      <h2>🎯 Overview</h2>
-      <p>
-        A sleek 30-second promotional edit for a fictional smart wearable. This project focused on rhythm-matched cuts, animated overlays, and tight commercial pacing — the kind of quick, slick video you'd see pre-roll on YouTube or TikTok.
-      </p>
-
-      <div class="video-embed-film">
-        <iframe width="100%" height="500" src="https://www.youtube.com/embed/YOUR_VIDEO_ID_AD" frameborder="0" allowfullscreen></iframe>
-      </div>
-
-      <h2>Details</h2>
-      <ul>
-        <li>Edited in Adobe Premiere Pro</li>
-        <li>Overlay animation in After Effects</li>
-        <li>Cut-to-beat pacing with tight zoom transitions</li>
-        <li>Product, hands, and lifestyle B-roll sourced and composited</li>
-      </ul>
-
-      <div class="img-block">
-        <img src="assets/productad-mock1.png" alt="Scene Breakdown">
-        <img src="assets/productad-overlay.png" alt="Text Overlay Preview">
-      </div>
-
-      <div class="project-nav">
-        <button onclick="switchProjectFWindow('project-motion-fracture')">← Previous</button>
-        <button onclick="switchProjectFWindow('project-motion-titles')">Next →</button>
-      </div>
-    </section>
-  </div>
-</div>
-<!--end video project 1-->
-<!--new video project 2-->
-<div class="project-fwindow hidden" id="project-motion-titles">
-  <div class="project-fwindow-header">
-    <span>Opening Titles – Cinematic Sequence</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-motion-titles')">✕</button>
-    </div>
-  </div>
-  <div class="project-fwindow-content">
-    <section class="case-study">
-      <h1>Opening Titles</h1>
-      <p class="cs-subtitle">Cinematic Title Design · Visual Atmosphere · Sound Design</p>
-
-      <h2>🎬 Project Description</h2>
-      <p>
-        A mood-driven opening title sequence inspired by modern drama TV. Created as a speculative intro for a fictional psychological thriller, this piece pairs text, atmosphere, and slow montage to create an unsettling tone.
-      </p>
-
-      <div class="video-embed-film">
-        <iframe width="100%" height="500" src="https://www.youtube.com/embed/YOUR_VIDEO_ID_TITLES" frameborder="0" allowfullscreen></iframe>
-      </div>
-
-      <h2>Process</h2>
-      <ul>
-        <li>Footage sourced and recolored to match tone</li>
-        <li>Type layout in After Effects using tracked motion</li>
-        <li>Atmospheric ambient soundtrack + risers</li>
-        <li>Influenced by titles like <em>Mindhunter</em> and <em>Sharp Objects</em></li>
-      </ul>
-
-      <div class="img-block">
-        <img src="assets/titles-frame1.png" alt="Title Overlay Frame">
-        <img src="assets/titles-styleframes.png" alt="Styleframe Mood Grid">
-      </div>
-
-      <div class="project-nav">
-        <button onclick="switchProjectFWindow('project-motion-ad')">← Previous</button>
-        <button onclick="switchProjectFWindow('project-motion-fracture')">Next →</button>
-      </div>
-    </section>
-  </div>
-</div>
-<!--end video project 2-->
-<!--new video project 3-->
-<div class="project-fwindow hidden" id="project-motion-fracture">
-  <div class="project-fwindow-header">
-    <span>Fracture – Conceptual Edit</span>
-    <div class="fwindow-controls">
-      <button class="red-close" onclick="closeProjectFWindow('project-motion-fracture')">✕</button>
-    </div>
-  </div>
-  <div class="project-fwindow-content">
-    <section class="case-study">
-      <h1>Fracture</h1>
-      <p class="cs-subtitle">Experimental Editing · Timeline Deconstruction · Visual Metaphor</p>
-
-      <h2>🧩 Concept</h2>
-      <p>
-        Fracture is a conceptual video piece about memory loss and nonlinear perception. Through editing techniques like glitch overlays, time reversal, jump cuts, and layered timelines, the video mimics a fractured psychological state.
-      </p>
-
-      <div class="video-embed-film">
-        <iframe width="100%" height="500" src="https://www.youtube.com/embed/YOUR_VIDEO_ID_FRACTURE" frameborder="0" allowfullscreen></iframe>
-      </div>
-
-      <h2>Techniques</h2>
-      <ul>
-        <li>VHS distortion and analog overlays</li>
-        <li>Reverse time sequences + flicker masking</li>
-        <li>Use of opacity ghosts and color splits</li>
-        <li>Sound design: pitch-shifted dialogue + reverb stack</li>
-      </ul>
-
-      <div class="img-block">
-        <img src="assets/fracture-glitch1.png" alt="Timeline Collapse Frame">
-        <img src="assets/fracture-overlay.png" alt="Overlaid Emotion Frames">
-      </div>
-
-      <div class="project-nav">
-        <button onclick="switchProjectFWindow('project-motion-titles')">← Previous</button>
-        <button onclick="switchProjectFWindow('project-motion-ad')">Next →</button>
-      </div>
-    </section>
-  </div>
-</div>
-<!--end video project 3-->
 <!-- END FULLSCREEN PROJECT WINDOW -->
 <!-- END PROJECTS WINDOW -->
 
 <!-- BROWSER WINDOW -->
-    <div class="window hidden" id="browser-window">
-      <div class="window-header">
-          <div class="ie-toolbar">
-          <img src="assets/bbutton.png" id="ie-back-button" title="Back" />
-          <input class="spoof-search" type="text" placeholder="Search..." />
-          </div>
-        <span class="window-title">Internet Explorer</span>
-        <div class="window-controls">
-          <button onclick="minimizeBrowser()">&#9472;</button>
-          <button onclick="closeBrowser()">✖</button>
+<div class="window hidden" id="browser-window">
+
+  <!-- TITLE BAR -->
+  <div class="window-header">
+    <div class="ie-titlebar-left">
+      <img src="assets/ie.png" class="ie-title-icon" alt="" />
+      <span class="ie-title-text">Internet Explorer</span>
+    </div>
+    <div class="window-controls">
+      <button class="ie-win-btn ie-win-min" onclick="minimizeBrowser()">─</button>
+      <button class="ie-win-btn ie-win-max">□</button>
+      <button class="ie-win-btn ie-win-close" onclick="closeBrowser()">✕</button>
+    </div>
+  </div>
+
+  <!-- MENU BAR -->
+  <div class="ie-menubar">
+    <span class="ie-menu-item">File</span>
+    <span class="ie-menu-item">Edit</span>
+    <span class="ie-menu-item">View</span>
+    <span class="ie-menu-item">Favorites</span>
+    <span class="ie-menu-item">Tools</span>
+    <span class="ie-menu-item">Help</span>
+  </div>
+
+  <!-- NAVIGATION TOOLBAR -->
+  <div class="ie-navbar">
+    <div class="ie-nav-buttons">
+      <button class="ie-nav-btn" id="ie-back-button" title="Back">
+        <span class="ie-nav-arrow">◀</span>
+        <span class="ie-nav-label">Back</span>
+      </button>
+      <button class="ie-nav-btn ie-nav-disabled" title="Forward">
+        <span class="ie-nav-arrow ie-arrow-fwd">▶</span>
+        <span class="ie-nav-label">Forward</span>
+      </button>
+      <button class="ie-nav-btn" title="Stop">■</button>
+      <button class="ie-nav-btn" title="Refresh">↻</button>
+      <button class="ie-nav-btn" title="Home" onclick="updateBrowserView('home')">⌂</button>
+    </div>
+    <div class="ie-address-bar">
+      <span class="ie-addr-label">Address</span>
+      <div class="ie-addr-field">
+        <img src="assets/ie.png" class="ie-addr-icon" alt="" />
+        <span id="ie-addr-text">about:home</span>
+      </div>
+      <button class="ie-addr-go">Go</button>
+    </div>
+    <img src="assets/ie.png" class="ie-logo-spin" alt="" title="Internet Explorer" />
+  </div>
+
+  <!-- LINKS BAR -->
+  <div class="ie-linksbar">
+    <span class="ie-links-label">Links</span>
+    <button class="ie-link-chip" onclick="updateBrowserView('home')">🏠 Home</button>
+    <button class="ie-link-chip" onclick="openChannel()">📺 Consistencyy</button>
+    <button class="ie-link-chip" id="wikipedia-bookmark">📖 About Me</button>
+    <button class="ie-link-chip" id="projects-bookmark">📁 My Projects</button>
+  </div>
+
+  <!-- PAGE CONTENT AREA — all views live inside here -->
+  <div class="window-content">
+    <div id="fake-loading">
+      <img src="assets/load.gif" alt="Connecting..." />
+      <p>Connecting to the Internet...</p>
+    </div>
+
+  <!-- HOMEPAGE -->
+  <div id="internet-home" class="internet-home hidden">
+
+    <div class="ie-home-inner">
+      <!-- Moogol search engine -->
+      <div class="ie-home-logo">
+        <img src="assets/moogollogo.png" alt="Moogol" />
+      </div>
+
+      <div class="ie-home-search">
+        <div class="ie-search-box">
+          <input type="text" id="internet-search-input" placeholder="Search the web..." />
+        </div>
+        <div class="ie-search-btns">
+          <button id="internet-search-btn">Moogol Search</button>
+          <button id="internet-lucky-btn">I'm Feeling Lucky</button>
         </div>
       </div>
-      <div class="window-content">
-        <div id="fake-loading">
-        <img src="assets/load.gif" alt="Connecting..." />
-        <p>Connecting to the Internet...</p>
-      </div>
-      </div>
-<!--internet browser-->
-<div id="internet-home" class="internet-home hidden">
 
-  <div class="internet-logo">
-    <img src="assets/moogollogo.png" alt="Internet Logo" />
+      <!-- Bookmarks / Favorites -->
+      <div class="ie-home-favorites">
+        <div class="ie-fav-heading">
+          <span class="ie-fav-icon">⭐</span> Favorites
+        </div>
+        <div class="ie-fav-row">
+          <div class="ie-fav-tile" onclick="openChannel()">
+            <img src="assets/youtube.png" alt="YouTube" />
+            <span>Consistencyy</span>
+            <small>YouTube Channel</small>
+          </div>
+          <div class="ie-fav-tile" id="wikipedia-bookmark-2">
+            <img src="assets/about.png" alt="About Me" />
+            <span>About Me</span>
+            <small>The Free Design Encyclopedia</small>
+          </div>
+          <div class="ie-fav-tile" id="projects-bookmark-2">
+            <img src="assets/folder.png" alt="Projects" />
+            <span>My Projects</span>
+            <small>Portfolio &amp; Work</small>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- IE status strip at bottom of homepage -->
+    <div class="ie-home-status">
+      <span>✔ conor.style — Local intranet</span>
+    </div>
   </div>
 
-<div class="internet-search-bar">
-  <input type="text" id="internet-search-input" placeholder="Surf the web..." />
-  <button id="internet-search-btn">Search</button>
-  <button id="internet-lucky-btn">I'm Feeling Lucky</button>
-</div>
-
-  <div class="bookmark-grid">
-    <div class="bookmark" onclick="openChannel()">
-      <img src="assets/ytlogo.png" />
-      <span>Youtube Channel</span>
-    </div>
-    <div class="bookmark" id="wikipedia-bookmark">
-      <img src="assets/about.png" />
-      <span>Wakapedia</span>
-    </div>
-    <div class="bookmark" id="projects-bookmark">
-      <img src="assets/openfile.png" />
-      <span>Projects</span>
-    </div>
-  </div>
-</div>
       <!-- BEGIN Youtube screen -->
 <div id="mock-youtube" class="youtube-mock hidden">
-  <div class="youtube-header">
-    <img src="assets/profile-banner.jpg" class="banner" />
-    <div class="channel-info">
-      <img src="assets/profile-pic.jpg" class="profile-pic" />
-      <div class="channel-meta">
-        <h2>Consistencyy</h2>
-        <span>927 subscribers</span>
+
+  <!-- CLASSIC YT TOP BAR -->
+  <div class="cyt-topbar">
+    <div class="cyt-topbar-left">
+      <div class="cyt-logo">
+        <span class="cyt-logo-you">You</span><span class="cyt-logo-tube">Tube</span>
+      </div>
+      <div class="cyt-tagline">Broadcast Yourself™</div>
+    </div>
+    <div class="cyt-topbar-right">
+      <input class="cyt-search-input" type="text" placeholder="Search" />
+      <button class="cyt-search-btn">Search</button>
+    </div>
+  </div>
+
+  <!-- CLASSIC YT NAV BAR -->
+  <div class="cyt-navbar">
+    <a class="cyt-nav-link cyt-nav-active">Home</a>
+    <a class="cyt-nav-link">Videos</a>
+    <a class="cyt-nav-link">Channels</a>
+    <a class="cyt-nav-link">Community</a>
+  </div>
+
+  <!-- CHANNEL HEADER -->
+  <div class="cyt-channel-header">
+    <div class="cyt-channel-left">
+      <img src="assets/profile-pic.jpg" class="cyt-avatar" alt="Consistencyy" />
+    </div>
+    <div class="cyt-channel-info">
+      <div class="cyt-channel-name">Consistencyy</div>
+      <div class="cyt-channel-meta">
+        <span class="cyt-meta-item">📍 Yonkers, NY</span>
+        <span class="cyt-meta-sep">|</span>
+        <span class="cyt-meta-item">989 subscribers</span>
+        <span class="cyt-meta-sep">|</span>
+        <span class="cyt-meta-item">Videos: 15</span>
+      </div>
+      <div class="cyt-channel-desc">filmmaker. designer. editor. making things feel real.</div>
+    </div>
+    <div class="cyt-channel-actions">
+      <button class="cyt-subscribe-btn">Subscribe</button>
+    </div>
+  </div>
+
+  <!-- CHANNEL TABS -->
+  <div class="cyt-tabs-bar">
+    <div class="cyt-tab active" data-target="yt-home">Featured</div>
+    <div class="cyt-tab" data-target="yt-videos-2">Videos</div>
+    <div class="cyt-tab" data-target="yt-playlists">Playlists</div>
+  </div>
+
+  <!-- FEATURED / HOME TAB -->
+  <div id="yt-home" class="cyt-section yt-section">
+    <div class="cyt-main-col">
+
+      <!-- Featured video -->
+      <div class="cyt-featured-block">
+        <div class="cyt-featured-thumb video-thumb" data-index="0">
+          <img src="assets/thumb1.jpg" alt="VG Concept Pixel Art" />
+        </div>
+        <div class="cyt-featured-info">
+          <div class="cyt-featured-title">VG Concept Pixel Art</div>
+          <div class="cyt-featured-meta">Added: March 5, 2024 · Views: —</div>
+          <div class="cyt-featured-desc">A short pixel animation concept. Click to watch.</div>
+          <div class="cyt-featured-label">⭐ Featured Video</div>
+        </div>
+      </div>
+
+      <!-- Recent uploads list -->
+      <div class="cyt-section-heading">Recent Videos</div>
+      <div class="cyt-video-list">
+        <div class="cyt-list-item video-thumb" data-index="2">
+          <img src="assets/thumb3.jpg" class="cyt-list-thumb" alt="" />
+          <div class="cyt-list-info">
+            <div class="cyt-list-title">Jean Dawson — POWER FREAKS</div>
+            <div class="cyt-list-meta">March 19, 2024</div>
+          </div>
+        </div>
+        <div class="cyt-list-item video-thumb" data-index="4">
+          <img src="assets/thumb5.jpg" class="cyt-list-thumb" alt="" />
+          <div class="cyt-list-info">
+            <div class="cyt-list-title">KENDRICK LAMAR — FOR SALE?</div>
+            <div class="cyt-list-meta">March 12, 2024</div>
+          </div>
+        </div>
+        <div class="cyt-list-item video-thumb" data-index="8">
+          <img src="assets/thumb9.jpg" class="cyt-list-thumb" alt="" />
+          <div class="cyt-list-info">
+            <div class="cyt-list-title">the burn marks on my memories never fade</div>
+            <div class="cyt-list-meta">March 8, 2024</div>
+          </div>
+        </div>
+        <div class="cyt-list-item video-thumb" data-index="6">
+          <img src="assets/thumby1.png" class="cyt-list-thumb" alt="" />
+          <div class="cyt-list-info">
+            <div class="cyt-list-title">somethings always wrong with his brain</div>
+            <div class="cyt-list-meta">March 25, 2024</div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="youtube-tabs">
-      <div class="yt-tab active" data-target="yt-home">Home</div>
-      <div class="yt-tab" data-target="yt-videos-2">Videos</div>
-      <div class="yt-tab" data-target="yt-playlists">Playlists</div>
+
+    <!-- SIDEBAR -->
+    <div class="cyt-sidebar">
+      <div class="cyt-sidebar-heading">About This Channel</div>
+      <div class="cyt-sidebar-body">
+        <p>filmmaker. designer. editor.</p>
+        <p>conor.style</p>
+        <p class="cyt-sidebar-joined">Joined: 2021</p>
+      </div>
+
+      <div class="cyt-sidebar-heading">Subscribers</div>
+      <div class="cyt-sidebar-body cyt-sub-count">989</div>
+
+      <div class="cyt-sidebar-heading">Playlists</div>
+      <div class="cyt-sidebar-body">
+        <div class="cyt-sidebar-playlist playlist-link" data-url="https://www.youtube.com/playlist?list=PL_TvNrl5QKk464E3pUws8iVuyJ8Ga1jlm">
+          <img src="assets/thumb10.png" alt="" />
+          <span>FAVORITE SONGS OAT</span>
+        </div>
+        <div class="cyt-sidebar-playlist playlist-link" data-url="https://youtube.com/playlist?list=PL_TvNrl5QKk6E32vOQJh-owpjbmFrz18W&si=czlPMeTArp6zjNnr">
+          <img src="assets/thumb11.png" alt="" />
+          <span>ANIMATIONS & MORE</span>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Home Tab -->
-<div id="yt-home" class="yt-home-section yt-section">
-  <!-- Top: Post + Featured Video -->
-  <div class="home-top-row">
-    <div class="home-post">
-      <h2>Website Launch Incoming</h2>
-      <p>Just wrapped up 3.0 of conor.style, working on putting up my work now...</p>
-      <small>Posted 1 week ago</small>
-    </div>
-    <div class="home-post">
-      <h2>Youtube Update almost Complete</h2>
-      <p>Almost finished up the Youtube Channel, working on Wikipedia page next 🎥🔥</p>
-      <small>Posted 3 weeks ago</small>
-    </div>
-    <div class="home-featured-video video-thumb" data-index="0">
-      <img src="assets/thumb1.jpg">
-      <p><strong>Latest Upload:</strong></p>
-      <p>VG Concept Pixel Art</p>
+  <!-- VIDEOS TAB -->
+  <div id="yt-videos-2" class="cyt-section yt-section" style="display:none;">
+    <div class="cyt-videos-grid">
+      <div class="cyt-grid-item video-thumb" data-index="0"><img src="assets/thumb1.jpg"><div class="cyt-grid-title">VG Concept Pixel Art</div><div class="cyt-grid-date">Mar 5, 2024</div></div>
+      <div class="cyt-grid-item video-thumb" data-index="1"><img src="assets/thumb2.jpg"><div class="cyt-grid-title">Eminem If he was RESONANCE</div><div class="cyt-grid-date">Apr 2, 2024</div></div>
+      <div class="cyt-grid-item video-thumb" data-index="2"><img src="assets/thumb3.jpg"><div class="cyt-grid-title">Jean Dawson — POWER FREAKS</div><div class="cyt-grid-date">Mar 19, 2024</div></div>
+      <div class="cyt-grid-item video-thumb" data-index="3"><img src="assets/thumb4.jpg"><div class="cyt-grid-title">world$tar money - channel bumper</div><div class="cyt-grid-date">Feb 28, 2024</div></div>
+      <div class="cyt-grid-item video-thumb" data-index="4"><img src="assets/thumb5.jpg"><div class="cyt-grid-title">KENDRICK LAMAR — FOR SALE?</div><div class="cyt-grid-date">Mar 12, 2024</div></div>
+      <div class="cyt-grid-item video-thumb" data-index="5"><img src="assets/thumb6.jpg"><div class="cyt-grid-title">TAKE OFF.</div><div class="cyt-grid-date">Apr 9, 2024</div></div>
+      <div class="cyt-grid-item video-thumb" data-index="6"><img src="assets/thumby1.png"><div class="cyt-grid-title">somethings always wrong with his brain</div><div class="cyt-grid-date">Mar 25, 2024</div></div>
+      <div class="cyt-grid-item video-thumb" data-index="7"><img src="assets/thumby2.png"><div class="cyt-grid-title">WHATS YOUR DEFINITION OF LOVE?</div><div class="cyt-grid-date">Feb 14, 2024</div></div>
+      <div class="cyt-grid-item video-thumb" data-index="8"><img src="assets/thumb9.jpg"><div class="cyt-grid-title">the burn marks on my memories never fade</div><div class="cyt-grid-date">Mar 8, 2024</div></div>
     </div>
   </div>
 
-  <!-- Shorts Row -->
-  <div class="home-row">
-    <h3>Shorts</h3>
-    <div class="scroll-row">
-      <div class="video-thumb" data-index="7"><img src="assets/thumby2.png"><p>What's your definition of love?</p></div>
-      <div class="video-thumb" data-index="9"><img src="assets/thumby3.png"><p>Resonance Nights</p></div>
-      <div class="video-thumb" data-index="10"><img src="assets/thumby4.png"><p>TAKE OFF (Cooking)</p></div>
-      <div class="video-thumb" data-index="11"><img src="assets/thumb8.jpg"><p>SPACING OUT</p></div>
+  <!-- PLAYLISTS TAB -->
+  <div id="yt-playlists" class="cyt-section yt-section" style="display:none;">
+    <div class="cyt-videos-grid">
+      <div class="cyt-grid-item playlist-link" data-url="https://www.youtube.com/playlist?list=PL_TvNrl5QKk464E3pUws8iVuyJ8Ga1jlm">
+        <img src="assets/thumb10.png" /><div class="cyt-grid-title">FAVORITE SONGS OF ALL TIME (OAT)</div>
+        <div class="cyt-grid-date">Playlist · 20+ videos</div>
+      </div>
+      <div class="cyt-grid-item playlist-link" data-url="https://youtube.com/playlist?list=PL_TvNrl5QKk6E32vOQJh-owpjbmFrz18W&si=czlPMeTArp6zjNnr">
+        <img src="assets/thumb11.png" /><div class="cyt-grid-title">ANIMATIONS & MORE</div>
+        <div class="cyt-grid-date">Playlist · 10+ videos</div>
+      </div>
+      <div class="cyt-grid-item playlist-link" data-url="https://www.youtube.com/watch?v=y0g_kAvJxiQ&list=ULcxqQ59vzyTk&ab_channel=Consistency">
+        <img src="assets/thumb12.png" /><div class="cyt-grid-title">More videos from CONSISTENCYY...</div>
+        <div class="cyt-grid-date">Playlist</div>
+      </div>
     </div>
   </div>
 
-  <!-- Recommended Row -->
-  <div class="home-row">
-    <h3>Recommended</h3>
-    <div class="scroll-row">
-      <div class="video-thumb" data-index="14"><img src="assets/thumby7.png"><p>Medicine - Daughter [MV/Original Cover]</p></div>
-      <div class="video-thumb" data-index="12"><img src="assets/thumby5.png"><p>MGMT - Little Dark Age (Prødigy Remix) MUSIC VIDEO</p></div>
-      <div class="video-thumb" data-index="13"><img src="assets/thumby6.png"><p>mounika - cut my hair (music video)</p></div>
-      <div class="video-thumb playlist-link" data-url="https://www.youtube.com/watch?v=y0g_kAvJxiQ&list=ULcxqQ59vzyTk&ab_channel=Consistency"><img src="assets/thumb12.png" /><p>More videos from CONSISTENCYY...</p></div>
-    </div>
-  </div>
-</div>
-
-  <!-- Videos Tab (moved from old default tab) -->
-  <div id="yt-videos-2" class="yt-section video-grid" style="display: none;">
-    <div class="video-thumb" data-index="0"><img src="assets/thumb1.jpg"><p>VG Concept Pixel Art</p></div>
-    <div class="video-thumb" data-index="1"><img src="assets/thumb2.jpg"><p>Eminem If he was RESONANCE</p></div>
-    <div class="video-thumb" data-index="2"><img src="assets/thumb3.jpg"><p>Jean Dawson - POWER FREAKS</p></div>
-    <div class="video-thumb" data-index="3"><img src="assets/thumb4.jpg"><p>world$tar money - channel bumper</p></div>
-    <div class="video-thumb" data-index="4"><img src="assets/thumb5.jpg"><p>KENDRICK LAMAR - FOR SALE?</p></div>
-    <div class="video-thumb" data-index="5"><img src="assets/thumb6.jpg"><p>TAKE OFF.</p></div>
-    <div class="video-thumb" data-index="6"><img src="assets/thumby1.png"><p>somethings always wrong with his brain</p></div>
-    <div class="video-thumb" data-index="7"><img src="assets/thumby2.png"><p>WHATS YOUR DEFINITION OF LOVE?</p></div>
-    <div class="video-thumb" data-index="8"><img src="assets/thumb9.jpg"><p>the burn marks on my memories never fade</p></div>
-  </div>
-
-  <!-- Playlists -->
-  <div id="yt-playlists" class="yt-section video-grid" style="display: none;">
-    <div class="video-thumb playlist-link" data-url="https://www.youtube.com/playlist?list=PL_TvNrl5QKk464E3pUws8iVuyJ8Ga1jlm">
-      <img src="assets/thumb10.png" />
-      <p>FAVORITE SONGS OF ALL TIME (OAT)</p>
-    </div>
-    <div class="video-thumb playlist-link" data-url="https://youtube.com/playlist?list=PL_TvNrl5QKk6E32vOQJh-owpjbmFrz18W&si=czlPMeTArp6zjNnr">
-      <img src="assets/thumb11.png" />
-      <p>ANIMATIONS & MORE</p>
-    </div>
-    <div class="video-thumb playlist-link" data-url="https://www.youtube.com/watch?v=y0g_kAvJxiQ&list=ULcxqQ59vzyTk&ab_channel=Consistency">
-      <img src="assets/thumb12.png" />
-      <p>More videos from CONSISTENCYY...</p>
-    </div>
-  </div>
 </div>
 <!-- END #mock-youtube -->
 
@@ -1169,119 +1114,267 @@ Thanks for stopping by :3
 <!-- END: Mock YouTube Video Player -->
 
 <div id="mock-wikipedia" class="wikipedia-mock hidden">
-  
-  <!-- TOP HEADER SECTION -->
-<div class="wiki-header">
-  <div class="wiki-logo-title">
-    <img src="assets/about.png" alt="Wikipedia Logo" class="wiki-logo" />
-    <div class="wiki-site-info">
-      <h2 class="wiki-site-name">Wakapedia</h2>
-      <p class="wiki-tagline">The Waka Free Encyclopedia</p>
+
+  <!-- WAKAPEDIA CHROME HEADER -->
+  <div class="waka-chrome">
+    <div class="waka-chrome-left">
+      <div class="waka-wordmark">
+        <span class="waka-w">W</span><span class="waka-rest">akapedia</span>
+      </div>
+      <div class="waka-tagline">The Free<sup>*</sup> Design Encyclopedia</div>
     </div>
-    <div class="wiki-search">
-      <input type="text" placeholder="Search Wakapedia" />
+    <div class="waka-chrome-center">
+      <div class="waka-tabs">
+        <span class="waka-tab active-tab">Article</span>
+        <span class="waka-tab">Talk</span>
+        <span class="waka-tab">View source</span>
+        <span class="waka-tab">History</span>
+      </div>
     </div>
-  </div>
-  <hr />
-</div>
-
-  <!-- MAIN CONTENT AND SIDEBAR -->
-  <div class="wiki-main">
-    <!-- ARTICLE CONTENT -->
-<div class="cmWiki_resume">
-  <h1 class="cmWiki_name">Conor McCutcheon</h1>
-  <p class="cmWiki_title">Designer, Editor & Notary Public</p>
-  <p class="cmWiki_contact">
-    YONKERS, NY · <a href="http://conor.style" target="_blank">conor.style</a> · 
-    <a href="mailto:conormcc.edits@gmail.com">conormcc.edits@gmail.com</a>
-  </p>
-
-  <h2 class="cmWiki_section">Summary</h2>
-  <p class="cmWiki_body">
-    Graphic Designer with expertise in motion graphics, typography, brand identity, and video production. Proficient in Adobe CC (Illustrator, Photoshop, InDesign, Premiere Pro, After Effects), DaVinci Resolve, Blender, and AutoCAD. Experienced in video production, DSLR/drone operation, and color grading. Eager to contribute fresh ideas and energy to a creative team. Quick learner with a passion for design trends and visual storytelling.
-  </p>
-
-  <h2 class="cmWiki_section">Experience</h2>
-  <div class="cmWiki_job">
-    <h3>The UPS Store — Graphic Designer & Notary Public</h3>
-    <p><em>Aug. 2024 – Present</em></p>
-    <ul>
-      <li>Created custom marketing and branding materials: business cards, flyers, posters, and certificates.</li>
-      <li>Optimized images for print/digital formats.</li>
-      <li>Collaborated directly with customers to translate ideas into compelling designs.</li>
-    </ul>
-  </div>
-
-  <div class="cmWiki_job">
-    <h3>PopGeeks.com — Production Assistant, Designer</h3>
-    <p><em>Aug. 2023 – Present</em></p>
-    <ul>
-      <li>Designed branded content including business cards, blog visuals, and social media assets.</li>
-      <li>Updated site and blog posts using HTML/CSS for a multimedia experience.</li>
-      <li>Shot and edited live events, managing DSLR workflows and post-production.</li>
-    </ul>
-  </div>
-
-  <div class="cmWiki_job">
-    <h3>Freelance — Designer & Video Editor</h3>
-    <p><em>2021 – Present</em></p>
-    <ul>
-      <li>Delivered branding packages, social media assets, and promotional videos for diverse clients.</li>
-      <li>Led all stages of production: planning, graphics, revisions, and final delivery.</li>
-      <li>Adapted creative styles to meet unique brand messaging needs.</li>
-    </ul>
-  </div>
-
-  <h2 class="cmWiki_section">Education</h2>
-  <p class="cmWiki_body">BA in Graphic Design, Minor in Film & Media Studies — SUNY at Buffalo, 2023.</p>
-
-  <h2 class="cmWiki_section">Licenses & Awards</h2>
-  <ul class="cmWiki_list">
-    <li>Certified Notary Public, State of New York (2025–2029)</li>
-    <li>FAA TRUST Drone Certification, 2025</li>
-    <li>Winner, NHTSA Video Entry Contest, 2023</li>
-  </ul>
-</div>
-
-<!-- SIDEBAR -->
-<div class="wiki-sidebar">
-  <div class="wiki-infobox">
-    <h3>About</h3>
-    <table>
-      <tr><td><strong>Born</strong></td><td>2001</td></tr>
-      <tr><td><strong>YT Channel</strong></td><td>Consistencyy</td></tr>
-      <tr><td><strong>Profession</strong></td><td>Artist</td></tr>
-      <tr><td><strong>Specialties</strong></td><td>Motion, Design, Film</td></tr>
-    </table>
-  </div>
-
-  <!-- NEW: Additional Gallery Sidebar -->
-  <div class="wiki-gallery">
-    <h3>Notable Works</h3>
-    
-    <div class="gallery-item">
-      <img src="assets/thumb1.jpg" alt="Work 1" />
-      <p><strong>VG Pixel Art</strong><br/>Concept animation experiment.</p>
-    </div>
-    
-    <div class="gallery-item">
-      <img src="assets/thumb2.jpg" alt="Work 2" />
-      <p><strong>Power Freaks</strong><br/>Visualizer for Jean Dawson.</p>
-    </div>
-    
-    <div class="gallery-item">
-      <img src="assets/thumb3.jpg" alt="Work 3" />
-      <p><strong>Burn Marks</strong><br/>Visual poetry short.</p>
+    <div class="waka-chrome-right">
+      <div class="waka-search-wrap">
+        <input class="waka-search-input" type="text" placeholder="🔍 Search Wakapedia" />
+      </div>
+      <div class="waka-tools-row">
+        <span class="waka-tool-link">Create account</span>
+        <span class="waka-tool-sep">·</span>
+        <span class="waka-tool-link">Log in</span>
+      </div>
     </div>
   </div>
-</div>
-<!-- END SIDEBAR -->
+  <div class="waka-divider-full"></div>
+
+  <!-- NOTICE BANNER -->
+  <div class="waka-notice">
+    <span class="waka-notice-icon">🖨️</span>
+    <span>This article is part of the <strong>Print &amp; Production Design</strong> series. It has been reviewed for factual accuracy by one (1) notary public.</span>
+    <span class="waka-notice-close" onclick="this.parentElement.style.display='none'">✕</span>
   </div>
+
+  <!-- ARTICLE BODY -->
+  <div class="waka-article">
+
+    <!-- MAIN COLUMN -->
+    <div class="waka-main-col">
+
+      <!-- ARTICLE TITLE -->
+      <div class="waka-article-header">
+        <h1 class="waka-article-title">Conor McCutcheon</h1>
+        <div class="waka-article-subtitle">Graphic Designer · Production Specialist · Notary Public</div>
+        <div class="waka-article-meta">
+          <span class="waka-meta-item">📍 Yonkers, New York</span>
+          <span class="waka-meta-sep">·</span>
+          <a class="waka-meta-link" href="http://conor.style" target="_blank">conor.style</a>
+          <span class="waka-meta-sep">·</span>
+          <a class="waka-meta-link" href="mailto:conormcc.edits@gmail.com">conormcc.edits@gmail.com</a>
+        </div>
+      </div>
+
+      <!-- LEAD PARAGRAPH -->
+      <p class="waka-lead" id="waka-summary">
+        <strong>Conor McCutcheon</strong> (b. 2001) — Yonkers-based graphic designer and production specialist, currently at <a class="waka-wikilink" href="#">FASTSIGNS of New Rochelle</a>. I work across wide-format print, vinyl plotting, lamination, and brand design. BA in Graphic Design from <a class="waka-wikilink" href="#">SUNY Buffalo</a> (2023). Certified Notary Public, State of New York.
+      </p>
+
+      <div class="waka-hatnote">ℹ️ &nbsp;<em>For his video work, see <a class="waka-wikilink" href="#">Consistencyy (YouTube channel)</a>. For portfolio projects, see <a class="waka-wikilink" href="#">Projects (My Files)</a>.</em></div>
+
+      <!-- EXPERIENCE -->
+      <h2 class="waka-section-h2" id="waka-experience">Career</h2>
+
+      <h3 class="waka-section-h3" id="waka-fastsigns">FASTSIGNS of New Rochelle <span class="waka-role-tag">Current</span></h3>
+      <p class="waka-body"><em class="waka-date-em">2025 – Present &nbsp;·&nbsp; Graphic Designer &amp; Production Assistant</em></p>
+      <p class="waka-body">
+        Full lifecycle of commercial print — from design in Illustrator and Photoshop through prepress, printing, lamination, and finish cutting on a Roland vinyl plotter. Substrates include vinyl, foam board, banner material, and rigid aluminum composites. Day-to-day: adapting client artwork into production-ready files, color-correcting for large-format output, and managing my own brand design projects on the side.
+      </p>
+      <ul class="waka-ul">
+        <li>Wide-format printing, lamination, and vinyl plotter operation (Roland series)</li>
+        <li>Prepress preparation: bleed setup, color mode conversion, file optimization for print</li>
+        <li>Vehicle wrap design, window graphics, and ADA-compliant signage</li>
+        <li>Client-facing design consultations and brand adaptation for print media</li>
+        <li>Managing personal design projects and brand identity work alongside production duties</li>
+      </ul>
+
+      <h3 class="waka-section-h3" id="waka-popgeeks">PopGeeks.com</h3>
+      <p class="waka-body"><em class="waka-date-em">Aug. 2023 – Present &nbsp;·&nbsp; Production Assistant &amp; Designer</em></p>
+      <p class="waka-body">
+        Multimedia pop culture outlet. Designed branded content, maintained the site in HTML/CSS, and covered live events on DSLR. Full post-production: editing, color grading, graphics — for both editorial and social.
+      </p>
+      <ul class="waka-ul">
+        <li>Branded content design: business cards, blog headers, social media assets</li>
+        <li>HTML/CSS site updates for multimedia articles and event coverage</li>
+        <li>DSLR event photography and video, full post-production workflow</li>
+      </ul>
+
+      <h3 class="waka-section-h3" id="waka-freelance">Freelance Design &amp; Video</h3>
+      <p class="waka-body"><em class="waka-date-em">2021 – Present</em></p>
+      <p class="waka-body">
+        Branding, print collateral, social campaigns, and promo video across a range of clients and industries. I handle everything from brief to delivery.
+      </p>
+
+      <!-- TOOLS & SKILLS -->
+      <h2 class="waka-section-h2" id="waka-skills">Tools &amp; Skills</h2>
+      <div class="waka-skills-grid">
+        <div class="waka-skill-col">
+          <div class="waka-skill-group-title">Print Production</div>
+          <ul class="waka-ul">
+            <li>Wide-format inkjet printing</li>
+            <li>Cold &amp; hot lamination</li>
+            <li>Vinyl plotter / contour cutting</li>
+            <li>Substrate knowledge (vinyl, foam, ACM, fabric)</li>
+            <li>Prepress &amp; file prep</li>
+          </ul>
+        </div>
+        <div class="waka-skill-col">
+          <div class="waka-skill-group-title">Adobe Creative Cloud</div>
+          <ul class="waka-ul">
+            <li>Illustrator &nbsp;<span class="waka-proficiency waka-expert">Expert</span></li>
+            <li>Photoshop &nbsp;<span class="waka-proficiency waka-expert">Expert</span></li>
+            <li>InDesign &nbsp;<span class="waka-proficiency waka-adv">Advanced</span></li>
+            <li>Premiere Pro &nbsp;<span class="waka-proficiency waka-adv">Advanced</span></li>
+            <li>After Effects &nbsp;<span class="waka-proficiency waka-adv">Advanced</span></li>
+          </ul>
+        </div>
+        <div class="waka-skill-col">
+          <div class="waka-skill-group-title">Other Software</div>
+          <ul class="waka-ul">
+            <li>DaVinci Resolve</li>
+            <li>Blender (3D / motion)</li>
+            <li>AutoCAD</li>
+            <li>HTML / CSS</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- EDUCATION -->
+      <h2 class="waka-section-h2" id="waka-education">Education</h2>
+      <div class="waka-edu-block">
+        <span class="waka-edu-icon">🎓</span>
+        <div>
+          <strong>B.A. Graphic Design</strong> · Minor in Film &amp; Media Studies<br/>
+          <em>SUNY at Buffalo</em> — Class of 2023
+        </div>
+      </div>
+
+      <!-- CREDENTIALS -->
+      <h2 class="waka-section-h2" id="waka-creds">Credentials &amp; Recognition</h2>
+      <table class="waka-creds-table">
+        <thead>
+          <tr><th>Credential</th><th>Issuer</th><th>Year</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Certified Notary Public (NY)</td><td>New York State</td><td>2025–2029</td></tr>
+          <tr><td>FAA TRUST Drone Certification</td><td>Federal Aviation Administration</td><td>2025</td></tr>
+          <tr><td>NHTSA Video Entry Contest — Winner</td><td>Nat'l Highway Traffic Safety Admin.</td><td>2023</td></tr>
+        </tbody>
+      </table>
+
+      <!-- REFERENCES -->
+      <h2 class="waka-section-h2" id="waka-refs">References</h2>
+      <ol class="waka-refs-list">
+        <li>"Conor McCutcheon." <em>conor.style</em>. Retrieved 2025.</li>
+        <li>McCutcheon, C. (2023). <em>NHTSA Video Contest Entry.</em> National Highway Traffic Safety Administration.</li>
+        <li>New York Department of State — Notary Public licensing database, 2025.</li>
+      </ol>
+
+      <div class="waka-footer-cats">
+        <strong>Categories:</strong>
+        <span class="waka-cat">Graphic Designers</span>
+        <span class="waka-cat">Print Production Specialists</span>
+        <span class="waka-cat">New York Artists</span>
+        <span class="waka-cat">SUNY Buffalo Alumni</span>
+        <span class="waka-cat">Video Editors</span>
+        <span class="waka-cat">Notaries Public</span>
+        <span class="waka-cat">People from Yonkers</span>
+      </div>
+
+    </div><!-- end .waka-main-col -->
+
+    <!-- RIGHT SIDEBAR (INFOBOX) -->
+    <aside class="waka-infobox-aside">
+      <div class="waka-infobox-inner">
+        <div class="waka-infobox-img-wrap">
+          <img src="assets/headshot.jpg" alt="Conor McCutcheon" class="waka-infobox-portrait" onerror="this.src='assets/user.png'" />
+          <div class="waka-infobox-img-caption">Conor McCutcheon, Yonkers, NY (2025)</div>
+        </div>
+
+        <div class="waka-infobox-title-block">
+          <div class="waka-infobox-name">Conor McCutcheon</div>
+        </div>
+
+        <table class="waka-infobox-table">
+          <tr>
+            <td class="waka-ib-label">Born</td>
+            <td>2001<br/><span class="waka-ib-sub">Yonkers, New York, U.S.</span></td>
+          </tr>
+          <tr>
+            <td class="waka-ib-label">Nationality</td>
+            <td>American</td>
+          </tr>
+          <tr>
+            <td class="waka-ib-label">Occupation</td>
+            <td>Graphic Designer<br/>Production Specialist<br/>Notary Public</td>
+          </tr>
+          <tr>
+            <td class="waka-ib-label">Employer</td>
+            <td>FASTSIGNS, New Rochelle<br/><span class="waka-ib-sub">2025–present</span></td>
+          </tr>
+          <tr>
+            <td class="waka-ib-label">Specialties</td>
+            <td>Wide-format print<br/>Brand identity<br/>Motion graphics<br/>Vinyl &amp; plotter work</td>
+          </tr>
+          <tr>
+            <td class="waka-ib-label">Education</td>
+            <td>B.A. Graphic Design<br/><span class="waka-ib-sub">SUNY Buffalo, 2023</span></td>
+          </tr>
+          <tr>
+            <td class="waka-ib-label">Website</td>
+            <td><a class="waka-ib-link" href="http://conor.style" target="_blank">conor.style</a></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- NOTABLE WORKS -->
+      <div class="waka-notable-works">
+        <div class="waka-nw-title">Notable Works</div>
+        <div class="waka-nw-item">
+          <a class="waka-nw-thumb-link" href="https://www.youtube.com/watch?v=cxqQ59vzyTk" target="_blank">
+            <img src="assets/thumb1.jpg" alt="Work 1" class="waka-nw-img"/>
+            <span class="waka-nw-play">▶</span>
+          </a>
+          <div class="waka-nw-info"><strong>VG Pixel Art</strong><br/><span class="waka-nw-desc">Motion experiment — Consistencyy, 2022</span><br/><a class="waka-nw-ytlink" href="https://www.youtube.com/watch?v=cxqQ59vzyTk" target="_blank">▶ Watch on YouTube</a></div>
+        </div>
+        <div class="waka-nw-item">
+          <a class="waka-nw-thumb-link" href="https://www.youtube.com/watch?v=y0g_kAvJxiQ" target="_blank">
+            <img src="assets/thumb2.jpg" alt="Work 2" class="waka-nw-img"/>
+            <span class="waka-nw-play">▶</span>
+          </a>
+          <div class="waka-nw-info"><strong>Power Freaks</strong><br/><span class="waka-nw-desc">Jean Dawson visualizer — motion design</span><br/><a class="waka-nw-ytlink" href="https://www.youtube.com/watch?v=y0g_kAvJxiQ" target="_blank">▶ Watch on YouTube</a></div>
+        </div>
+        <div class="waka-nw-item">
+          <a class="waka-nw-thumb-link" href="https://www.youtube.com/watch?v=y0g_kAvJxiQ&list=ULcxqQ59vzyTk" target="_blank">
+            <img src="assets/thumb3.jpg" alt="Work 3" class="waka-nw-img"/>
+            <span class="waka-nw-play">▶</span>
+          </a>
+          <div class="waka-nw-info"><strong>Burn Marks</strong><br/><span class="waka-nw-desc">Visual poetry short — 2023</span><br/><a class="waka-nw-ytlink" href="https://www.youtube.com/watch?v=y0g_kAvJxiQ&list=ULcxqQ59vzyTk" target="_blank">▶ Watch on YouTube</a></div>
+        </div>
+      </div>
+
+    </aside>
+
+  </div><!-- end .waka-article -->
+
+  <!-- BOTTOM NOTE -->
+  <div class="waka-small-print">
+    <sup>*</sup> "Free" as in free to view. Not free to steal. · <em>This article was last edited by <strong>Conor</strong> · Not a real encyclopedia · Made with ☕ in Yonkers, NY</em>
+  </div>
+
 </div>
 <!-- END #mock-wikipedia -->
+</div><!-- END .window-content -->
 </div> 
 <!-- END #browser-window -->
   </div>
+<!-- END START MENU -->
+
   <!-- END #desktop-root -->
 
   <script src="assets/desktop.js" defer></script>
