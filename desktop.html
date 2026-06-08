@@ -49,7 +49,7 @@
 </div>
 
     <!-- TASKBAR -->
-    <div class="taskbar" style="position: absolute; bottom: 0; left: 0; width: 100%;">
+    <div class="taskbar">
       <div class="start-button">
         <img src="assets/logo.svg" alt="Start Icon" />
         start
@@ -140,8 +140,39 @@
   </div>
 </div>
 <!-- END TASKBAR TABS -->
-      <button id="mute-toggle" title="Toggle sound">🔊</button>
-      <div class="time">11:20 PM</div>
+      <!-- SYSTEM TRAY -->
+      <div class="taskbar-tray">
+        <button id="mute-toggle" title="Toggle sound">🔊</button>
+        <div class="time" id="taskbar-clock">
+          <span class="time-clock">11:20 PM</span>
+          <span class="time-date">Sun 6/7/2026</span>
+        </div>
+      </div>
+      <!-- END SYSTEM TRAY -->
+
+      <!-- CLOCK/CALENDAR POPUP -->
+      <div id="clock-popup">
+        <div class="cp-header">
+          <span>Date and Time</span>
+        </div>
+        <div class="cp-body">
+          <div class="cp-clock-display" id="cp-clock-big">11:20:00 PM</div>
+          <div class="cp-date-display" id="cp-date-full">Sunday, June 7, 2026</div>
+          <div class="cp-calendar">
+            <div class="cp-cal-header">
+              <button class="cp-cal-nav" id="cp-prev-month">◄</button>
+              <span id="cp-month-label">June 2026</span>
+              <button class="cp-cal-nav" id="cp-next-month">►</button>
+            </div>
+            <div class="cp-cal-grid" id="cp-cal-grid">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+        <div class="cp-footer">Click outside to close</div>
+      </div>
+      <!-- END CLOCK POPUP -->
+
     </div>
 <!-- END TASKBAR -->
 
@@ -177,12 +208,25 @@
 <!-- README.TXT WINDOW -->
 <div class="readme-window window" id="readme-window" style="display: flex;">
   <div class="title-bar" id="readme-drag-handle">
-    <span>readme.txt - Notepad</span>
-    <button class="close-button" id="readme-close">✕</button>
+    <div class="readme-titlebar-left">
+      <img src="assets/notepad.png" class="readme-title-icon" alt="" />
+      <span>readme.txt - Notepad</span>
+    </div>
+    <div class="readme-win-btns">
+      <button class="readme-win-btn readme-win-min" id="readme-minimize">─</button>
+      <button class="readme-win-btn readme-win-close" id="readme-close">✕</button>
+    </div>
   </div>
-  <div class="readme-body"><br>
+  <div class="readme-menubar">
+    <span class="readme-menu-item">File</span>
+    <span class="readme-menu-item">Edit</span>
+    <span class="readme-menu-item">Format</span>
+    <span class="readme-menu-item">View</span>
+    <span class="readme-menu-item">Help</span>
+  </div>
+  <div class="readme-body">
     <p class ="welcome-text">FIRST PUBLIC RELEASE!</p>
-    <p class ="welcome-text2">Thank you for standing by...</p><br>
+    <p class ="welcome-text2">Thank you for standing by...</p>
     <textarea readonly>
 Hey there! My name's Conor.
 
@@ -197,6 +241,10 @@ check out the actual business page.
 
 Thanks for stopping by :3
     </textarea>
+    <div class="readme-statusbar">
+      <span>Ln 1, Col 1</span>
+      <span>100%</span>
+    </div>
   </div>
 </div>
 <!-- END README.TXT WINDOW -->

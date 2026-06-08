@@ -55,13 +55,34 @@ document.addEventListener("DOMContentLoaded", () => {
 let browserInitialized = false;
 
   // CLOCK
-  const clock = document.querySelector(".time");
+  const clockEl      = document.querySelector(".time-clock");
+  const clockDateEl  = document.querySelector(".time-date");
+  const cpClockBig   = document.getElementById("cp-clock-big");
+  const cpDateFull   = document.getElementById("cp-date-full");
+
+  const DAYS   = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  const MONTHS_SHORT = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const DAYS_SHORT   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
   function updateClock() {
     const now = new Date();
-    const hours = now.getHours() % 12 || 12;
-    const minutes = now.getMinutes().toString().padStart(2, "0");
+    const h12 = now.getHours() % 12 || 12;
+    const min  = now.getMinutes().toString().padStart(2, "0");
+    const sec  = now.getSeconds().toString().padStart(2, "0");
     const ampm = now.getHours() >= 12 ? "PM" : "AM";
-    clock.textContent = `${hours}:${minutes} ${ampm}`;
+    const m = now.getMonth(), d = now.getDate(), y = now.getFullYear();
+    const dow = now.getDay();
+
+    // Taskbar clock (two lines)
+    if (clockEl) clockEl.textContent = `${h12}:${min} ${ampm}`;
+    if (clockDateEl) {
+      clockDateEl.textContent = `${DAYS_SHORT[dow]} ${m+1}/${d}/${y}`;
+    }
+
+    // Popup big clock
+    if (cpClockBig) cpClockBig.textContent = `${h12}:${min}:${sec} ${ampm}`;
+    if (cpDateFull) cpDateFull.textContent = `${DAYS[dow]}, ${MONTHS[m]} ${d}, ${y}`;
   }
   setInterval(updateClock, 1000);
   updateClock();
@@ -81,6 +102,108 @@ let browserInitialized = false;
       muteBtn.textContent = foreVideo.muted ? "🔇" : "🔊";
     });
   }
+
+  // ==============================
+  // CLOCK / CALENDAR POPUP
+  // ==============================
+  const clockPopup   = document.getElementById("clock-popup");
+  const taskbarClock = document.getElementById("taskbar-clock");
+  const calGrid      = document.getElementById("cp-cal-grid");
+  const monthLabel   = document.getElementById("cp-month-label");
+  const prevMonthBtn = document.getElementById("cp-prev-month");
+  const nextMonthBtn = document.getElementById("cp-next-month");
+
+  const CAL_MONTHS = ["January","February","March","April","May","June",
+                      "July","August","September","October","November","December"];
+  const CAL_DAYS   = ["Su","Mo","Tu","We","Th","Fr","Sa"];
+
+  let calYear  = new Date().getFullYear();
+  let calMonth = new Date().getMonth();
+
+  function buildCalendar(year, month) {
+    if (!calGrid || !monthLabel) return;
+    monthLabel.textContent = `${CAL_MONTHS[month]} ${year}`;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today = new Date();
+
+    calGrid.innerHTML = "";
+
+    // Day headers
+    CAL_DAYS.forEach(d => {
+      const hdr = document.createElement("div");
+      hdr.className = "cp-cal-day-header";
+      hdr.textContent = d;
+      calGrid.appendChild(hdr);
+    });
+
+    // Empty cells before first day
+    for (let i = 0; i < firstDay; i++) {
+      const empty = document.createElement("div");
+      empty.className = "cp-cal-day other-month";
+      empty.textContent = "";
+      calGrid.appendChild(empty);
+    }
+
+    // Day cells
+    for (let d = 1; d <= daysInMonth; d++) {
+      const cell = document.createElement("div");
+      cell.className = "cp-cal-day";
+      cell.textContent = d;
+      if (d === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
+        cell.classList.add("today");
+      }
+      calGrid.appendChild(cell);
+    }
+  }
+
+  if (taskbarClock) {
+    taskbarClock.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (clockPopup) {
+        clockPopup.classList.toggle("visible");
+        if (clockPopup.classList.contains("visible")) {
+          const now = new Date();
+          calYear  = now.getFullYear();
+          calMonth = now.getMonth();
+          buildCalendar(calYear, calMonth);
+        }
+      }
+    });
+  }
+
+  if (prevMonthBtn) {
+    prevMonthBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      calMonth--;
+      if (calMonth < 0) { calMonth = 11; calYear--; }
+      buildCalendar(calYear, calMonth);
+    });
+  }
+
+  if (nextMonthBtn) {
+    nextMonthBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      calMonth++;
+      if (calMonth > 11) { calMonth = 0; calYear++; }
+      buildCalendar(calYear, calMonth);
+    });
+  }
+
+  // Close popup when clicking anywhere outside
+  document.addEventListener("click", (e) => {
+    if (clockPopup && clockPopup.classList.contains("visible")) {
+      if (!clockPopup.contains(e.target) && e.target !== taskbarClock && !taskbarClock?.contains(e.target)) {
+        clockPopup.classList.remove("visible");
+      }
+    }
+  });
+
+  // Close popup when start menu opens
+  startButton.addEventListener("click", () => {
+    if (clockPopup) clockPopup.classList.remove("visible");
+  });
 
 });
 
@@ -608,6 +731,10 @@ function minimizeReadme() {
 
 readmeClose.onclick = closeReadme;
 
+// Minimize button (new)
+const readmeMinBtn = document.getElementById("readme-minimize");
+if (readmeMinBtn) readmeMinBtn.onclick = minimizeReadme;
+
 readmeTab.onclick = () => {
   if (isReadmeMinimized) {
     readmeWin.style.display = 'flex';
@@ -618,25 +745,31 @@ readmeTab.onclick = () => {
   }
 };
 
-// Drag-and-drop for readme window
-readmeDragHandle.addEventListener("mousedown", (e) => {
-  const rootRect = document.getElementById("desktop-root").getBoundingClientRect();
-  const winRect = readmeWin.getBoundingClientRect();
-  readmeOffsetX = e.clientX - winRect.left;
-  readmeOffsetY = e.clientY - winRect.top;
-  isReadmeDragging = true;
+// Drag-and-drop for readme window — scale-aware
+function getReadmeScale() {
+  const root = document.getElementById("desktop-root");
+  if (!root) return 1;
+  return (new DOMMatrix(getComputedStyle(root).transform)).a || 1;
+}
 
+readmeDragHandle.addEventListener("mousedown", (e) => {
+  if (e.target.closest(".readme-win-btns")) return;
+  const scale = getReadmeScale();
+  const winRect = readmeWin.getBoundingClientRect();
+  readmeOffsetX = (e.clientX - winRect.left) / scale;
+  readmeOffsetY = (e.clientY - winRect.top)  / scale;
+  isReadmeDragging = true;
   document.addEventListener("mousemove", dragReadme);
   document.addEventListener("mouseup", stopDragReadme);
+  e.preventDefault();
 });
 
 function dragReadme(e) {
   if (!isReadmeDragging) return;
+  const scale = getReadmeScale();
   const rootRect = document.getElementById("desktop-root").getBoundingClientRect();
-  const newLeft = e.clientX - rootRect.left - readmeOffsetX;
-  const newTop = e.clientY - rootRect.top - readmeOffsetY;
-  readmeWin.style.left = `${newLeft}px`;
-  readmeWin.style.top = `${newTop}px`;
+  readmeWin.style.left = `${(e.clientX - rootRect.left) / scale - readmeOffsetX}px`;
+  readmeWin.style.top  = `${(e.clientY - rootRect.top)  / scale - readmeOffsetY}px`;
 }
 
 function stopDragReadme() {

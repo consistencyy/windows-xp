@@ -25,7 +25,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(100% - 32px);
+  height: calc(100% - 40px);
   padding: 8px;
   display: flex;
   flex-wrap: wrap;
@@ -46,47 +46,328 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 
 /* specialised absolute‑positioned icons on bottom‑right stack */
 .recycle-bin{position:absolute;right:16px;bottom:48px;}
-.consistency {position:absolute;right:16px;bottom:168px;}   /* 120 px above recycle bin */ /* another 120 px above */
+.consistency {position:absolute;right:16px;bottom:168px;}
+.mixed-media  {position:absolute;right:16px;bottom:288px;}
 
 /******************** TASKBAR ********************/
-.taskbar{
-    position:absolute;left:0;bottom:0;width:100%;height:32px;display:flex;align-items:center;
-    background:linear-gradient(to bottom,#245edc 0%,#3f8cf3 9%,#245edc 18%,#245edc 92%,#1941a5 100%) center/cover no-repeat;
+.taskbar {
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 40px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(to bottom,
+    #2b5fd9 0%,
+    #4c8fff 6%,
+    #2b5fd9 14%,
+    #2454cb 86%,
+    #1941a5 100%);
+  border-top: 1px solid #5588ff;
+  box-shadow: 0 -1px 0 #0a2070;
+  z-index: 50000;
 }
-.start-button{display:flex;align-items:center;gap:6px;height:100%;padding:2px 25px 6px 10px;font:bold italic 22px/22px Calibri,Helvetica,Arial,sans-serif;color:#fff;text-shadow:1px 1px 3px #222;background:radial-gradient(circle,#5eac56 0%,#3c873c 100%) center/cover no-repeat;box-shadow:inset 0 5px 10px #79ce71,4px 0 8px #3f8cf3;border-radius:0 8px 8px 0;cursor:pointer;}
-.start-button img{height:20px;filter:drop-shadow(1px 1px 1px #222);}
 
-.opened-tabs{flex:1 1 auto;display:flex;overflow:hidden;}
-.open-tab{width:150px;flex:0 0 150px;display:flex;align-items:center;gap:5px;height:26px;margin:3px 0;padding:0 8px;font:14px/14px Calibri,monospace;color:#fff;background:url("btn1.png") no-repeat;border:1px solid #306fd9;border-radius:2px;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;cursor:pointer;}
-.open-tab:hover{background-image:url("btn2.png");}
-.open-tab.active{background-image:url("btn3.png");}
-.open-tab img{height:18px;}
+/* START BUTTON */
+.start-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  padding: 2px 22px 4px 10px;
+  font: bold italic 22px/22px Calibri, Helvetica, Arial, sans-serif;
+  color: #fff;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  background: radial-gradient(ellipse at 50% 30%, #72d468 0%, #4a9e42 50%, #2d7028 100%);
+  box-shadow: inset 0 2px 6px rgba(255,255,255,0.35), inset 0 -2px 4px rgba(0,0,0,0.25), 3px 0 6px rgba(0,0,50,0.3);
+  border-radius: 0 12px 12px 0;
+  border-right: 1px solid #1d5018;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.1s;
+}
+.start-button:hover {
+  background: radial-gradient(ellipse at 50% 30%, #8aec7e 0%, #5dc055 50%, #3a8832 100%);
+}
+.start-button:active {
+  background: radial-gradient(ellipse at 50% 60%, #3d8036 0%, #2d6028 50%, #1d4018 100%);
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.3), inset 0 -1px 2px rgba(255,255,255,0.1);
+}
+.start-button img { height: 22px; filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.4)); }
 
-.time{display:flex;align-items:center;padding:0 15px;height:100%;font:14px/14px Calibri,monospace;color:#fff;text-transform:uppercase;cursor:default;background:linear-gradient(to bottom,#1290e9 0%,#19b9f3 9%,#1290e9 18%,#1290e9 92%,#1941a5 100%) center/cover no-repeat;box-shadow:inset 0 5px 10px #14a5f0,0 5px 10px #333;border-left:1px solid #092e51;}
+/* TASKBAR DIVIDER */
+.taskbar-divider {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(to bottom, transparent, #5588ff 20%, #5588ff 80%, transparent);
+  margin: 0 2px;
+  flex-shrink: 0;
+}
 
+/* OPEN TABS AREA */
+.opened-tabs {
+  flex: 1 1 auto;
+  display: flex;
+  gap: 2px;
+  padding: 0 4px;
+  overflow: hidden;
+  align-items: center;
+}
+
+.open-tab {
+  flex: 0 0 auto;
+  min-width: 100px;
+  max-width: 160px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 8px;
+  font: 12px/12px Tahoma, sans-serif;
+  color: #fff;
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,0.18) 0%,
+    rgba(255,255,255,0.06) 50%,
+    rgba(0,0,0,0.08) 51%,
+    rgba(0,0,0,0.12) 100%);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-bottom-color: rgba(0,0,60,0.3);
+  border-radius: 3px 3px 0 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  cursor: pointer;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+  transition: background 0.1s;
+}
+.open-tab:hover {
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,0.28) 0%,
+    rgba(255,255,255,0.14) 50%,
+    rgba(0,0,0,0.04) 51%,
+    rgba(0,0,0,0.08) 100%);
+  border-color: rgba(255,255,255,0.4);
+}
+.open-tab.active {
+  background: linear-gradient(to bottom,
+    rgba(0,0,0,0.12) 0%,
+    rgba(0,0,60,0.18) 50%,
+    rgba(255,255,255,0.06) 51%,
+    rgba(255,255,255,0.12) 100%);
+  border-color: rgba(0,0,0,0.3);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.3);
+}
+.open-tab img { height: 16px; flex-shrink: 0; }
+
+/* SYSTEM TRAY AREA */
+.taskbar-tray {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  background: linear-gradient(to bottom,
+    #1290e9 0%, #19b9f3 6%, #1290e9 14%, #1290e9 86%, #1941a5 100%);
+  border-left: 1px solid #0a3a8a;
+  box-shadow: inset 1px 0 0 rgba(255,255,255,0.2);
+  flex-shrink: 0;
+}
+
+/* MUTE BUTTON IN TRAY */
 #mute-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 0 10px;
-  font-size: 16px;
-  background: linear-gradient(to bottom, #1290e9 0%, #19b9f3 9%, #1290e9 18%, #1290e9 92%, #1941a5 100%);
+  padding: 0 8px;
+  font-size: 15px;
+  background: transparent;
   border: none;
-  border-left: 1px solid #092e51;
+  border-right: 1px solid rgba(0,0,0,0.2);
   color: #fff;
   cursor: pointer;
-  line-height: 32px;
   transition: background 0.15s;
   -webkit-user-select: none;
   user-select: none;
 }
-#mute-toggle:hover {
-  background: linear-gradient(to bottom, #1aa8ff 0%, #22ccff 9%, #1aa8ff 18%, #1aa8ff 92%, #2255cc 100%);
+#mute-toggle:hover { background: rgba(255,255,255,0.15); }
+#mute-toggle:active { background: rgba(0,0,0,0.15); }
+
+/* CLOCK / TIME BUTTON */
+.time {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  height: 100%;
+  font-family: Tahoma, sans-serif;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+  border-left: 1px solid rgba(0,0,0,0.2);
+  transition: background 0.1s;
+  gap: 1px;
 }
-#mute-toggle:active {
-  background: linear-gradient(to bottom, #0e6db5 0%, #117dc9 9%, #0e6db5 92%, #102e8a 100%);
+.time:hover { background: rgba(255,255,255,0.12); }
+.time:active { background: rgba(0,0,0,0.15); }
+.time-clock { font-size: 13px; font-weight: bold; line-height: 1; }
+.time-date  { font-size: 10px; opacity: 0.85; line-height: 1; }
+
+/* ════════════════════════════════════════════
+   CLOCK / CALENDAR POPUP
+   ════════════════════════════════════════════ */
+#clock-popup {
+  position: absolute;
+  bottom: 42px;
+  right: 0;
+  width: 260px;
+  background: #ece9d8;
+  border: 2px solid #fff;
+  border-right-color: #444;
+  border-bottom-color: #444;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+  z-index: 99998;
+  font-family: Tahoma, Arial, sans-serif;
+  overflow: hidden;
+  display: none;
 }
+#clock-popup.visible { display: block; }
+
+.cp-header {
+  background: linear-gradient(to bottom, #0058ee 0%, #3a93ff 4%, #2076e0 8%, #1260c4 92%, #0038a8 100%);
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: bold;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cp-body {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* DIGITAL CLOCK DISPLAY */
+.cp-clock-display {
+  background: #000080;
+  border: 2px inset #888;
+  border-top-color: #444;
+  border-left-color: #444;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
+  padding: 8px 12px;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  color: #00ff44;
+  font-size: 28px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  text-shadow: 0 0 8px #00ff44;
+}
+
+.cp-date-display {
+  text-align: center;
+  font-size: 11px;
+  font-family: Tahoma, sans-serif;
+  color: #333;
+  padding: 3px 0;
+  font-weight: bold;
+}
+
+/* CALENDAR */
+.cp-calendar {
+  background: #fff;
+  border: 2px solid #aaa;
+  border-top-color: #444;
+  border-left-color: #444;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
+  font-size: 11px;
+  font-family: Tahoma, sans-serif;
+}
+
+.cp-cal-header {
+  background: linear-gradient(to bottom, #dce6f7, #b8ccee);
+  padding: 4px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 12px;
+  color: #000080;
+  border-bottom: 1px solid #aaa;
+}
+
+.cp-cal-nav {
+  background: #c0c0c0;
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-right: 1px solid #444;
+  border-bottom: 1px solid #444;
+  width: 18px; height: 18px;
+  cursor: pointer;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  flex-shrink: 0;
+  user-select: none;
+}
+.cp-cal-nav:active {
+  border-top: 1px solid #444;
+  border-left: 1px solid #444;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+}
+
+.cp-cal-grid {
+  padding: 4px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+}
+
+.cp-cal-day-header {
+  text-align: center;
+  font-size: 10px;
+  font-weight: bold;
+  color: #000080;
+  padding: 2px 0;
+}
+
+.cp-cal-day {
+  text-align: center;
+  padding: 2px 0;
+  font-size: 11px;
+  cursor: default;
+  border-radius: 1px;
+  color: #000;
+  line-height: 18px;
+}
+.cp-cal-day:hover { background: #dce6f7; }
+.cp-cal-day.today {
+  background: #000080;
+  color: #fff;
+  font-weight: bold;
+}
+.cp-cal-day.other-month { color: #999; }
+
+.cp-footer {
+  background: #ece9d8;
+  border-top: 1px solid #aaa;
+  padding: 4px 8px;
+  font-size: 10px;
+  color: #555;
+  text-align: center;
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+/* mute-toggle styles consolidated in taskbar tray section above */
 
 /******************** RESPONSIVE TAB HIDES ********************/
 @media(max-width:925px){.open-tab:nth-child(4){display:none;}}
@@ -125,7 +406,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
    ════════════════════════════════════════════ */
 .start-menu {
   position: absolute;
-  bottom: 32px;
+  bottom: 40px;
   left: 0;
   width: 260px;
   background: #c0c0c0;
@@ -1731,53 +2012,123 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   height: auto;
 }
 
-/* README.TXT WINDOW STYLES */
+/* ════════════════════════════════════════════
+   README.TXT — Notepad Window (XP Style)
+   ════════════════════════════════════════════ */
 .readme-window {
   position: absolute;
   width: 800px;
   height: 540px;
   top: 20%;
-  background: #fcfcfc;
-  border: 2px solid #003d90;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
-  z-index: 100; /* managed by bringToFront() */
+  background: #ece9d8;
+  border: 2px solid #0054e3;
+  box-shadow: 4px 4px 0 #000, inset 1px 1px 0 #fff;
+  z-index: 100;
   display: flex;
   flex-direction: column;
   font-family: Tahoma, sans-serif;
+  overflow: hidden;
 }
 
+/* TITLE BAR — matches IE / File Explorer */
 .readme-window .title-bar {
-  background: linear-gradient(to bottom, #0066cc, #004c99);
-  color: white;
-  padding: 6px 10px;
+  background: linear-gradient(to bottom, #0058ee 0%, #3a93ff 4%, #2076e0 8%, #1260c4 92%, #0038a8 100%);
+  color: #fff;
+  padding: 4px 6px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: bold;
-  font-size: 14px;
+  height: 28px;
+  flex-shrink: 0;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+  cursor: default;
+  user-select: none;
 }
 
-.readme-window .close-button {
-  background: red;
-  border: none;
-  color: white;
-  font-size: 16px;
+.readme-titlebar-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: bold;
+  font-family: Tahoma, sans-serif;
+}
+
+.readme-title-icon {
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
+}
+
+.readme-win-btns {
+  display: flex;
+  gap: 2px;
+}
+
+.readme-win-btn {
+  width: 21px;
+  height: 21px;
+  font-size: 11px;
+  font-family: Tahoma, sans-serif;
+  border: 1px solid rgba(255,255,255,0.5);
   cursor: pointer;
-  width: 24px;
-  height: 24px;
-  text-align: center;
-  line-height: 24px;
-  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
 }
 
-.readme-window .readme-body {
-  padding: 12px;
+.readme-win-min {
+  background: linear-gradient(to bottom, #d9e8ff, #b0c8f0);
+  color: #000;
+  border-color: #6090c8;
 }
-
-.readme-window .welcome-text {
-  font-size: 18px;
+.readme-win-close {
+  background: linear-gradient(to bottom, #ff6060, #cc0000);
+  color: #fff;
+  border-color: #800000;
   font-weight: bold;
-  margin-bottom: 2px;
+}
+.readme-win-min:hover  { background: linear-gradient(to bottom, #e8f0ff, #c0d8ff); }
+.readme-win-close:hover { background: linear-gradient(to bottom, #ff8080, #dd2020); }
+
+/* MENU BAR */
+.readme-menubar {
+  background: #ece9d8;
+  border-bottom: 1px solid #aaa;
+  display: flex;
+  align-items: center;
+  padding: 1px 4px;
+  font-size: 12px;
+  font-family: Tahoma, sans-serif;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.readme-menu-item {
+  padding: 2px 8px;
+  cursor: default;
+  border-radius: 2px;
+  color: #000;
+}
+.readme-menu-item:hover { background: #0058ee; color: #fff; }
+
+/* BODY */
+.readme-window .readme-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* WELCOME HEADER */
+.readme-window .welcome-text {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 8px 0 2px;
   color: #002861;
   text-shadow: -1px -1px 0 #99c2ff, 1px -1px 0 #99c2ff, -1px 1px 0 #99c2ff, 1px 1px 0 #99c2ff;
   font-family: Consolas, monospace;
@@ -1785,25 +2136,41 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .readme-window .welcome-text2 {
-  font-size: 16px;
+  font-size: 13px;
   font-weight: bold;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
   color: #0051c4;
   text-shadow: -1px -1px 0 #d1e3ff, 1px -1px 0 #d1e3ff, -1px 1px 0 #d1e3ff, 1px 1px 0 #d1e3ff;
   font-family: Consolas, monospace;
   text-align: center;
 }
 
+/* TEXTAREA */
 .readme-window textarea {
+  flex: 1;
   width: 100%;
-  height: 350px;
   border: none;
   resize: none;
-  font-family: Consolas, monospace;
+  font-family: 'Courier New', Consolas, monospace;
   font-size: 13px;
   background-color: #fff;
   color: #000;
-  padding: 24px;
+  padding: 12px 16px;
+  outline: none;
+}
+
+/* STATUS BAR */
+.readme-statusbar {
+  background: #ece9d8;
+  border-top: 1px solid #aaa;
+  font-size: 11px;
+  font-family: Tahoma, sans-serif;
+  color: #333;
+  padding: 2px 8px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: inset 0 1px 0 #fff;
 }
 
 /* ---------- FILE EXPLORER WINDOW ---------- */
@@ -2782,7 +3149,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(100% - 32px); /* leave space for taskbar */
+  height: calc(100% - 40px); /* leave space for taskbar */
   background: white;
   border: 2px solid #000;
   z-index: 100; /* managed by bringToFront() */ /* above file explorer and others */
