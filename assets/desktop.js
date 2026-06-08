@@ -1891,16 +1891,40 @@ function mobCloseAll() {
 
   lbClose.addEventListener("click", closeLightbox);
 
-  // Tap outside the media to close
+  // Tap the dark backdrop (not the media itself) to close.
+  // lbInner fills the whole viewport, so we check if the tap landed
+  // directly on the lightbox overlay or on lbInner background.
   lightbox.addEventListener("click", function(e) {
-    if (e.target === lightbox) closeLightbox();
+    if (e.target === lightbox || e.target === lbInner) closeLightbox();
   });
 
-  // Swipe down to dismiss
+  // Swipe DOWN to dismiss — but only for a genuine single-finger swipe,
+  // never during a pinch (two fingers). A pinch always has e.touches.length > 1.
   let touchStartY = 0;
-  lightbox.addEventListener("touchstart", (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
+  let touchStartX = 0;
+  let isPinching   = false;
+
+  lightbox.addEventListener("touchstart", (e) => {
+    if (e.touches.length > 1) {
+      // Two or more fingers -> pinch gesture starting, not a swipe
+      isPinching = true;
+      return;
+    }
+    isPinching   = false;
+    touchStartY  = e.touches[0].clientY;
+    touchStartX  = e.touches[0].clientX;
+  }, { passive: true });
+
+  lightbox.addEventListener("touchmove", (e) => {
+    if (e.touches.length > 1) isPinching = true; // fingers added mid-gesture
+  }, { passive: true });
+
   lightbox.addEventListener("touchend", (e) => {
-    if (e.changedTouches[0].clientY - touchStartY > 60) closeLightbox();
+    if (isPinching) { isPinching = false; return; } // never dismiss after a pinch
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    // Only dismiss if the swipe is clearly downward (dy > 80) and more vertical than horizontal
+    if (dy > 80 && dy > Math.abs(dx) * 1.5) closeLightbox();
   }, { passive: true });
 })();
 

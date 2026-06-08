@@ -5560,38 +5560,47 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px;
   -webkit-tap-highlight-color: transparent;
+  /* Allow the browser's native pinch-zoom and pan to work inside */
+  touch-action: none;
 }
 
 .mob-lightbox.hidden {
   display: none;
 }
 
+/* Scrollable/pannable wrapper — fills the whole lightbox minus close-btn space */
 .mob-lightbox-inner {
-  max-width: 100%;
-  max-height: 100%;
+  position: absolute;
+  inset: 0;
+  overflow: auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Let native pinch-zoom and two-finger pan pass through */
+  touch-action: pan-x pan-y pinch-zoom;
 }
 
 .mob-lightbox-inner img {
+  /* Start at a comfortable fit; user can pinch to zoom beyond this */
   max-width: 100%;
-  max-height: 85vh;
+  max-height: 100vh;
   object-fit: contain;
   border: 1px solid #444;
   border-radius: 2px;
   display: block;
+  /* Ensure the image itself doesn't swallow touch events */
+  touch-action: pan-x pan-y pinch-zoom;
 }
 
 .mob-lightbox-inner video {
   max-width: 100%;
-  max-height: 85vh;
+  max-height: 100vh;
   object-fit: contain;
   border: 1px solid #444;
   border-radius: 2px;
   display: block;
+  touch-action: pan-x pan-y pinch-zoom;
 }
 
 .mob-lightbox-close {
