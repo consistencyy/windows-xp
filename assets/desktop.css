@@ -3218,7 +3218,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .bdr-logo {
-  width: 90px;
+  width: 300px;
   height: auto;
   filter: drop-shadow(0 0 16px rgba(180, 120, 255, 0.5));
 }
@@ -3272,13 +3272,15 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   color: #8060c0;
 }
 
-.bdr-img {
+.bdr-img,
+.bdr-video {
   width: 100%;
-  aspect-ratio: 4/3;
+  aspect-ratio: 16/9;
   object-fit: cover;
   border: 1px solid rgba(180, 120, 255, 0.2);
   border-radius: 2px;
   background: rgba(255,255,255,0.04);
+  display: block;
 }
 
 /* Bottom: full-width installed photo */
@@ -3290,8 +3292,8 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 
 .bdr-installed-img {
   width: 100%;
-  max-height: 260px;
-  object-fit: cover;
+  max-height: 540px;
+  object-fit: contain;
   border: 1px solid rgba(180, 120, 255, 0.2);
   border-radius: 2px;
   background: rgba(255,255,255,0.04);
@@ -3330,7 +3332,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .jewel-logo {
-  width: 90px;
+  width: 200px;
   height: auto;
   filter: drop-shadow(0 0 12px rgba(201, 168, 76, 0.4));
 }
@@ -3398,8 +3400,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 
 .jewel-img {
   width: 100%;
-  aspect-ratio: 4/3;
-  object-fit: cover;
+  object-fit: contain;
   border: 1px solid rgba(201, 168, 76, 0.25);
   background: rgba(201, 168, 76, 0.04);
 }

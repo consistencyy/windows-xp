@@ -60,7 +60,7 @@
 
         <!-- Left sidebar banner -->
         <div class="sm-sidebar">
-          <span class="sm-sidebar-text">Conor<span class="sm-sidebar-dot">.</span>style</span>
+          <span class="sm-sidebar-text">Consistency<span class="sm-sidebar-dot">.</span>ink</span>
         </div>
 
         <!-- Menu items -->
@@ -95,11 +95,11 @@
             <div class="sm-item-label">YouTube Channel</div>
           </div>
           <div class="sm-item" id="open-photos">
-            <img src="assets/photoapp.png" class="sm-item-icon" alt="" />
+            <img src="assets/camera.png" class="sm-item-icon" alt="" />
             <div class="sm-item-label">Photography</div>
           </div>
           <div class="sm-item" id="open-snake">
-            <img src="assets/videoapp.png" class="sm-item-icon" alt="" />
+            <img src="assets/snek.png" class="sm-item-icon" alt="" />
             <div class="sm-item-label">Snake</div>
           </div>
 
@@ -136,7 +136,7 @@
   <img src="assets/project.png" />Projects
   </div>
   <div class="open-tab" id="snake-tab" style="display: none;">
-    <img src="assets/videoapp.png" />Snake
+    <img src="assets/snek.png" />Snake
   </div>
 </div>
 <!-- END TASKBAR TABS -->
@@ -149,7 +149,7 @@
 <div class="snake-window" id="snake-window" style="display:none;">
   <div class="snake-titlebar" id="snake-drag-handle">
     <div class="snake-title-left">
-      <img src="assets/videoapp.png" class="snake-title-icon" alt="" />
+      <img src="assets/snek.png" class="snake-title-icon" alt="" />
       <span>Snake</span>
     </div>
     <div class="snake-title-btns">
@@ -355,7 +355,7 @@ Thanks for stopping by :3
         <!-- Folder: My Work -->
         <div class="fwin-folder" onclick="openProjectFWindow('project-mywork')">
           <div class="fwin-folder-icon-wrap">
-            <img src="assets/brandidicon.png" class="fwin-folder-img" alt="" />
+            <img src="assets/gdicon.png" class="fwin-folder-img" alt="" />
           </div>
           <div class="fwin-folder-meta">
             <div class="fwin-folder-name">My Work</div>
@@ -366,7 +366,7 @@ Thanks for stopping by :3
         <!-- Folder: Photography -->
         <div class="fwin-folder" onclick="window.open('https://www.consistency.ink/', '_blank')">
           <div class="fwin-folder-icon-wrap">
-            <img src="assets/photoapp.png" class="fwin-folder-img" alt="" />
+            <img src="assets/camera.png" class="fwin-folder-img" alt="" />
           </div>
           <div class="fwin-folder-meta">
             <div class="fwin-folder-name">Photography</div>
@@ -377,7 +377,7 @@ Thanks for stopping by :3
         <!-- Folder: Latest Video -->
         <div class="fwin-folder" onclick="openProjectFWindow('project-directorscut')">
           <div class="fwin-folder-icon-wrap">
-            <img src="assets/filmmaking.png" class="fwin-folder-img" alt="" />
+            <img src="assets/filmicon.png" class="fwin-folder-img" alt="" />
           </div>
           <div class="fwin-folder-meta">
             <div class="fwin-folder-name">Latest Video</div>
@@ -424,16 +424,16 @@ Thanks for stopping by :3
     <div class="mywork-panel about-panel" id="work-about">
       <div class="about-inner">
         <div class="about-tag">DESIGN · PRODUCTION · INSTALLATION</div>
-        <h1 class="about-title">The Work is Real.</h1>
+        <h1 class="about-title">The Work Becomes Real.</h1>
         <p class="about-lead">
           Most designers stop at the screen. I don't.
         </p>
         <div class="about-divider"></div>
         <p class="about-body">
-          [Replace with your own words — something like: I'm a graphic designer and production specialist with a hands-on approach that goes beyond the file. From concept to client-ready, I handle the full pipeline: identity systems, print collateral, wide-format production, vinyl plotting, lamination, and on-site installation.]
+          I'm a graphic designer and production specialist with a hands-on approach that goes beyond the file. From concept to client-ready, I handle the full pipeline: identity systems, print collateral, wide-format production, vinyl plotting, lamination, and on-site installation.
         </p>
         <p class="about-body">
-          [Replace: Whether I'm building a brand in Illustrator or mounting a finished window graphic to a storefront in the rain, the standard doesn't change. The Adobe suite is home base — but the real world is where the work lives.]
+          Whether I'm building a brand in Illustrator or mounting a finished window graphic to a storefront, the standard doesn't change. The Adobe suite is home base — but the real world is where the work lives.
         </p>
         <div class="about-pills">
           <span class="about-pill">Wide-Format Print</span>
@@ -483,27 +483,38 @@ Thanks for stopping by :3
                   <p class="bdr-subtitle">Logo Design · Vinyl Graphics · Wide-Format Production · Installation</p>
                 </div>
               </div>
-              <p class="bdr-blurb">
-                [Replace: Blanks Done Right came to me needing more than a logo — they needed a presence. I designed their identity from the ground up, then brought it into the physical world: printing, laminating, cutting, and installing the vinyl window graphics myself. Every edge, every corner, placed by hand.]
-              </p>
             </div>
 
-            <!-- MIDDLE: Logo full + Production photo side by side -->
+              <p class="bdr-blurb">
+                Blanks Done Right came to me needing more than a logo — they needed a presence. I designed their identity from the ground up, then brought it into the physical world: printing, laminating, cutting, and installing the vinyl window graphics myself. Every edge, every corner, placed by hand.
+              </p>
+
+            <!-- MIDDLE: Logo full + Production video side by side -->
             <div class="bdr-mid">
               <div class="bdr-img-block">
                 <div class="bdr-img-label">LOGO</div>
                 <img src="assets/bdr-logo-full.png" alt="BDR Logo" class="bdr-img" />
               </div>
+
               <div class="bdr-img-block">
                 <div class="bdr-img-label">PRODUCTION</div>
-                <img src="assets/bdr-production.jpg" alt="BDR Production Photo" class="bdr-img" />
+                <video
+                  class="bdr-video"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                >
+                  <source src="assets/bdr-production.webm" type="video/webm" />
+                  Your browser does not support the video tag.
+                </video>
               </div>
             </div>
 
             <!-- BOTTOM: Full-width installed photo -->
             <div class="bdr-installed-wrap">
               <div class="bdr-img-label">INSTALLED</div>
-              <img src="assets/bdr-installed.jpg" alt="BDR Installed Vinyl" class="bdr-installed-img" />
+              <img src="assets/bdr-installed.png" alt="BDR Installed Vinyl" class="bdr-installed-img" />
             </div>
           </div>
         </div>
@@ -526,18 +537,18 @@ Thanks for stopping by :3
             </div>
 
             <p class="jewel-blurb">
-              [Replace: Jewel-Art Inc. needed a refined presence worthy of their storefront. I designed their logo and two window graphics for the front of their store — balancing elegance with visibility. As with all my production work, I handled the full process: print, laminate, cut, and install.]
+              Jewel-Art Inc. needed a refined presence worthy of their storefront. I designed their logo and two window graphics for the front of their store — balancing elegance with visibility. As with all my production work, I handled the full process: print, laminate, cut, and install.
             </p>
 
             <div class="jewel-gallery">
               <div class="jewel-top-row">
                 <div class="jewel-img-block">
                   <div class="jewel-img-label">WINDOW GRAPHIC 1</div>
-                  <img src="assets/jewel-window1.jpg" alt="Jewel-Art Window Graphic 1" class="jewel-img" />
+                  <img src="assets/jewel-window1.png" alt="Jewel-Art Window Graphic 1" class="jewel-img" />
                 </div>
                 <div class="jewel-img-block">
                   <div class="jewel-img-label">WINDOW GRAPHIC 2</div>
-                  <img src="assets/jewel-window2.jpg" alt="Jewel-Art Window Graphic 2" class="jewel-img" />
+                  <img src="assets/jewel-window2.png" alt="Jewel-Art Window Graphic 2" class="jewel-img" />
                 </div>
               </div>
               <div class="jewel-installed-wrap">
@@ -565,7 +576,7 @@ Thanks for stopping by :3
             </div>
 
             <p class="ls-blurb">
-              [Replace: LAST STOP is a concept project for a fictional cocktail bar where sophisticated craft meets raw urban energy. The identity system spans everything from the logo and menu design to loyalty cards, wayfinding signage, window graphics, and an external sign — built to feel like a real place you'd want to find.]
+              LAST STOP is a concept project for a fictional cocktail bar where sophisticated craft meets raw urban energy. The identity system spans everything from the logo and menu design to loyalty cards, wayfinding signage, window graphics, and an external sign — built to feel like a real place you'd want to find.
             </p>
 
             <div class="ls-deliverables">
@@ -617,7 +628,7 @@ Thanks for stopping by :3
             </div>
 
             <p class="various-blurb">
-              [Replace: A selection of logos, marks, and design work from across different clients and contexts. Each piece is built around the client's identity — no templates, no shortcuts.]
+              A selection of logos, marks, and design work from across different clients and contexts. Each piece is built around the client's identity — no templates, no shortcuts.
             </p>
 
             <!-- 4×4 logo grid -->
@@ -684,7 +695,7 @@ Thanks for stopping by :3
             </div>
 
             <p class="fastsigns-blurb">
-              [Replace: Created and produced for display on FASTSIGNS New Rochelle's digital signage screens. These advertisements were designed to cycle in-store, combining motion graphics with branded messaging — built for attention in a high-traffic environment.]
+              Created and produced for display on FASTSIGNS New Rochelle's digital signage screens. These advertisements were designed to cycle in-store, combining motion graphics with branded messaging — built for attention in a high-traffic environment.
             </p>
 
             <div class="fastsigns-videos">
@@ -722,7 +733,7 @@ Thanks for stopping by :3
             <!-- TOP: Blurb + hero video side by side -->
             <div class="vhs-top">
               <p class="vhs-blurb">
-                [Replace: Custom VHS-style graphic overlays built from scratch — tracking lines, tape noise, color bleeding, and analog artifacts, all designed as reusable motion assets. Built for use in edits to add texture, era, and character to any footage.]
+                Custom VHS-style graphic overlays built from scratch — tracking lines, tape noise, color bleeding, and analog artifacts, all designed as reusable motion assets. Built for use in edits to add texture, era, and character to any footage.
               </p>
               <div class="vhs-hero-vid-block">
                 <div class="vhs-vid-label">OVERVIEW</div>
@@ -748,7 +759,7 @@ Thanks for stopping by :3
               <div class="vhs-datamosh-left">
                 <div class="vhs-datamosh-label">DATAMOSH</div>
                 <p class="vhs-datamosh-blurb">
-                  [Replace: Datamoshing is a glitch technique that corrupts video compression data to create painterly, melting frame transitions. I built this effect by hand — no plugins, just frame manipulation and intentional codec abuse.]
+                  Datamoshing is a glitch technique that corrupts video compression data to create painterly, melting frame transitions. I built this effect by hand — no plugins, just frame manipulation and intentional codec abuse.
                 </p>
               </div>
               <div class="vhs-datamosh-vid-block">
@@ -927,7 +938,7 @@ Thanks for stopping by :3
 
     <!-- IE status strip at bottom of homepage -->
     <div class="ie-home-status">
-      <span>✔ conor.style — Local intranet</span>
+      <span>✔ consistency.ink — Local intranet</span>
     </div>
   </div>
 
@@ -970,7 +981,7 @@ Thanks for stopping by :3
         <span class="cyt-meta-sep">|</span>
         <span class="cyt-meta-item">Videos: 15</span>
       </div>
-      <div class="cyt-channel-desc">filmmaker. designer. editor. making things feel real.</div>
+      <div class="cyt-channel-desc">filmmaker. designer. editor.</div>
     </div>
     <div class="cyt-channel-actions">
       <button class="cyt-subscribe-btn">Subscribe</button>
@@ -1040,8 +1051,8 @@ Thanks for stopping by :3
       <div class="cyt-sidebar-heading">About This Channel</div>
       <div class="cyt-sidebar-body">
         <p>filmmaker. designer. editor.</p>
-        <p>conor.style</p>
-        <p class="cyt-sidebar-joined">Joined: 2021</p>
+        <p>consistency.ink</p>
+        <p class="cyt-sidebar-joined">Joined: 2016</p>
       </div>
 
       <div class="cyt-sidebar-heading">Subscribers</div>
@@ -1164,7 +1175,7 @@ Thanks for stopping by :3
         <div class="waka-article-meta">
           <span class="waka-meta-item">📍 Yonkers, New York</span>
           <span class="waka-meta-sep">·</span>
-          <a class="waka-meta-link" href="http://conor.style" target="_blank">conor.style</a>
+          <a class="waka-meta-link" href="http://consistency.ink" target="_blank">consistency.ink</a>
           <span class="waka-meta-sep">·</span>
           <a class="waka-meta-link" href="mailto:conormcc.edits@gmail.com">conormcc.edits@gmail.com</a>
         </div>
@@ -1174,8 +1185,6 @@ Thanks for stopping by :3
       <p class="waka-lead" id="waka-summary">
         <strong>Conor McCutcheon</strong> (b. 2001) — Yonkers-based graphic designer and production specialist, currently at <a class="waka-wikilink" href="#">FASTSIGNS of New Rochelle</a>. I work across wide-format print, vinyl plotting, lamination, and brand design. BA in Graphic Design from <a class="waka-wikilink" href="#">SUNY Buffalo</a> (2023). Certified Notary Public, State of New York.
       </p>
-
-      <div class="waka-hatnote">ℹ️ &nbsp;<em>For his video work, see <a class="waka-wikilink" href="#">Consistencyy (YouTube channel)</a>. For portfolio projects, see <a class="waka-wikilink" href="#">Projects (My Files)</a>.</em></div>
 
       <!-- EXPERIENCE -->
       <h2 class="waka-section-h2" id="waka-experience">Career</h2>
@@ -1292,7 +1301,7 @@ Thanks for stopping by :3
     <aside class="waka-infobox-aside">
       <div class="waka-infobox-inner">
         <div class="waka-infobox-img-wrap">
-          <img src="assets/headshot.jpg" alt="Conor McCutcheon" class="waka-infobox-portrait" onerror="this.src='assets/user.png'" />
+          <img src="assets/headshot.png" alt="Conor McCutcheon" class="waka-infobox-portrait" onerror="this.src='assets/user.png'" />
           <div class="waka-infobox-img-caption">Conor McCutcheon, Yonkers, NY (2025)</div>
         </div>
 
