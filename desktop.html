@@ -1435,19 +1435,346 @@ Thanks for stopping by :3
   <!-- END #desktop-root -->
 
   <script src="assets/desktop.js" defer></script>
-  
-<!-- Mobile Mode Prompt -->
-<div id="mobile-mode-prompt" class="mobile-modal hidden">
-  <div class="mobile-modal-box">
-    <h2>Welcome to My Portfolio!</h2>
-    <p>This experience was designed for desktop, but luckily there's a mobile-optimized version just for you...</p>
 
-    <div class="mobile-modal-buttons">
-      <button class="primary" onclick="redirectToMobile()">📱 Mobile Version (Recommended)</button>
-      <button onclick="dismissMobileWarning()">💻 Desktop Anyway</button>
+<!-- ══════════════════════════════════════════════
+     MOBILE VIEW
+     Hidden on desktop, shown on phones/tablets
+     ══════════════════════════════════════════════ -->
+<div id="mobile-view">
+
+  <!-- Background video (single combined webm) -->
+  <video id="mobile-bg-video" autoplay loop muted playsinline>
+    <source src="assets/mobile.webm" type="video/webm" />
+  </video>
+
+  <!-- TOP BAR -->
+  <div class="mob-topbar">
+    <img src="assets/logo.svg" class="mob-topbar-logo" alt="C" />
+    <div class="mob-topbar-title">consistency.ink</div>
+    <div class="mob-topbar-time" id="mob-time">12:00 PM</div>
+  </div>
+
+  <!-- DESKTOP ICON GRID -->
+  <div class="mob-icon-grid">
+
+    <div class="mob-icon" onclick="mobOpenSheet('mob-sheet-about')">
+      <div class="mob-icon-img-wrap"><img src="assets/documents.png" alt="" /></div>
+      <div class="mob-icon-label">About Me</div>
+    </div>
+
+    <div class="mob-icon" onclick="mobOpenSheet('mob-sheet-projects')">
+      <div class="mob-icon-img-wrap"><img src="assets/folder.png" alt="" /></div>
+      <div class="mob-icon-label">My Projects</div>
+    </div>
+
+    <div class="mob-icon" onclick="mobOpenSheet('mob-sheet-youtube')">
+      <div class="mob-icon-img-wrap"><img src="assets/youtube.png" alt="" /></div>
+      <div class="mob-icon-label">YouTube</div>
+    </div>
+
+    <div class="mob-icon" onclick="window.open('https://www.consistency.ink/','_blank')">
+      <div class="mob-icon-img-wrap"><img src="assets/photoapp.png" alt="" /></div>
+      <div class="mob-icon-label">Photography</div>
+    </div>
+
+    <div class="mob-icon" onclick="mobOpenSheet('mob-sheet-player')">
+      <div class="mob-icon-img-wrap"><img src="assets/music.png" alt="" /></div>
+      <div class="mob-icon-label">Media Player</div>
+    </div>
+
+    <div class="mob-icon" onclick="window.open('https://www.consistency.ink/','_blank')">
+      <div class="mob-icon-img-wrap"><img src="assets/home.png" alt="" /></div>
+      <div class="mob-icon-label">Return Home</div>
+    </div>
+
+    <div class="mob-icon" onclick="mobOpenSheet('mob-sheet-ie')">
+      <div class="mob-icon-img-wrap"><img src="assets/ie.png" alt="" /></div>
+      <div class="mob-icon-label">Internet Explorer</div>
+    </div>
+
+    <div class="mob-icon" onclick="mobOpenSheet('mob-sheet-snake')">
+      <div class="mob-icon-img-wrap"><img src="assets/snek.png" alt="" /></div>
+      <div class="mob-icon-label">Snake</div>
+    </div>
+
+  </div>
+
+  <!-- TASKBAR -->
+  <div class="mob-taskbar">
+    <div class="mob-taskbar-start">
+      <img src="assets/logo.svg" alt="" />
+      <span>start</span>
+    </div>
+    <div class="mob-taskbar-tabs" id="mob-taskbar-tabs"></div>
+    <div class="mob-taskbar-time" id="mob-taskbar-time">12:00 PM</div>
+  </div>
+
+  <!-- ═══════════════ BOTTOM SHEETS ═══════════════ -->
+
+  <!-- Sheet: About Me (Wakapedia) -->
+  <div class="mob-sheet hidden" id="mob-sheet-about">
+    <div class="mob-sheet-handle-bar"></div>
+    <div class="mob-sheet-titlebar">
+      <img src="assets/documents.png" class="mob-sheet-icon" />
+      <span>About Me</span>
+      <button class="mob-sheet-close" onclick="mobCloseSheet('mob-sheet-about')">✕</button>
+    </div>
+    <div class="mob-sheet-content">
+      <div class="mob-about-header">
+        <img src="assets/profile-pic.jpg" class="mob-about-avatar" alt="Conor" />
+        <div>
+          <div class="mob-about-name">Conor McCutcheon</div>
+          <div class="mob-about-role">Graphic Designer · Video Editor · Production Specialist</div>
+          <div class="mob-about-location">📍 Yonkers, NY</div>
+        </div>
+      </div>
+      <div class="mob-section-heading">Bio</div>
+      <p class="mob-body-text">Graphic designer and production specialist at FASTSIGNS New Rochelle. Combines design, filmmaking, and print production into a single practice — from brand identity to wide-format vinyl installation.</p>
+      <div class="mob-section-heading">Skills</div>
+      <div class="mob-pill-row">
+        <span class="mob-pill">Adobe CC</span>
+        <span class="mob-pill">Wide-Format Print</span>
+        <span class="mob-pill">Vinyl & Plotter</span>
+        <span class="mob-pill">Brand Identity</span>
+        <span class="mob-pill">Lamination</span>
+        <span class="mob-pill">Installation</span>
+        <span class="mob-pill">Motion Graphics</span>
+        <span class="mob-pill">Prepress</span>
+      </div>
+      <div class="mob-section-heading">Contact</div>
+      <p class="mob-body-text">📧 <a href="mailto:conormcc.edits@gmail.com">conormcc.edits@gmail.com</a></p>
     </div>
   </div>
+
+  <!-- Sheet: My Projects -->
+  <div class="mob-sheet hidden" id="mob-sheet-projects">
+    <div class="mob-sheet-handle-bar"></div>
+    <div class="mob-sheet-titlebar">
+      <img src="assets/folder.png" class="mob-sheet-icon" />
+      <span>My Projects</span>
+      <button class="mob-sheet-close" onclick="mobCloseSheet('mob-sheet-projects')">✕</button>
+    </div>
+    <div class="mob-sheet-content">
+
+      <!-- Project: BDR -->
+      <div class="mob-bdr-header">
+        <img src="assets/bdr-logo.png" class="mob-bdr-logo" alt="BDR Logo" />
+        <div>
+          <div class="mob-bdr-title">Blanks Done Right</div>
+          <div class="mob-project-meta">Logo Design · Vinyl Graphics · Wide-Format Production · Installation</div>
+        </div>
+      </div>
+      <p class="mob-body-text">
+        Blanks Done Right came to me needing more than a logo — they needed a presence. I designed their identity from the ground up, then brought it into the physical world: printing, laminating, cutting, and installing the vinyl window graphics myself. Every edge, every corner, placed by hand.
+      </p>
+      <div class="mob-img-row">
+        <div class="mob-img-block-labeled">
+          <div class="mob-img-label">LOGO</div>
+          <img src="assets/bdr-logo-full.png" class="mob-project-img mob-lightbox-trigger" alt="BDR Logo" data-lightbox-src="assets/bdr-logo-full.png" data-lightbox-type="image" />
+        </div>
+        <div class="mob-img-block-labeled">
+          <div class="mob-img-label">PRODUCTION</div>
+          <video class="mob-project-img mob-bdr-video mob-lightbox-trigger" autoplay muted loop playsinline data-lightbox-src="assets/bdr-production.webm" data-lightbox-type="video">
+            <source src="assets/bdr-production.webm" type="video/webm" />
+          </video>
+        </div>
+      </div>
+      <div class="mob-img-block-labeled">
+        <div class="mob-img-label">INSTALLED</div>
+        <img src="assets/bdr-installed.png" class="mob-project-img-wide mob-lightbox-trigger" alt="Installed" data-lightbox-src="assets/bdr-installed.png" data-lightbox-type="image" />
+      </div>
+
+      <!-- Project: Jewel-Art -->
+      <div class="mob-jewel-header mob-section-top">
+        <img src="assets/jewel-logo.png" class="mob-jewel-logo" alt="Jewel-Art Inc. Logo" />
+        <div>
+          <div class="mob-jewel-title">Jewel-Art Inc.</div>
+          <div class="mob-project-meta">Logo Design · Window Graphics · Production · Installation</div>
+        </div>
+      </div>
+      <p class="mob-body-text">
+        Jewel-Art Inc. needed a refined presence worthy of their storefront. I designed their logo and two window graphics for the front of their store — balancing elegance with visibility. As with all my production work, I handled the full process: print, laminate, cut, and install.
+      </p>
+      <div class="mob-img-row">
+        <div class="mob-img-block-labeled">
+          <div class="mob-img-label">WINDOW GRAPHIC 1</div>
+          <img src="assets/jewel-window1.png" class="mob-project-img mob-lightbox-trigger" alt="Window 1" data-lightbox-src="assets/jewel-window1.png" data-lightbox-type="image" />
+        </div>
+        <div class="mob-img-block-labeled">
+          <div class="mob-img-label">WINDOW GRAPHIC 2</div>
+          <img src="assets/jewel-window2.png" class="mob-project-img mob-lightbox-trigger" alt="Window 2" data-lightbox-src="assets/jewel-window2.png" data-lightbox-type="image" />
+        </div>
+      </div>
+      <div class="mob-img-block-labeled">
+        <div class="mob-img-label">INSTALLED</div>
+        <img src="assets/jewel-installed.jpg" class="mob-project-img-wide mob-lightbox-trigger" alt="Installed" data-lightbox-src="assets/jewel-installed.jpg" data-lightbox-type="image" />
+      </div>
+
+      <!-- Project: LAST STOP -->
+      <div class="mob-section-heading mob-section-top">LAST STOP</div>
+      <p class="mob-body-text mob-project-meta">Concept Project · Cocktail Bar Identity System</p>
+      <p class="mob-body-text">LAST STOP is a concept project for a fictional cocktail bar where sophisticated craft meets raw urban energy. The identity system spans everything from the logo and menu design to loyalty cards, wayfinding signage, window graphics, and an external sign — built to feel like a real place you'd want to find.</p>
+      <div class="mob-img-row">
+        <img src="assets/ls-logo.png" class="mob-project-img mob-lightbox-trigger" alt="Logo" data-lightbox-src="assets/ls-logo.png" data-lightbox-type="image" />
+        <img src="assets/ls-menu.png" class="mob-project-img mob-lightbox-trigger" alt="Menu" data-lightbox-src="assets/ls-menu.png" data-lightbox-type="image" />
+        <img src="assets/ls-loyaltycard.png" class="mob-project-img mob-lightbox-trigger" alt="Loyalty Card" data-lightbox-src="assets/ls-loyaltycard.png" data-lightbox-type="image" />
+      </div>
+
+      <!-- Project: Various Work -->
+      <div class="mob-section-heading mob-section-top">Various Work</div>
+      <p class="mob-body-text">Logos, marks, and collateral across various clients and contexts.</p>
+      <div class="mob-logo-grid">
+        <img src="assets/various-logo-01.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-01.png" data-lightbox-type="image" /><img src="assets/various-logo-02.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-02.png" data-lightbox-type="image" />
+        <img src="assets/various-logo-03.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-03.png" data-lightbox-type="image" /><img src="assets/various-logo-04.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-04.png" data-lightbox-type="image" />
+        <img src="assets/various-logo-05.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-05.png" data-lightbox-type="image" /><img src="assets/various-logo-06.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-06.png" data-lightbox-type="image" />
+        <img src="assets/various-logo-07.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-07.png" data-lightbox-type="image" /><img src="assets/various-logo-08.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-08.png" data-lightbox-type="image" />
+        <img src="assets/various-logo-09.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-09.png" data-lightbox-type="image" /><img src="assets/various-logo-10.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-10.png" data-lightbox-type="image" />
+        <img src="assets/various-logo-11.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-11.png" data-lightbox-type="image" /><img src="assets/various-logo-12.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-12.png" data-lightbox-type="image" />
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Sheet: YouTube -->
+  <div class="mob-sheet hidden" id="mob-sheet-youtube">
+    <div class="mob-sheet-handle-bar"></div>
+    <div class="mob-sheet-titlebar">
+      <img src="assets/youtube.png" class="mob-sheet-icon" />
+      <span>Consistencyy</span>
+      <button class="mob-sheet-close" onclick="mobCloseSheet('mob-sheet-youtube')">✕</button>
+    </div>
+    <div class="mob-sheet-content">
+      <div class="mob-yt-header">
+        <img src="assets/profile-pic.jpg" class="mob-yt-avatar" alt="" />
+        <div>
+          <div class="mob-yt-name">Consistencyy</div>
+          <div class="mob-yt-subs">989 subscribers</div>
+        </div>
+        <a class="mob-yt-btn" href="https://www.youtube.com/@Consistencyy" target="_blank">Subscribe</a>
+      </div>
+      <div class="mob-section-heading">Latest Videos</div>
+      <div class="mob-video-list">
+        <div class="mob-video-item">
+          <div class="mob-video-label">VG Concept Pixel Art</div>
+          <div class="mob-iframe-wrap"><iframe src="https://www.youtube.com/embed/KNtCdSNIqMk" frameborder="0" allowfullscreen></iframe></div>
+        </div>
+        <div class="mob-video-item">
+          <div class="mob-video-label">Jean Dawson — POWER FREAKS</div>
+          <div class="mob-iframe-wrap"><iframe src="https://www.youtube.com/embed/Rlmc4TMsFGU" frameborder="0" allowfullscreen></iframe></div>
+        </div>
+        <div class="mob-video-item">
+          <div class="mob-video-label">the burn marks on my memories</div>
+          <div class="mob-iframe-wrap"><iframe src="https://www.youtube.com/embed/tUH_49myQI0" frameborder="0" allowfullscreen></iframe></div>
+        </div>
+        <div class="mob-video-item">
+          <div class="mob-video-label">KENDRICK LAMAR — FOR SALE?</div>
+          <div class="mob-iframe-wrap"><iframe src="https://www.youtube.com/embed/2Eay_dH9Hv4" frameborder="0" allowfullscreen></iframe></div>
+        </div>
+      </div>
+      <a class="mob-yt-full-link" href="https://www.youtube.com/@Consistencyy" target="_blank">▶ View Full Channel on YouTube</a>
+    </div>
+  </div>
+
+  <!-- Sheet: Media Player -->
+  <div class="mob-sheet hidden" id="mob-sheet-player">
+    <div class="mob-sheet-handle-bar"></div>
+    <div class="mob-sheet-titlebar">
+      <img src="assets/music.png" class="mob-sheet-icon" />
+      <span>Media Player</span>
+      <button class="mob-sheet-close" onclick="mobCloseSheet('mob-sheet-player')">✕</button>
+    </div>
+    <div class="mob-sheet-content">
+      <div class="mob-player">
+        <div class="mob-player-artwork" id="mob-artwork-wrap">
+          <img id="mob-cover-img" src="assets/cover-placeholder.png" class="mob-cover" />
+          <video id="mob-cover-video" class="mob-cover" muted autoplay loop style="display:none;"></video>
+        </div>
+        <div class="mob-player-title" id="mob-track-title">Track Title</div>
+        <audio id="mob-audio"></audio>
+        <div class="mob-player-transport">
+          <button class="mob-ctrl" id="mob-prev">⏮</button>
+          <button class="mob-ctrl mob-play" id="mob-play">▶</button>
+          <button class="mob-ctrl" id="mob-next">⏭</button>
+        </div>
+        <div class="mob-vol-row">
+          <span>🔈</span>
+          <input type="range" id="mob-vol" min="0" max="1" step="0.01" value="1" class="mob-vol-slider" />
+        </div>
+      </div>
+      <div class="mob-section-heading">Playlist</div>
+      <div class="mob-playlist" id="mob-playlist"></div>
+    </div>
+  </div>
+
+  <!-- Sheet: Internet Explorer (homepage + search) -->
+  <div class="mob-sheet hidden" id="mob-sheet-ie">
+    <div class="mob-sheet-handle-bar"></div>
+    <div class="mob-sheet-titlebar">
+      <img src="assets/ie.png" class="mob-sheet-icon" />
+      <span>Internet Explorer</span>
+      <button class="mob-sheet-close" onclick="mobCloseSheet('mob-sheet-ie')">✕</button>
+    </div>
+    <div class="mob-sheet-content">
+      <div class="mob-ie-logo"><img src="assets/moogollogo.png" alt="Moogol" /></div>
+      <div class="mob-ie-search">
+        <input type="text" id="mob-search-input" placeholder="Search the web..." />
+        <button id="mob-search-btn">Search</button>
+      </div>
+      <div class="mob-section-heading">Favorites</div>
+      <div class="mob-ie-favs">
+        <div class="mob-ie-fav" onclick="mobOpenSheet('mob-sheet-about')">
+          <img src="assets/about.png" /><span>About Me</span>
+        </div>
+        <div class="mob-ie-fav" onclick="mobOpenSheet('mob-sheet-youtube')">
+          <img src="assets/youtube.png" /><span>YouTube</span>
+        </div>
+        <div class="mob-ie-fav" onclick="mobOpenSheet('mob-sheet-projects')">
+          <img src="assets/folder.png" /><span>Projects</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sheet: Snake -->
+  <div class="mob-sheet hidden" id="mob-sheet-snake">
+    <div class="mob-sheet-handle-bar"></div>
+    <div class="mob-sheet-titlebar">
+      <img src="assets/videoapp.png" class="mob-sheet-icon" />
+      <span>Snake</span>
+      <button class="mob-sheet-close" onclick="mobCloseSheet('mob-sheet-snake')">✕</button>
+    </div>
+    <div class="mob-sheet-content mob-snake-content">
+      <div class="mob-snake-info">
+        <span>Score: <strong id="mob-snake-score">0</strong></span>
+        <span>Best: <strong id="mob-snake-best">0</strong></span>
+        <span id="mob-snake-status">Tap Start</span>
+      </div>
+      <canvas id="mob-snake-canvas" width="300" height="300"></canvas>
+      <div class="mob-snake-btns">
+        <button class="mob-snake-btn" id="mob-snake-start">▶ Start</button>
+        <button class="mob-snake-btn" id="mob-snake-reset">↺ Reset</button>
+      </div>
+      <!-- D-pad for touch -->
+      <div class="mob-dpad">
+        <button class="mob-dpad-btn" id="dpad-up" style="grid-area: up">▲</button>
+        <button class="mob-dpad-btn" id="dpad-left" style="grid-area: left">◀</button>
+        <button class="mob-dpad-btn" id="dpad-right" style="grid-area: right">▶</button>
+        <button class="mob-dpad-btn" id="dpad-down" style="grid-area: down">▼</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Lightbox -->
+  <div class="mob-lightbox hidden" id="mob-lightbox">
+    <button class="mob-lightbox-close" id="mob-lightbox-close" aria-label="Close">✕</button>
+    <div class="mob-lightbox-inner" id="mob-lightbox-inner"></div>
+  </div>
+
+  <!-- Sheet backdrop -->
+  <div class="mob-backdrop hidden" id="mob-backdrop" onclick="mobCloseAll()"></div>
+
 </div>
+<!-- END #mobile-view -->
 
 </body>
 </html>

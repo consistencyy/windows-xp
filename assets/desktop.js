@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Skip all desktop init on mobile
+  if (/Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || window.innerWidth <= 768) return;
+
   // SCALE DESKTOP TO FIT WINDOW WITH 4:3 ASPECT RATIO
   function scaleDesktop() {
     const root = document.getElementById("desktop-root");
@@ -675,6 +678,7 @@ browserWindow.addEventListener("mouseenter", () => parallaxPaused = true);
 browserWindow.addEventListener("mouseleave", () => parallaxPaused = false);
 
 document.addEventListener("mousemove", (e) => {
+  if (/Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || window.innerWidth <= 768) return;
   if (parallaxPaused) return;
 
   const vw = window.innerWidth;
@@ -1592,24 +1596,311 @@ function switchProjectFWindow(nextId) {
 }
 // Event listeners for project windows
 
+// ══════════════════════════════════════════════
+// MOBILE VIEW
+// ══════════════════════════════════════════════
 function isMobileDevice() {
   return /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || window.innerWidth <= 768;
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  if (isMobileDevice()) {
-    document.getElementById("mobile-mode-prompt").classList.remove("hidden");
+if (isMobileDevice()) {
+  document.getElementById("mobile-view").style.display = "flex";
+  document.getElementById("desktop-root").style.display = "none";
+  initMobile();
+}
+
+function initMobile() {
+
+  // Clock
+  function mobUpdateClock() {
+    const now = new Date();
+    const h = now.getHours() % 12 || 12;
+    const m = now.getMinutes().toString().padStart(2, "0");
+    const ampm = now.getHours() >= 12 ? "PM" : "AM";
+    const t = `${h}:${m} ${ampm}`;
+    const tEl = document.getElementById("mob-time");
+    const tbEl = document.getElementById("mob-taskbar-time");
+    if (tEl) tEl.textContent = t;
+    if (tbEl) tbEl.textContent = t;
   }
-});
+  setInterval(mobUpdateClock, 1000);
+  mobUpdateClock();
 
-function redirectToMobile() {
-  // Optional: Add a quick fade-out effect
-  document.body.style.opacity = '0';
-  setTimeout(() => {
-    window.location.href = 'mobile.html';
-  }, 300); // Adjust if you add fade-out CSS
+  // IE search
+  const mobSearchBtn = document.getElementById("mob-search-btn");
+  const mobSearchInput = document.getElementById("mob-search-input");
+  if (mobSearchBtn && mobSearchInput) {
+    mobSearchBtn.onclick = () => {
+      const q = mobSearchInput.value.trim();
+      if (q) window.open(`https://www.google.com/search?q=${encodeURIComponent(q)}`, "_blank");
+    };
+    mobSearchInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") mobSearchBtn.click();
+    });
+  }
+
+  // Mobile Media Player
+  const mobTracks = [
+    { src:"assets/music1.mp3", title:"CHRYSTAL - The Days (Notion Remix)", coverSrc:"assets/music1.webm", coverType:"video" },
+    { src:"assets/music2.mp3", title:"eery - Her",                          coverSrc:"assets/music2.webm", coverType:"video" },
+    { src:"assets/music3.mp3", title:"The Backseat Lovers - Slowing Down",   coverSrc:"assets/music3.webm", coverType:"video" }
+  ];
+
+  let mobCurrent = 0;
+  const mobAudio     = document.getElementById("mob-audio");
+  const mobCoverImg  = document.getElementById("mob-cover-img");
+  const mobCoverVid  = document.getElementById("mob-cover-video");
+  const mobTrackTitle= document.getElementById("mob-track-title");
+  const mobPlayBtn   = document.getElementById("mob-play");
+  const mobPrevBtn   = document.getElementById("mob-prev");
+  const mobNextBtn   = document.getElementById("mob-next");
+  const mobVolSlider = document.getElementById("mob-vol");
+  const mobPlaylistEl= document.getElementById("mob-playlist");
+
+  function mobBuildPlaylist() {
+    if (!mobPlaylistEl) return;
+    mobPlaylistEl.innerHTML = "";
+    mobTracks.forEach((t, i) => {
+      const el = document.createElement("div");
+      el.className = "mob-playlist-item" + (i === mobCurrent ? " active" : "");
+      el.innerHTML = `<span class="mob-playlist-num">${i+1}</span><span>${t.title}</span>`;
+      el.onclick = () => { mobLoadTrack(i); mobPlayTrack(); };
+      mobPlaylistEl.appendChild(el);
+    });
+  }
+
+  function mobLoadTrack(i) {
+    mobCurrent = (i + mobTracks.length) % mobTracks.length;
+    const t = mobTracks[mobCurrent];
+    if (mobAudio) mobAudio.src = t.src;
+    if (mobTrackTitle) mobTrackTitle.textContent = t.title;
+    if (t.coverType === "video" && mobCoverVid) {
+      mobCoverVid.src = t.coverSrc; mobCoverVid.style.display = "block";
+      if (mobCoverImg) mobCoverImg.style.display = "none";
+      mobCoverVid.play();
+    } else if (mobCoverImg) {
+      mobCoverImg.src = t.coverSrc; mobCoverImg.style.display = "block";
+      if (mobCoverVid) mobCoverVid.style.display = "none";
+    }
+    document.querySelectorAll(".mob-playlist-item").forEach((el, idx) => {
+      el.classList.toggle("active", idx === mobCurrent);
+    });
+  }
+
+  function mobPlayTrack() {
+    if (mobAudio) { mobAudio.play(); if (mobPlayBtn) mobPlayBtn.textContent = "⏸"; }
+  }
+
+  function mobTogglePlay() {
+    if (!mobAudio) return;
+    if (mobAudio.paused) mobPlayTrack();
+    else { mobAudio.pause(); if (mobPlayBtn) mobPlayBtn.textContent = "▶"; }
+  }
+
+  if (mobPlayBtn)   mobPlayBtn.onclick   = mobTogglePlay;
+  if (mobPrevBtn)   mobPrevBtn.onclick   = () => { mobLoadTrack(mobCurrent - 1); mobPlayTrack(); };
+  if (mobNextBtn)   mobNextBtn.onclick   = () => { mobLoadTrack(mobCurrent + 1); mobPlayTrack(); };
+  if (mobVolSlider) mobVolSlider.oninput = () => { if (mobAudio) mobAudio.volume = mobVolSlider.value; };
+  if (mobAudio)     mobAudio.onended     = () => { mobLoadTrack(mobCurrent + 1); mobPlayTrack(); };
+
+  document.getElementById("mob-sheet-player")?.addEventListener("mob-open", () => {
+    mobBuildPlaylist();
+    if (!mobAudio.src) mobLoadTrack(0);
+  });
+
+  // Mobile Snake
+  const mobCanvas  = document.getElementById("mob-snake-canvas");
+  const mobCtx     = mobCanvas ? mobCanvas.getContext("2d") : null;
+  const mobScoreEl = document.getElementById("mob-snake-score");
+  const mobBestEl  = document.getElementById("mob-snake-best");
+  const mobStatEl  = document.getElementById("mob-snake-status");
+  const MCELL = 15, MCOLS = 20, MROWS = 20;
+
+  let mSnake, mDir, mNextDir, mFood, mScore, mBest = 0, mRunning, mInterval;
+
+  function mobSnakeInit() {
+    mSnake = [{x:10,y:10},{x:9,y:10},{x:8,y:10}];
+    mDir = {x:1,y:0}; mNextDir = {x:1,y:0};
+    mScore = 0;
+    mRunning = false;
+    if (mobScoreEl) mobScoreEl.textContent = "0";
+    if (mobStatEl)  mobStatEl.textContent  = "Tap Start";
+    mobSpawnFood(); mobSnakeDraw();
+  }
+
+  function mobSpawnFood() {
+    do { mFood = {x:Math.floor(Math.random()*MCOLS), y:Math.floor(Math.random()*MROWS)}; }
+    while (mSnake.some(s => s.x===mFood.x && s.y===mFood.y));
+  }
+
+  function mobSnakeDraw() {
+    if (!mobCtx) return;
+    mobCtx.fillStyle = "#001800"; mobCtx.fillRect(0,0,MCOLS*MCELL,MROWS*MCELL);
+    mobCtx.fillStyle = "#ff3333"; mobCtx.shadowColor="#ff0000"; mobCtx.shadowBlur=6;
+    mobCtx.fillRect(mFood.x*MCELL+2, mFood.y*MCELL+2, MCELL-4, MCELL-4);
+    mobCtx.shadowBlur = 0;
+    mSnake.forEach((seg, i) => {
+      mobCtx.fillStyle = i===0 ? "#00ff44" : `hsl(${130-i*2},100%,${45-i*0.5}%)`;
+      mobCtx.shadowColor = i===0 ? "#00ff44" : "transparent"; mobCtx.shadowBlur = i===0 ? 5 : 0;
+      mobCtx.fillRect(seg.x*MCELL+1, seg.y*MCELL+1, MCELL-2, MCELL-2);
+    });
+    mobCtx.shadowBlur = 0;
+    if (!mRunning && mScore > 0) {
+      mobCtx.fillStyle="rgba(0,0,0,0.6)"; mobCtx.fillRect(0,0,MCOLS*MCELL,MROWS*MCELL);
+      mobCtx.fillStyle="#ff3333"; mobCtx.font="bold 20px 'Courier New'"; mobCtx.textAlign="center";
+      mobCtx.fillText("GAME OVER", MCOLS*MCELL/2, MROWS*MCELL/2-8);
+      mobCtx.fillStyle="#fff"; mobCtx.font="13px 'Courier New'";
+      mobCtx.fillText(`Score: ${mScore}`, MCOLS*MCELL/2, MROWS*MCELL/2+12);
+      mobCtx.textAlign="left";
+    }
+  }
+
+  function mobSnakeTick() {
+    mDir = {...mNextDir};
+    const head = {x: mSnake[0].x+mDir.x, y: mSnake[0].y+mDir.y};
+    if (head.x<0||head.x>=MCOLS||head.y<0||head.y>=MROWS||mSnake.some(s=>s.x===head.x&&s.y===head.y)) {
+      clearInterval(mInterval); mRunning=false;
+      if (mScore>mBest){mBest=mScore; if(mobBestEl)mobBestEl.textContent=mBest;}
+      if (mobStatEl) mobStatEl.textContent="Game Over!";
+      mobSnakeDraw(); return;
+    }
+    mSnake.unshift(head);
+    if (head.x===mFood.x && head.y===mFood.y) {
+      mScore+=10; if(mobScoreEl)mobScoreEl.textContent=mScore; mobSpawnFood();
+    } else { mSnake.pop(); }
+    mobSnakeDraw();
+  }
+
+  const mobStartBtn = document.getElementById("mob-snake-start");
+  const mobResetBtn = document.getElementById("mob-snake-reset");
+
+  if (mobStartBtn) mobStartBtn.onclick = () => {
+    mobSnakeInit(); mRunning=true;
+    if(mobStatEl)mobStatEl.textContent="Running";
+    mobStartBtn.textContent="Running..."; mobStartBtn.disabled=true;
+    clearInterval(mInterval); mInterval=setInterval(mobSnakeTick,130);
+  };
+  if (mobResetBtn) mobResetBtn.onclick = () => { clearInterval(mInterval); mobSnakeInit(); if(mobStartBtn){mobStartBtn.textContent="▶ Start";mobStartBtn.disabled=false;} };
+
+  // D-pad controls
+  const dirMap = { dpad_up:{x:0,y:-1}, dpad_left:{x:-1,y:0}, dpad_right:{x:1,y:0}, dpad_down:{x:0,y:1} };
+  ["up","left","right","down"].forEach(d => {
+    const btn = document.getElementById(`dpad-${d}`);
+    if (btn) btn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      const nd = dirMap[`dpad_${d}`];
+      if (nd.x !== -mDir.x || nd.y !== -mDir.y) mNextDir = nd;
+    }, { passive: false });
+  });
+
+  if (mobCtx) mobSnakeInit();
 }
 
-function dismissMobileWarning() {
-  document.getElementById("mobile-mode-prompt").classList.add("hidden");
+// Sheet open/close (used by inline onclick too)
+function mobOpenSheet(id) {
+  document.querySelectorAll(".mob-sheet").forEach(s => s.classList.add("hidden"));
+  const sheet = document.getElementById(id);
+  if (sheet) {
+    sheet.classList.remove("hidden");
+    sheet.dispatchEvent(new Event("mob-open"));
+  }
+  const bd = document.getElementById("mob-backdrop");
+  if (bd) bd.classList.remove("hidden");
+
+  // Build player playlist on open
+  if (id === "mob-sheet-player") {
+    const mobPlaylistEl = document.getElementById("mob-playlist");
+    const mobTracks = [
+      { title:"CHRYSTAL - The Days (Notion Remix)" },
+      { title:"eery - Her" },
+      { title:"The Backseat Lovers - Slowing Down" }
+    ];
+    if (mobPlaylistEl && mobPlaylistEl.children.length === 0) {
+      mobTracks.forEach((t, i) => {
+        const el = document.createElement("div");
+        el.className = "mob-playlist-item";
+        el.innerHTML = `<span class="mob-playlist-num">${i+1}</span><span>${t.title}</span>`;
+        mobPlaylistEl.appendChild(el);
+      });
+    }
+  }
 }
+
+function mobCloseSheet(id) {
+  const sheet = document.getElementById(id);
+  if (sheet) sheet.classList.add("hidden");
+  const bd = document.getElementById("mob-backdrop");
+  if (bd) bd.classList.add("hidden");
+}
+
+function mobCloseAll() {
+  document.querySelectorAll(".mob-sheet").forEach(s => s.classList.add("hidden"));
+  const bd = document.getElementById("mob-backdrop");
+  if (bd) bd.classList.add("hidden");
+}
+
+// ══════════════════════════════════════════════
+// MOBILE LIGHTBOX
+// Wired via event delegation so it works for
+// any .mob-lightbox-trigger image/video, even
+// those inside sheets opened after page load.
+// ══════════════════════════════════════════════
+(function initMobLightbox() {
+  const lightbox    = document.getElementById("mob-lightbox");
+  const lbInner     = document.getElementById("mob-lightbox-inner");
+  const lbClose     = document.getElementById("mob-lightbox-close");
+  if (!lightbox || !lbInner || !lbClose) return;
+
+  function openLightbox(src, type) {
+    lbInner.innerHTML = "";
+    if (type === "video") {
+      const vid = document.createElement("video");
+      vid.src = src;
+      vid.controls = true;
+      vid.autoplay = true;
+      vid.loop = true;
+      vid.playsInline = true;
+      lbInner.appendChild(vid);
+    } else {
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = "";
+      lbInner.appendChild(img);
+    }
+    lightbox.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeLightbox() {
+    lightbox.classList.add("hidden");
+    lbInner.innerHTML = "";
+    document.body.style.overflow = "";
+  }
+
+  // Delegate clicks on the document so it catches
+  // triggers inside any sheet regardless of open state
+  document.addEventListener("click", function(e) {
+    const trigger = e.target.closest(".mob-lightbox-trigger");
+    if (trigger) {
+      e.stopPropagation();
+      const src  = trigger.dataset.lightboxSrc;
+      const type = trigger.dataset.lightboxType || "image";
+      if (src) openLightbox(src, type);
+    }
+  }, true);
+
+  lbClose.addEventListener("click", closeLightbox);
+
+  // Tap outside the media to close
+  lightbox.addEventListener("click", function(e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+
+  // Swipe down to dismiss
+  let touchStartY = 0;
+  lightbox.addEventListener("touchstart", (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
+  lightbox.addEventListener("touchend", (e) => {
+    if (e.changedTouches[0].clientY - touchStartY > 60) closeLightbox();
+  }, { passive: true });
+})();
+
