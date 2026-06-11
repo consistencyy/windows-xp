@@ -795,12 +795,20 @@ const resumeWin        = document.getElementById("resume-window");
 const resumeIcon       = document.getElementById("resume-icon");
 const resumeClose      = document.getElementById("resume-close");
 const resumeMinBtn     = document.getElementById("resume-minimize");
+const resumeMaxBtn     = document.getElementById("resume-maximize");
 const resumeTab        = document.getElementById("resume-tab");
 const resumeDragHandle = document.getElementById("resume-drag-handle");
 
 let isResumeDragging  = false;
 let resumeOffsetX     = 0, resumeOffsetY = 0;
 let isResumeMinimized = false;
+let isResumeMaximized = false;
+
+// Saved windowed geometry (restored when un-maximizing)
+let resumeSavedStyle = {};
+
+// Desktop canvas is always 1024×768; taskbar is 40px at bottom.
+const RESUME_MAX = { left: 0, top: 0, width: 1024, height: 728 };
 
 function openResume() {
   bringToFront(resumeWin);
@@ -810,9 +818,12 @@ function openResume() {
 }
 
 function closeResume() {
+  // If maximized, restore CSS class first so saved geometry is clean
+  if (isResumeMaximized) unmaximizeResume(false);
   resumeWin.style.display = "none";
   if (resumeTab) resumeTab.style.display = "none";
   isResumeMinimized = false;
+  isResumeMaximized = false;
 }
 
 function minimizeResume() {
@@ -821,8 +832,47 @@ function minimizeResume() {
   if (resumeTab) resumeTab.style.display = "inline-flex";
 }
 
+function maximizeResume() {
+  // Save current windowed position/size from inline styles (or CSS defaults)
+  resumeSavedStyle = {
+    left:   resumeWin.style.left,
+    top:    resumeWin.style.top,
+    width:  resumeWin.style.width,
+    height: resumeWin.style.height,
+  };
+  resumeWin.style.left   = RESUME_MAX.left   + "px";
+  resumeWin.style.top    = RESUME_MAX.top    + "px";
+  resumeWin.style.width  = RESUME_MAX.width  + "px";
+  resumeWin.style.height = RESUME_MAX.height + "px";
+  isResumeMaximized = true;
+  if (resumeMaxBtn) resumeMaxBtn.textContent = "❐"; // restore icon
+  bringToFront(resumeWin);
+}
+
+function unmaximizeResume(refocus = true) {
+  resumeWin.style.left   = resumeSavedStyle.left   || "";
+  resumeWin.style.top    = resumeSavedStyle.top    || "";
+  resumeWin.style.width  = resumeSavedStyle.width  || "";
+  resumeWin.style.height = resumeSavedStyle.height || "";
+  isResumeMaximized = false;
+  if (resumeMaxBtn) resumeMaxBtn.textContent = "□";
+  if (refocus) bringToFront(resumeWin);
+}
+
+function toggleResumeMaximize() {
+  if (isResumeMaximized) unmaximizeResume();
+  else maximizeResume();
+}
+
 if (resumeClose)  resumeClose.onclick  = closeResume;
 if (resumeMinBtn) resumeMinBtn.onclick = minimizeResume;
+if (resumeMaxBtn) resumeMaxBtn.onclick = toggleResumeMaximize;
+
+// Double-click title bar to maximize/restore (standard Windows behaviour)
+resumeDragHandle.addEventListener("dblclick", (e) => {
+  if (e.target.closest(".readme-win-btns")) return;
+  toggleResumeMaximize();
+});
 
 if (resumeTab) {
   resumeTab.onclick = () => {
@@ -840,14 +890,16 @@ if (resumeIcon) {
   resumeIcon.addEventListener("dblclick", openResume);
 }
 
-// Scale-aware drag for resume window
+// Scale-aware drag — disabled while maximized
 (function() {
   function getScale() {
     const root = document.getElementById("desktop-root");
     return root ? (new DOMMatrix(getComputedStyle(root).transform)).a || 1 : 1;
   }
   resumeDragHandle.addEventListener("mousedown", (e) => {
+    // Don't drag if clicking buttons or while maximized
     if (e.target.closest(".readme-win-btns")) return;
+    if (isResumeMaximized) return;
     const scale = getScale();
     const rect  = resumeWin.getBoundingClientRect();
     resumeOffsetX = (e.clientX - rect.left) / scale;
