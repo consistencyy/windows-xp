@@ -5657,3 +5657,51 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   margin-bottom: 3px;
 }
 
+
+/* ==============================
+   RESUME WINDOW
+   ============================== */
+.resume-window {
+  position: absolute;
+  width: 660px;
+  height: 520px;
+  top: 8%;
+  left: 18%;
+  background: #ece9d8;
+  border: 2px solid #0054e3;
+  box-shadow: 4px 4px 0 #000, inset 1px 1px 0 #fff;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  font-family: Tahoma, sans-serif;
+  overflow: hidden;
+}
+
+.resume-window .title-bar {
+  background: linear-gradient(to bottom, #0058ee 0%, #3a93ff 4%, #2076e0 8%, #1260c4 92%, #0038a8 100%);
+  color: #fff;
+  padding: 4px 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 28px;
+  flex-shrink: 0;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.4);
+  cursor: default;
+  user-select: none;
+}
+
+.resume-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fff;
+}
+
+#resume-iframe {
+  width: 100%;
+  flex: 1;
+  border: none;
+  display: block;
+}

@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "#file-explorer-window",
     "#music-player",
     "#readme-window",
+    "#resume-window",
     "#snake-window",
   ].forEach(sel => {
     const el = document.querySelector(sel);
@@ -786,6 +787,92 @@ function stopDragReadme() {
 if (readmeIcon) {
   readmeIcon.ondblclick = openReadme;
 }
+
+// ==============================
+// RESUME WINDOW
+// ==============================
+const resumeWin        = document.getElementById("resume-window");
+const resumeIcon       = document.getElementById("resume-icon");
+const resumeClose      = document.getElementById("resume-close");
+const resumeMinBtn     = document.getElementById("resume-minimize");
+const resumeTab        = document.getElementById("resume-tab");
+const resumeDragHandle = document.getElementById("resume-drag-handle");
+
+let isResumeDragging  = false;
+let resumeOffsetX     = 0, resumeOffsetY = 0;
+let isResumeMinimized = false;
+
+function openResume() {
+  bringToFront(resumeWin);
+  resumeWin.style.display = "flex";
+  if (resumeTab) resumeTab.style.display = "inline-flex";
+  isResumeMinimized = false;
+}
+
+function closeResume() {
+  resumeWin.style.display = "none";
+  if (resumeTab) resumeTab.style.display = "none";
+  isResumeMinimized = false;
+}
+
+function minimizeResume() {
+  resumeWin.style.display = "none";
+  isResumeMinimized = true;
+  if (resumeTab) resumeTab.style.display = "inline-flex";
+}
+
+if (resumeClose)  resumeClose.onclick  = closeResume;
+if (resumeMinBtn) resumeMinBtn.onclick = minimizeResume;
+
+if (resumeTab) {
+  resumeTab.onclick = () => {
+    if (isResumeMinimized || resumeWin.style.display === "none") {
+      resumeWin.style.display = "flex";
+      isResumeMinimized = false;
+      bringToFront(resumeWin);
+    } else {
+      minimizeResume();
+    }
+  };
+}
+
+if (resumeIcon) {
+  resumeIcon.addEventListener("dblclick", openResume);
+}
+
+// Scale-aware drag for resume window
+(function() {
+  function getScale() {
+    const root = document.getElementById("desktop-root");
+    return root ? (new DOMMatrix(getComputedStyle(root).transform)).a || 1 : 1;
+  }
+  resumeDragHandle.addEventListener("mousedown", (e) => {
+    if (e.target.closest(".readme-win-btns")) return;
+    const scale = getScale();
+    const rect  = resumeWin.getBoundingClientRect();
+    resumeOffsetX = (e.clientX - rect.left) / scale;
+    resumeOffsetY = (e.clientY - rect.top)  / scale;
+    isResumeDragging = true;
+    document.addEventListener("mousemove", onResumeDrag);
+    document.addEventListener("mouseup",   stopResumeDrag);
+    e.preventDefault();
+  });
+  function onResumeDrag(e) {
+    if (!isResumeDragging) return;
+    const scale    = getScale();
+    const rootRect = document.getElementById("desktop-root").getBoundingClientRect();
+    resumeWin.style.left = `${(e.clientX - rootRect.left) / scale - resumeOffsetX}px`;
+    resumeWin.style.top  = `${(e.clientY - rootRect.top)  / scale - resumeOffsetY}px`;
+  }
+  function stopResumeDrag() {
+    isResumeDragging = false;
+    document.removeEventListener("mousemove", onResumeDrag);
+    document.removeEventListener("mouseup",   stopResumeDrag);
+  }
+})();
+// ==============================
+// END RESUME WINDOW
+// ==============================
 
 function openConsistency() {
   bringToFront(document.getElementById("browser-window"));

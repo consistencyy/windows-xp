@@ -34,6 +34,10 @@
         <img alt="" src="assets/folder.png" />
         <div class="icon-name">Projects</div>
       </div>
+      <div class="icon resume-icon" id="resume-icon">
+        <img alt="" src="assets/resume.png" />
+        <div class="icon-name">Resume</div>
+      </div>
       <div class="icon consistency" onclick="openConsistency()">
         <img alt="" src="assets/youtube.png" />
         <div class="icon-name">Consistency</div>
@@ -134,6 +138,9 @@
   </div>
   <div class="open-tab" id="projects-tab" style="display: none;">
   <img src="assets/project.png" />Projects
+  </div>
+  <div class="open-tab" id="resume-tab" style="display: none;">
+    <img src="assets/Resume.png" />Resume
   </div>
   <div class="open-tab" id="snake-tab" style="display: none;">
     <img src="assets/snek.png" />Snake
@@ -248,6 +255,38 @@ Thanks for stopping by :3
   </div>
 </div>
 <!-- END README.TXT WINDOW -->
+
+<!-- RESUME WINDOW -->
+<div class="resume-window window" id="resume-window" style="display: none;">
+  <div class="title-bar" id="resume-drag-handle">
+    <div class="readme-titlebar-left">
+      <img src="assets/resume.png" class="readme-title-icon" alt="" />
+      <span>Conor_McCutcheon_Resume.pdf</span>
+    </div>
+    <div class="readme-win-btns">
+      <button class="readme-win-btn readme-win-min" id="resume-minimize">─</button>
+      <button class="readme-win-btn readme-win-close" id="resume-close">✕</button>
+    </div>
+  </div>
+  <div class="readme-menubar">
+    <span class="readme-menu-item">File</span>
+    <span class="readme-menu-item">Edit</span>
+    <span class="readme-menu-item">View</span>
+    <span class="readme-menu-item">Help</span>
+  </div>
+  <div class="resume-body">
+    <iframe
+      id="resume-iframe"
+      src="assets/resume2026.pdf"
+      title="Resume"
+    ></iframe>
+  </div>
+  <div class="readme-statusbar" style="padding: 2px 8px; font-size: 11px; background: #d4d0c8; border-top: 1px solid #808080; display: flex; justify-content: space-between;">
+    <span>Conor McCutcheon — Resume</span>
+    <span>PDF</span>
+  </div>
+</div>
+<!-- END RESUME WINDOW -->
 
 <!-- MUSIC PLAYER WINDOW -->
 <div class="music-player" id="music-player" style="display: none;">
