@@ -844,6 +844,7 @@ function maximizeResume() {
   resumeWin.style.top    = RESUME_MAX.top    + "px";
   resumeWin.style.width  = RESUME_MAX.width  + "px";
   resumeWin.style.height = RESUME_MAX.height + "px";
+  resumeWin.classList.add("is-maximized");
   isResumeMaximized = true;
   if (resumeMaxBtn) resumeMaxBtn.textContent = "❐"; // restore icon
   bringToFront(resumeWin);
@@ -854,6 +855,7 @@ function unmaximizeResume(refocus = true) {
   resumeWin.style.top    = resumeSavedStyle.top    || "";
   resumeWin.style.width  = resumeSavedStyle.width  || "";
   resumeWin.style.height = resumeSavedStyle.height || "";
+  resumeWin.classList.remove("is-maximized");
   isResumeMaximized = false;
   if (resumeMaxBtn) resumeMaxBtn.textContent = "□";
   if (refocus) bringToFront(resumeWin);
@@ -1004,10 +1006,10 @@ function showWorkPanel(panelId, btn) {
   if (panel) panel.style.display = 'block';
   if (btn) btn.classList.add('active');
 
-  // When switching to Graphic Design, always land on BDR tab
+  // When switching to Graphic Design, always land on Signage tab
   if (panelId === 'work-gfx') {
     const firstGfxBtn = panel.querySelector('.gfx-subtab');
-    showGfxPanel('gfx-bdr', firstGfxBtn);
+    showGfxPanel('gfx-signage', firstGfxBtn);
   }
 
   // When switching to Motion Graphics, always land on FASTSIGNS tab
@@ -1024,6 +1026,51 @@ function showGfxPanel(panelId, btn) {
   if (panel) panel.style.display = 'block';
   if (btn) btn.classList.add('active');
 }
+
+// ==============================
+// DESKTOP LIGHTBOX
+// ==============================
+(function initDtLightbox() {
+  const lb       = document.getElementById('dt-lightbox');
+  const lbImg    = document.getElementById('dt-lightbox-img');
+  const lbClose  = document.getElementById('dt-lightbox-close');
+  const lbBack   = document.getElementById('dt-lightbox-backdrop');
+  if (!lb || !lbImg) return;
+
+  function openDtLightbox(src) {
+    lbImg.src = src;
+    lb.style.display = 'flex';
+    // Prevent desktop-root scroll-through
+    document.getElementById('desktop-root').style.overflow = 'hidden';
+  }
+
+  function closeDtLightbox() {
+    lb.style.display = 'none';
+    lbImg.src = '';
+    document.getElementById('desktop-root').style.overflow = 'hidden';
+  }
+
+  // Event delegation — catches triggers inside any panel
+  document.addEventListener('click', function(e) {
+    const trigger = e.target.closest('.dt-lightbox-trigger');
+    if (trigger) {
+      e.stopPropagation();
+      const src = trigger.dataset.src || trigger.src;
+      if (src) openDtLightbox(src);
+    }
+  }, true);
+
+  if (lbClose) lbClose.addEventListener('click', closeDtLightbox);
+  if (lbBack)  lbBack.addEventListener('click', closeDtLightbox);
+
+  // Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && lb.style.display !== 'none') closeDtLightbox();
+  });
+})();
+// ==============================
+// END DESKTOP LIGHTBOX
+// ==============================
 
 function showMotionPanel(panelId, btn) {
   document.querySelectorAll('.motion-panel').forEach(p => p.style.display = 'none');
@@ -1343,7 +1390,7 @@ document.getElementById("open-youtube")?.addEventListener("click", () => {
 });
 
 document.getElementById("open-photos")?.addEventListener("click", () => {
-  window.open("https://www.consistency.ink/", "_blank");
+  window.open("https://mccutcheon.myportfolio.com", "_blank");
   closeStartMenu();
 });
 

@@ -3145,17 +3145,17 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 /* Home-specific override (renamed for clarity) */
 /* Fullscreen Project Window Styles */
 .project-fwindow {
-  position: fixed; /* was absolute — fixed ensures it stays in view */
+  position: absolute; /* absolute = inside #desktop-root, not viewport */
   top: 0;
   left: 0;
-  width: 100%;
-  height: calc(100% - 40px); /* leave space for taskbar */
+  width: 1024px;      /* exact desktop canvas width — no bleed */
+  height: 728px;      /* 768px minus 40px taskbar */
   background: white;
-  border: 2px solid #000;
-  z-index: 100; /* managed by bringToFront() */ /* above file explorer and others */
+  border: none;       /* flush to canvas edges, no sliver */
+  z-index: 100;       /* managed by bringToFront() */
   display: none;
   flex-direction: column;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+  box-shadow: none;
   font-family: Calibri, sans-serif;
 }
 
@@ -3377,14 +3377,45 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   align-items: stretch;
 }
 
+/* Two-column layout: text left, headshot right */
+.about-layout {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-height: 100%;
+}
+
 .about-inner {
   position: relative;
   z-index: 2;
-  padding: 44px 56px;
-  max-width: 780px;
+  padding: 44px 48px 44px 56px;
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+/* Headshot column — same height as text block, top aligned */
+.about-headshot-wrap {
+  flex-shrink: 0;
+  width: 260px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 44px 40px 44px 0;
+}
+
+.about-headshot {
+  width: 220px;
+  height: auto;
+  max-height: 340px;
+  object-fit: contain;
+  border: 2px solid rgba(74, 158, 255, 0.25);
+  box-shadow: 0 0 32px rgba(74, 158, 255, 0.15), inset 0 0 0 1px rgba(255,255,255,0.05);
+  display: block;
+  filter: grayscale(20%);
 }
 
 .about-tag {
@@ -3482,6 +3513,9 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   background: #111;
   border-bottom: 2px solid #333;
   flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .gfx-subtab {
@@ -3502,8 +3536,52 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   background: #000;
   color: #fff;
   font-weight: bold;
-  border-bottom: 2px solid #fff;
-  margin-bottom: -2px;
+  position: relative;
+}
+
+/* Per-tab colored top indicator — lives in the sticky tab bar */
+.gfx-subtab[data-color="rgb"].active {
+  border-top: 3px solid #b060ff; /* fallback solid; gradient via pseudo */
+}
+.gfx-subtab[data-color="rgb"].active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #ff0040, #ff8000, #ffff00, #00ff80, #0080ff, #8000ff);
+}
+
+.gfx-subtab[data-color="gold"].active {
+  border-top: 3px solid #c9a84c;
+}
+.gfx-subtab[data-color="gold"].active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #c9a84c, #f0d080, #c9a84c);
+}
+
+.gfx-subtab[data-color="red"].active {
+  border-top: 3px solid #e8350a;
+}
+.gfx-subtab[data-color="red"].active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #e8350a, #ff6040, #e8350a);
+}
+
+.gfx-subtab[data-color="silver"].active {
+  border-top: 3px solid #aaa;
+}
+.gfx-subtab[data-color="silver"].active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #666, #ccc, #666);
 }
 
 .gfx-panel {
@@ -3520,6 +3598,16 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   inset: 0;
   background: radial-gradient(ellipse at 70% 30%, #1a0533 0%, #0a0015 40%, #000005 100%);
   overflow-y: auto;
+}
+
+/* RGB indicator line at top — matches Jewel's gold line pattern */
+.bdr-bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(to right, #ff0040, #ff8000, #ffff00, #00ff80, #0080ff, #8000ff, #ff0040);
+  z-index: 10;
 }
 
 /* Make the gfx-panel itself a positioning context for full-bleed */
@@ -3635,10 +3723,11 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 
 .bdr-img-label {
   font-family: 'Courier New', Courier, monospace;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: #8060c0;
+  color: #c090ff;
+  font-weight: bold;
 }
 
 .bdr-img,
@@ -3793,6 +3882,16 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   overflow: hidden;
 }
 
+/* Red/crimson indicator line — matches Last Stop's accent */
+.ls-bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(to right, transparent, #e8350a, #ff6040, #e8350a, transparent);
+  z-index: 10;
+}
+
 /* Concrete texture overlay */
 .ls-texture {
   position: absolute;
@@ -3901,6 +4000,17 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 .various-bg {
   min-height: 100%;
   background: #080808;
+  position: relative;
+}
+
+/* Silver/white indicator line — clean, minimal */
+.various-bg::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(to right, transparent, #666, #ccc, #666, transparent);
+  z-index: 10;
 }
 
 .various-content {
@@ -5713,3 +5823,341 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 #resume-maximize:hover {
   background: linear-gradient(to bottom, #e8f0ff, #c0d8ff);
 }
+
+/* More breathing room between resume window title buttons */
+.resume-window .readme-win-btns {
+  gap: 6px;
+}
+
+/* When maximized: flush to canvas, no border sliver */
+.resume-window.is-maximized {
+  border: none;
+  box-shadow: none;
+}
+
+/* ════════════════════════════════════════════════
+   NEW CATEGORY TAB COLORS
+   amber = Signage, cyan = Identity, lime = Vehicle
+   ════════════════════════════════════════════════ */
+.gfx-subtab[data-color="amber"].active {
+  border-top: 3px solid #ff8f00;
+}
+.gfx-subtab[data-color="amber"].active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #e65100, #ff8f00, #ffca28, #ff8f00, #e65100);
+}
+
+.gfx-subtab[data-color="cyan"].active {
+  border-top: 3px solid #00bcd4;
+}
+.gfx-subtab[data-color="cyan"].active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #006064, #00bcd4, #80deea, #00bcd4, #006064);
+}
+
+.gfx-subtab[data-color="lime"].active {
+  border-top: 3px solid #76ff03;
+}
+.gfx-subtab[data-color="lime"].active::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #33691e, #76ff03, #ccff90, #76ff03, #33691e);
+}
+
+/* ════════════════════════════════════════════════
+   CATEGORY BACKGROUNDS
+   ════════════════════════════════════════════════ */
+.cat-bg {
+  min-height: 100%;
+  padding: 32px 40px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.cat-bg--amber {
+  background: #0a0800;
+  color: #f0e8d0;
+}
+.cat-bg--amber::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #e65100, #ff8f00, #ffca28, #ff8f00, #e65100);
+}
+
+.cat-bg--cyan {
+  background: #000a0c;
+  color: #d0f0f4;
+}
+.cat-bg--cyan::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #006064, #00bcd4, #80deea, #00bcd4, #006064);
+}
+
+.cat-bg--lime {
+  background: #020a00;
+  color: #d8f0c8;
+}
+.cat-bg--lime::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(to right, #33691e, #76ff03, #ccff90, #76ff03, #33691e);
+}
+
+/* gfx-panel must be a positioning context for cat-bg::before */
+#gfx-signage,
+#gfx-identity,
+#gfx-vehicle {
+  position: relative;
+  overflow: hidden;
+}
+
+.cat-header {
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding-bottom: 16px;
+  margin-bottom: 4px;
+}
+
+.cat-title {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 4px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.cat-subtitle {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #666;
+  margin: 0;
+  font-family: Tahoma, sans-serif;
+}
+
+/* ════════════════════════════════════════════════
+   PROJECT CARDS
+   ════════════════════════════════════════════════ */
+.proj-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-top: 2px solid var(--proj-color, #444);
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  overflow: hidden;
+}
+
+.proj-card-header {
+  padding: 16px 20px 12px;
+  background: rgba(0,0,0,0.3);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+}
+
+/* Gradient line at top of each card header */
+.proj-card-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--proj-gradient, #444);
+}
+
+.proj-card-label {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 4px;
+}
+
+.proj-card-name {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 4px;
+  letter-spacing: 0.5px;
+}
+
+.proj-card-meta {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #666;
+  margin: 0;
+  font-family: Tahoma, sans-serif;
+}
+
+.proj-card-blurb {
+  font-family: Calibri, sans-serif;
+  font-size: 13px;
+  color: #888;
+  line-height: 1.6;
+  margin: 0;
+  padding: 14px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+/* Image grid inside a project card */
+.proj-card-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: rgba(0,0,0,0.4);
+  padding: 2px;
+}
+
+.proj-card-item {
+  display: flex;
+  flex-direction: column;
+  background: #0a0a0a;
+}
+
+.proj-card-item--wide {
+  grid-column: span 2;
+}
+
+.proj-card-item-label {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #555;
+  padding: 6px 10px 4px;
+  flex-shrink: 0;
+}
+
+.proj-card-img {
+  width: 100%;
+  height: auto;
+  max-height: 220px;
+  object-fit: contain;
+  display: block;
+  background: #0a0a0a;
+  cursor: zoom-in;
+  transition: opacity 0.15s;
+}
+.proj-card-img:hover { opacity: 0.85; }
+
+/* Logo grid inside Various Work card */
+.proj-card-logo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  background: rgba(0,0,0,0.4);
+  padding: 2px;
+}
+
+.proj-logo-cell {
+  aspect-ratio: 1;
+  width: 100%;
+  object-fit: contain;
+  background: #0d0d0d;
+  padding: 10px;
+  cursor: zoom-in;
+  transition: opacity 0.15s;
+  display: block;
+}
+.proj-logo-cell:hover { opacity: 0.8; }
+
+/* ════════════════════════════════════════════════
+   DESKTOP LIGHTBOX
+   ════════════════════════════════════════════════ */
+#dt-lightbox {
+  position: absolute;
+  inset: 0;
+  z-index: 99000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#dt-lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.88);
+  cursor: pointer;
+}
+
+#dt-lightbox-content {
+  position: relative;
+  z-index: 1;
+  max-width: 90%;
+  max-height: 88%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#dt-lightbox-img {
+  max-width: 100%;
+  max-height: 88vh;
+  object-fit: contain;
+  display: block;
+  box-shadow: 0 0 60px rgba(0,0,0,0.8);
+  background: #111;
+}
+
+#dt-lightbox-close {
+  position: absolute;
+  top: -36px;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0.7;
+  line-height: 1;
+  padding: 4px 8px;
+  font-family: Tahoma, sans-serif;
+  transition: opacity 0.15s;
+}
+#dt-lightbox-close:hover { opacity: 1; }
+
+
+/* ════════════════════════════════════════════════
+   PROJECT CARD LOGO IN HEADER
+   ════════════════════════════════════════════════ */
+.proj-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.proj-card-logo {
+  height: 52px;
+  width: auto;
+  max-width: 90px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.15));
+  display: block;
+}
+
+/* Hair Lord: yellow-purple gradient indicator override */
+.gfx-subtab[data-color="lime"].active::before,
+#proj-hairlord .proj-card-header::before {
+  background: linear-gradient(to right, #6a0dad, #ffd600, #6a0dad);
+}
+
