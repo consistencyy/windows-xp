@@ -785,7 +785,13 @@ function stopDragReadme() {
 
 // ✅ Double-click on the desktop icon opens readme
 if (readmeIcon) {
-  readmeIcon.ondblclick = openReadme;
+  readmeIcon.ondblclick = () => window.open('https://www.consistency.ink/', '_self');
+}
+
+// ✅ Double-click on Consistency icon opens YouTube window
+const consistencyIcon = document.querySelector('.icon.consistency');
+if (consistencyIcon) {
+  consistencyIcon.ondblclick = openConsistency;
 }
 
 // ==============================
