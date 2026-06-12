@@ -2987,7 +2987,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 .waka-infobox-portrait {
   width: 100%;
   aspect-ratio: 3 / 4;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center top;
   border: 1px solid #a2a9b1;
   display: block;
