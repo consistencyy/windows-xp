@@ -6063,7 +6063,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .cat-title {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 22px;
   font-weight: 700;
   color: #fff;
@@ -6078,7 +6078,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   text-transform: uppercase;
   color: #666;
   margin: 0;
-  font-family: Tahoma, sans-serif;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* ════════════════════════════════════════════════
@@ -6111,7 +6111,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .proj-card-label {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 9px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -6120,7 +6120,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .proj-card-name {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: #fff;
@@ -6134,7 +6134,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   text-transform: uppercase;
   color: #666;
   margin: 0;
-  font-family: Tahoma, sans-serif;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
 }
 
 .proj-card-blurb {
@@ -6167,7 +6167,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .proj-card-item-label {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 9px;
   letter-spacing: 2.5px;
   text-transform: uppercase;
