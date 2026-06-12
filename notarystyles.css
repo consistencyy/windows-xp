@@ -772,6 +772,15 @@ footer{ background:#0b1220; color:#a3aabd; padding:28px 0 24px }
   .contact-grid{ grid-template-columns:1fr; }
 }
 
+.contact-solo{
+  display:flex;
+  justify-content:center;
+}
+.contact-solo .contact-card{
+  width: min(520px, 100%);
+  padding: 32px;
+}
+
 .contact-card, .contact-form-card{
   padding:24px;
   border:1px solid #e5eaf1;
