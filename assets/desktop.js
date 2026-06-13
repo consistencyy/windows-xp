@@ -1811,7 +1811,7 @@ function initMobile() {
     const ampm = now.getHours() >= 12 ? "PM" : "AM";
     const t = `${h}:${m} ${ampm}`;
     const tEl = document.getElementById("mob-time");
-    const tbEl = document.getElementById("mob-taskbar-time");
+    const tbEl = document.getElementById("mob-statusbar-time");
     if (tEl) tEl.textContent = t;
     if (tbEl) tbEl.textContent = t;
   }
@@ -2023,6 +2023,19 @@ function mobCloseSheet(id) {
   if (sheet) sheet.classList.add("hidden");
   const bd = document.getElementById("mob-backdrop");
   if (bd) bd.classList.add("hidden");
+}
+
+// ── Mobile project tab switcher ──────────────────
+function mobShowProjTab(panelId, btn) {
+  // Hide all panels
+  document.querySelectorAll(".mob-proj-panel").forEach(p => p.classList.add("hidden"));
+  // Deactivate all tab buttons
+  document.querySelectorAll(".mob-proj-tab").forEach(b => b.classList.remove("active"));
+  // Show target panel
+  const panel = document.getElementById(panelId);
+  if (panel) panel.classList.remove("hidden");
+  // Mark this button active
+  if (btn) btn.classList.add("active");
 }
 
 function mobCloseAll() {

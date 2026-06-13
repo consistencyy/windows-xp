@@ -1743,19 +1743,18 @@ Thanks for stopping by :)
 
   </div>
 
-  <!-- TASKBAR -->
-  <div class="mob-taskbar">
-    <div class="mob-taskbar-start">
-      <img src="assets/logo.svg" alt="" />
-      <span>start</span>
+  <!-- SLIM STATUS BAR (replaces old useless taskbar) -->
+  <div class="mob-statusbar-strip">
+    <div class="mob-statusbar-left">
+      <img src="assets/logo.svg" class="mob-status-logo" alt="" />
+      <span class="mob-status-site">consistency.ink</span>
     </div>
-    <div class="mob-taskbar-tabs" id="mob-taskbar-tabs"></div>
-    <div class="mob-taskbar-time" id="mob-taskbar-time">12:00 PM</div>
+    <div class="mob-statusbar-right" id="mob-statusbar-time">12:00 PM</div>
   </div>
 
   <!-- ═══════════════ BOTTOM SHEETS ═══════════════ -->
 
-  <!-- Sheet: About Me (Wakapedia) -->
+  <!-- Sheet: About Me -->
   <div class="mob-sheet hidden" id="mob-sheet-about">
     <div class="mob-sheet-handle-bar"></div>
     <div class="mob-sheet-titlebar">
@@ -1764,29 +1763,67 @@ Thanks for stopping by :)
       <button class="mob-sheet-close" onclick="mobCloseSheet('mob-sheet-about')">✕</button>
     </div>
     <div class="mob-sheet-content">
+
+      <!-- Header: photo + name -->
       <div class="mob-about-header">
-        <img src="assets/profile-pic.jpg" class="mob-about-avatar" alt="Conor" />
+        <img src="assets/FullSizeRender.png" class="mob-about-avatar" alt="Conor" />
         <div>
           <div class="mob-about-name">Conor McCutcheon</div>
-          <div class="mob-about-role">Graphic Designer · Video Editor · Production Specialist</div>
+          <div class="mob-about-role">Graphic Designer &amp; Production Specialist</div>
           <div class="mob-about-location">📍 Yonkers, NY</div>
         </div>
       </div>
+
+      <!-- Bio -->
       <div class="mob-section-heading">Bio</div>
-      <p class="mob-body-text">Graphic designer and production specialist at FASTSIGNS New Rochelle. Combines design, filmmaking, and print production into a single practice — from brand identity to wide-format vinyl installation.</p>
+      <p class="mob-body-text">I'm Conor — a 24-year-old graphic designer and production specialist based out of Westchester, New York. My background spans brand identity, wide-format print, vinyl graphics, and on-site installation.</p>
+      <p class="mob-body-text">I studied Graphic Design at SUNY Buffalo with a minor in Film &amp; Media Studies. Outside of client work, I create motion graphics, edit videos, and hand-code interactive Windows XP desktop environments for my portfolio. (Like this one!)</p>
+
+      <!-- Stats -->
+      <div class="mob-about-stats">
+        <div class="mob-about-stat">
+          <div class="mob-about-stat-num">14<span class="mob-stat-plus">+</span></div>
+          <div class="mob-about-stat-label">Client Projects</div>
+        </div>
+        <div class="mob-about-stat-divider"></div>
+        <div class="mob-about-stat">
+          <div class="mob-about-stat-num">3</div>
+          <div class="mob-about-stat-label">Years Experience</div>
+        </div>
+        <div class="mob-about-stat-divider"></div>
+        <div class="mob-about-stat">
+          <div class="mob-about-stat-num">100<span class="mob-stat-plus">%</span></div>
+          <div class="mob-about-stat-label">Client Satisfaction</div>
+        </div>
+      </div>
+
+      <!-- Skills pills -->
       <div class="mob-section-heading">Skills</div>
       <div class="mob-pill-row">
-        <span class="mob-pill">Adobe CC</span>
-        <span class="mob-pill">Wide-Format Print</span>
-        <span class="mob-pill">Vinyl & Plotter</span>
-        <span class="mob-pill">Brand Identity</span>
-        <span class="mob-pill">Lamination</span>
-        <span class="mob-pill">Installation</span>
-        <span class="mob-pill">Motion Graphics</span>
-        <span class="mob-pill">Prepress</span>
+        <span class="mob-pill mob-pill--r">Wide-Format Print</span>
+        <span class="mob-pill mob-pill--g">Vinyl &amp; Plotter</span>
+        <span class="mob-pill mob-pill--b">Brand Identity</span>
+        <span class="mob-pill mob-pill--r">Lamination</span>
+        <span class="mob-pill mob-pill--g">Installation</span>
+        <span class="mob-pill mob-pill--b">Motion Graphics</span>
+        <span class="mob-pill mob-pill--r">Prepress &amp; File Prep</span>
+        <span class="mob-pill mob-pill--g">Adobe CC</span>
+        <span class="mob-pill mob-pill--b">HTML &amp; CSS</span>
       </div>
+
+      <!-- Credentials -->
+      <div class="mob-section-heading">Credentials</div>
+      <div class="mob-cred-list">
+        <div class="mob-cred-item">🏛️ <strong>NY Notary Public</strong> — 2025–2029</div>
+        <div class="mob-cred-item">✈️ <strong>FAA TRUST Drone Certified</strong> — 2025</div>
+        <div class="mob-cred-item">🏆 <strong>NHTSA Video Contest Winner</strong> — 2023</div>
+        <div class="mob-cred-item">🎓 <strong>B.A. Graphic Design, SUNY Buffalo</strong> — 2023</div>
+      </div>
+
+      <!-- Contact -->
       <div class="mob-section-heading">Contact</div>
       <p class="mob-body-text">📧 <a href="mailto:conormcc.edits@gmail.com">conormcc.edits@gmail.com</a></p>
+      <p class="mob-body-text">🌐 <a href="http://consistency.ink" target="_blank">consistency.ink</a></p>
     </div>
   </div>
 
@@ -1800,84 +1837,461 @@ Thanks for stopping by :)
     </div>
     <div class="mob-sheet-content">
 
-      <!-- Project: BDR -->
-      <div class="mob-bdr-header">
-        <img src="assets/bdr-logo.png" class="mob-bdr-logo" alt="BDR Logo" />
-        <div>
-          <div class="mob-bdr-title">Blanks Done Right</div>
-          <div class="mob-project-meta">Logo Design · Vinyl Graphics · Wide-Format Production · Installation</div>
-        </div>
-      </div>
-      <p class="mob-body-text">
-        Blanks Done Right came to me needing more than a logo — they needed a presence. I designed their identity from the ground up, then brought it into the physical world: printing, laminating, cutting, and installing the vinyl window graphics myself. Every edge, every corner, placed by hand.
-      </p>
-      <div class="mob-img-row">
-        <div class="mob-img-block-labeled">
-          <div class="mob-img-label">LOGO</div>
-          <img src="assets/bdr-logo-full.png" class="mob-project-img mob-lightbox-trigger" alt="BDR Logo" data-lightbox-src="assets/bdr-logo-full.png" data-lightbox-type="image" />
-        </div>
-        <div class="mob-img-block-labeled">
-          <div class="mob-img-label">PRODUCTION</div>
-          <video class="mob-project-img mob-bdr-video mob-lightbox-trigger" autoplay muted loop playsinline data-lightbox-src="assets/bdr-production.webm" data-lightbox-type="video">
-            <source src="assets/bdr-production.webm" type="video/webm" />
-          </video>
-        </div>
-      </div>
-      <div class="mob-img-block-labeled">
-        <div class="mob-img-label">INSTALLED</div>
-        <img src="assets/bdr-installed.png" class="mob-project-img-wide mob-lightbox-trigger" alt="Installed" data-lightbox-src="assets/bdr-installed.png" data-lightbox-type="image" />
+      <!-- CATEGORY TABS -->
+      <div class="mob-proj-tabs">
+        <button class="mob-proj-tab active" onclick="mobShowProjTab('mob-tab-signage', this)">Signage &amp; Print</button>
+        <button class="mob-proj-tab" onclick="mobShowProjTab('mob-tab-identity', this)">Identity</button>
+        <button class="mob-proj-tab" onclick="mobShowProjTab('mob-tab-vehicle', this)">Vehicle</button>
+        <button class="mob-proj-tab" onclick="mobShowProjTab('mob-tab-motion', this)">Motion</button>
+        <button class="mob-proj-tab" onclick="mobShowProjTab('mob-tab-video', this)">Video</button>
       </div>
 
-      <!-- Project: Jewel-Art -->
-      <div class="mob-jewel-header mob-section-top">
-        <img src="assets/jewel-logo.png" class="mob-jewel-logo" alt="Jewel-Art Inc. Logo" />
-        <div>
-          <div class="mob-jewel-title">Jewel-Art Inc.</div>
-          <div class="mob-project-meta">Logo Design · Window Graphics · Production · Installation</div>
-        </div>
-      </div>
-      <p class="mob-body-text">
-        Jewel-Art Inc. needed a refined presence worthy of their storefront. I designed their logo and two window graphics for the front of their store — balancing elegance with visibility. As with all my production work, I handled the full process: print, laminate, cut, and install.
-      </p>
-      <div class="mob-img-row">
-        <div class="mob-img-block-labeled">
-          <div class="mob-img-label">WINDOW GRAPHIC 1</div>
-          <img src="assets/jewel-window1.png" class="mob-project-img mob-lightbox-trigger" alt="Window 1" data-lightbox-src="assets/jewel-window1.png" data-lightbox-type="image" />
-        </div>
-        <div class="mob-img-block-labeled">
-          <div class="mob-img-label">WINDOW GRAPHIC 2</div>
-          <img src="assets/jewel-window2.png" class="mob-project-img mob-lightbox-trigger" alt="Window 2" data-lightbox-src="assets/jewel-window2.png" data-lightbox-type="image" />
-        </div>
-      </div>
-      <div class="mob-img-block-labeled">
-        <div class="mob-img-label">INSTALLED</div>
-        <img src="assets/jewel-installed.jpg" class="mob-project-img-wide mob-lightbox-trigger" alt="Installed" data-lightbox-src="assets/jewel-installed.jpg" data-lightbox-type="image" />
-      </div>
+      <!-- ─── TAB: SIGNAGE & PRODUCTION ─── -->
+      <div class="mob-proj-panel" id="mob-tab-signage">
 
-      <!-- Project: LAST STOP -->
-      <div class="mob-section-heading mob-section-top">LAST STOP</div>
-      <p class="mob-body-text mob-project-meta">Concept Project · Cocktail Bar Identity System</p>
-      <p class="mob-body-text">LAST STOP is a concept project for a fictional cocktail bar where sophisticated craft meets raw urban energy. The identity system spans everything from the logo and menu design to loyalty cards, wayfinding signage, window graphics, and an external sign — built to feel like a real place you'd want to find.</p>
-      <div class="mob-img-row">
-        <img src="assets/ls-logo.png" class="mob-project-img mob-lightbox-trigger" alt="Logo" data-lightbox-src="assets/ls-logo.png" data-lightbox-type="image" />
-        <img src="assets/ls-menu.png" class="mob-project-img mob-lightbox-trigger" alt="Menu" data-lightbox-src="assets/ls-menu.png" data-lightbox-type="image" />
-        <img src="assets/ls-loyaltycard.png" class="mob-project-img mob-lightbox-trigger" alt="Loyalty Card" data-lightbox-src="assets/ls-loyaltycard.png" data-lightbox-type="image" />
-      </div>
+        <!-- Blanks Done Right -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#b060ff;">
+            <img src="assets/work/bdr-logo.webp" class="mob-proj-logo" alt="BDR" />
+            <div>
+              <div class="mob-proj-label" style="color:#b060ff;">RGB · IDENTITY · INSTALL</div>
+              <div class="mob-proj-name">Blanks Done Right</div>
+              <div class="mob-project-meta">Logo · Vinyl Graphics · Wide-Format · Install</div>
+            </div>
+          </div>
+          <p class="mob-body-text">Window graphics with a square cut for displaying a 3D printer in action. Full process: print, laminate, plot, cut, install.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">LOGO</div>
+              <img src="assets/work/bdr-logo-full.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="BDR Logo" data-lightbox-src="assets/work/bdr-logo-full.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">PRODUCTION</div>
+              <video class="mob-proj-thumb mob-lightbox-trigger" autoplay muted loop playsinline data-lightbox-src="assets/work/bdr-production.webm" data-lightbox-type="video">
+                <source src="assets/work/bdr-production.webm" type="video/webm" />
+              </video>
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">INSTALLED</div>
+              <img src="assets/work/bdr-installed.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="BDR Installed" data-lightbox-src="assets/work/bdr-installed.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">STORE HOURS</div>
+              <img src="assets/work/bdr-hours.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="BDR Hours" data-lightbox-src="assets/work/bdr-hours.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
 
-      <!-- Project: Various Work -->
-      <div class="mob-section-heading mob-section-top">Various Work</div>
-      <p class="mob-body-text">Logos, marks, and collateral across various clients and contexts.</p>
-      <div class="mob-logo-grid">
-        <img src="assets/various-logo-01.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-01.png" data-lightbox-type="image" /><img src="assets/various-logo-02.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-02.png" data-lightbox-type="image" />
-        <img src="assets/various-logo-03.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-03.png" data-lightbox-type="image" /><img src="assets/various-logo-04.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-04.png" data-lightbox-type="image" />
-        <img src="assets/various-logo-05.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-05.png" data-lightbox-type="image" /><img src="assets/various-logo-06.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-06.png" data-lightbox-type="image" />
-        <img src="assets/various-logo-07.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-07.png" data-lightbox-type="image" /><img src="assets/various-logo-08.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-08.png" data-lightbox-type="image" />
-        <img src="assets/various-logo-09.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-09.png" data-lightbox-type="image" /><img src="assets/various-logo-10.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-10.png" data-lightbox-type="image" />
-        <img src="assets/various-logo-11.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-11.png" data-lightbox-type="image" /><img src="assets/various-logo-12.png" class="mob-lightbox-trigger" data-lightbox-src="assets/various-logo-12.png" data-lightbox-type="image" />
-      </div>
+        <!-- Jewel-Art Inc. -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#c9a84c;">
+            <img src="assets/work/jewel-logo.webp" class="mob-proj-logo" alt="Jewel-Art" />
+            <div>
+              <div class="mob-proj-label" style="color:#c9a84c;">GOLD · IDENTITY · INSTALL</div>
+              <div class="mob-proj-name">Jewel-Art Inc.</div>
+              <div class="mob-project-meta">Logo · Window Graphics · Production · Install</div>
+            </div>
+          </div>
+          <p class="mob-body-text">Logo from existing brand elements, two new window graphics. Full process: print, laminate, cut, install.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">WINDOW 1</div>
+              <img src="assets/work/jewel-window1.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Jewel Window 1" data-lightbox-src="assets/work/jewel-window1.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">WINDOW 2</div>
+              <img src="assets/work/jewel-window2.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Jewel Window 2" data-lightbox-src="assets/work/jewel-window2.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">INSTALLED</div>
+              <img src="assets/work/jewel-installed2.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Jewel Installed" data-lightbox-src="assets/work/jewel-installed2.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
 
-    </div>
-  </div>
+        <!-- Allied Converters -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#4caf50;">
+            <img src="assets/work/allied-logo.webp" class="mob-proj-logo" alt="Allied" />
+            <div>
+              <div class="mob-proj-label" style="color:#4caf50;">GREEN · MASCOT · ALUMINUM SIGN</div>
+              <div class="mob-proj-name">Allied Converters — Garb-O-Liner</div>
+              <div class="mob-project-meta">Mascot · Wordmark · Aluminum Sign</div>
+            </div>
+          </div>
+          <p class="mob-body-text">Large aluminum sign including a new mascot and wordmark for Garb-O-Liner.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">LOGO / MASCOT</div>
+              <img src="assets/work/allied-logo.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Allied Logo" data-lightbox-src="assets/work/allied-logo.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">INSTALLED SIGN</div>
+              <img src="assets/work/allied-installed.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Allied Installed" data-lightbox-src="assets/work/allied-installed.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Alpha Recycling -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#ff6600;">
+            <img src="assets/work/alpha-logo.webp" class="mob-proj-logo" alt="Alpha" />
+            <div>
+              <div class="mob-proj-label" style="color:#ff6600;">BLACK &amp; ORANGE · LOGO · BANNER</div>
+              <div class="mob-proj-name">Alpha Recycling</div>
+              <div class="mob-project-meta">Full Logo · Wordmark · Exterior Banner</div>
+            </div>
+          </div>
+          <p class="mob-body-text">New full logo and wordmark for Alpha Recycling, produced for an exterior banner.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">LOGO</div>
+              <img src="assets/work/alpha-logo2.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Alpha Logo" data-lightbox-src="assets/work/alpha-logo2.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">INSTALLED</div>
+              <img src="assets/work/alpha-installed2.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Alpha Installed" data-lightbox-src="assets/work/alpha-installed2.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Cell Phone Repair Lab -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#00bcd4;">
+            <img src="assets/work/cprl-logo.webp" class="mob-proj-logo" alt="CPRL" />
+            <div>
+              <div class="mob-proj-label" style="color:#00bcd4;">CYAN · LOGO · ALUMINUM PAN SIGN</div>
+              <div class="mob-proj-name">Cell Phone Repair Lab LLC</div>
+              <div class="mob-project-meta">Logo · Wordmark · Exterior Aluminum Pan Sign</div>
+            </div>
+          </div>
+          <p class="mob-body-text">New logo, wordmark, and exterior aluminum pan sign. Just delivered.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">SIGN DESIGN</div>
+              <img src="assets/work/cprl-sign.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="CPRL Sign" data-lightbox-src="assets/work/cprl-sign.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">DELIVERED</div>
+              <img src="assets/work/cprl-delivered.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="CPRL Delivered" data-lightbox-src="assets/work/cprl-delivered.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">MOCKUP</div>
+              <img src="assets/work/cprl-mockup.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="CPRL Mockup" data-lightbox-src="assets/work/cprl-mockup.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Grace International Ministries -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#8b0000;">
+            <div>
+              <div class="mob-proj-label" style="color:#c9a84c;">BURGUNDY &amp; GOLD · SIGN DESIGN</div>
+              <div class="mob-proj-name">Grace International Ministries</div>
+              <div class="mob-project-meta">Sign Design · Font Match · Prepress · Production</div>
+            </div>
+          </div>
+          <p class="mob-body-text">Logo cleanup, font-matching, full design layout, prepress, and production.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">SIGN DESIGN</div>
+              <img src="assets/work/grace-sign.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Grace Sign" data-lightbox-src="assets/work/grace-sign.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">PRODUCED</div>
+              <img src="assets/work/grace-produced.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Grace Produced" data-lightbox-src="assets/work/grace-produced.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Jack's Bait & Tackle -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#cc0000;">
+            <img src="assets/work/jacks-logo.webp" class="mob-proj-logo" alt="Jacks" />
+            <div>
+              <div class="mob-proj-label" style="color:#ff4444;">RED · LOGO · EXTERIOR SIGN</div>
+              <div class="mob-proj-name">Jack's Bait &amp; Tackle Shop</div>
+              <div class="mob-project-meta">Logo · Wordmark · Exterior Sign · Production Templates</div>
+            </div>
+          </div>
+          <p class="mob-body-text">New business in Mamaroneck, NY. Logo, wordmark, exterior signage — templated for production including hole placement.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">LOGO</div>
+              <img src="assets/work/jacks-logo2.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Jacks Logo" data-lightbox-src="assets/work/jacks-logo2.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">SIGN</div>
+              <img src="assets/work/jacks-sign.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Jacks Sign" data-lightbox-src="assets/work/jacks-sign.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">TEMPLATE</div>
+              <img src="assets/work/jacks-template.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Jacks Template" data-lightbox-src="assets/work/jacks-template.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">INSTALLED</div>
+              <img src="assets/work/jacks-installed.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Jacks Installed" data-lightbox-src="assets/work/jacks-installed.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end mob-tab-signage -->
+
+      <!-- ─── TAB: IDENTITY & BRANDING ─── -->
+      <div class="mob-proj-panel hidden" id="mob-tab-identity">
+
+        <!-- Librett Real Estate -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#1565c0;">
+            <div>
+              <div class="mob-proj-label" style="color:#42a5f5;">LOGO FROM SCRATCH · FOR SALE SIGN</div>
+              <div class="mob-proj-name">Librett Real Estate Group</div>
+              <div class="mob-project-meta">Logo Design · Brand Identity · Aluminum For-Sale Sign</div>
+            </div>
+          </div>
+          <p class="mob-body-text">Logo built from scratch to match the client's website color. Printed and applied onto aluminum for-sale signs with contact info.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">LOGO</div>
+              <img src="assets/work/librett-sign.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Librett Logo" data-lightbox-src="assets/work/librett-sign.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">FOR SALE SIGN</div>
+              <img src="assets/work/librett-installed.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Librett Sign" data-lightbox-src="assets/work/librett-installed.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Hair Lord -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#ffd600;">
+            <div>
+              <div class="mob-proj-label" style="color:#ffd600;">HAND VECTORIZED · DOOR GRAPHICS</div>
+              <div class="mob-proj-name">Hair Lord</div>
+              <div class="mob-project-meta">Logo Vectorization · Door Graphics · Mockup</div>
+            </div>
+          </div>
+          <p class="mob-body-text">Vectorized a raster logo by hand into a clean scalable vector. Designed door graphics and produced a mockup for client approval.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">VECTOR LOGO</div>
+              <img src="assets/work/hairlord-logo.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Hair Lord Logo" data-lightbox-src="assets/work/hairlord-logo.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">DOOR MOCKUP</div>
+              <img src="assets/work/hairlord-mockup.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Hair Lord Mockup" data-lightbox-src="assets/work/hairlord-mockup.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Temple of Victory -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#ffa000;">
+            <div>
+              <div class="mob-proj-label" style="color:#ffa000;">LOGO REDESIGN · COMMUNITY</div>
+              <div class="mob-proj-name">Temple of Victory</div>
+              <div class="mob-project-meta">Logo Redesign · Raster-to-Vector · Identity</div>
+            </div>
+          </div>
+          <p class="mob-body-text">Redesigned the logo for Temple of Victory Deliverance House of Prayer, improving visual appeal and alignment with the community's identity.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">REDESIGNED</div>
+              <img src="assets/work/temple-redesign.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Temple Redesign" data-lightbox-src="assets/work/temple-redesign.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Ashley Korin Photography -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#f06292;">
+            <div>
+              <div class="mob-proj-label" style="color:#f06292;">VECTORIZATION · LOGO REDESIGN</div>
+              <div class="mob-proj-name">Ashley Korin Photography</div>
+              <div class="mob-project-meta">Logo Vectorization · Redesign</div>
+            </div>
+          </div>
+          <p class="mob-body-text">Vectorized and redesigned Ashley Korin's photography logo while preserving her brand equity.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">REDESIGNED</div>
+              <img src="assets/work/ashley-redesign.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Ashley Redesign" data-lightbox-src="assets/work/ashley-redesign.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Enzo's Restaurant -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#cc0000;">
+            <div>
+              <div class="mob-proj-label" style="color:#ff4444;">LOGO REDESIGN · VECTOR</div>
+              <div class="mob-proj-name">Enzo's Restaurant</div>
+              <div class="mob-project-meta">Logo Redesign · Vectorization</div>
+            </div>
+          </div>
+          <p class="mob-body-text">Logo redesign and vectorization for Enzo's Restaurant — production-ready while honoring the warmth of the original.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">REDESIGNED</div>
+              <img src="assets/work/enzos-redesign.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Enzos Redesign" data-lightbox-src="assets/work/enzos-redesign.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end mob-tab-identity -->
+
+      <!-- ─── TAB: VEHICLE & SPECIALTY ─── -->
+      <div class="mob-proj-panel hidden" id="mob-tab-vehicle">
+
+        <!-- Exit Here LLC -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#f5c400;">
+            <img src="assets/work/exitherelogo.webp" class="mob-proj-logo" alt="Exit Here" />
+            <div>
+              <div class="mob-proj-label" style="color:#f5c400;">ROAD YELLOW · ROOFTOP ROLLER · MAGNETS</div>
+              <div class="mob-proj-name">Exit Here LLC</div>
+              <div class="mob-project-meta">Logo · Car Rooftop Roller · Vehicle Magnets · Install</div>
+            </div>
+          </div>
+          <p class="mob-body-text">New logo, vectorized old assets, designed and produced a car rooftop roller and vehicle magnets for their driving school. Full design, production, and install.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">LOGO</div>
+              <img src="assets/work/exithere-logo.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Exit Here Logo" data-lightbox-src="assets/work/exithere-logo.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">ROOFTOP ROLLER</div>
+              <img src="assets/work/exithere-roller.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Exit Here Roller" data-lightbox-src="assets/work/exithere-roller.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">VEHICLE MAGNET</div>
+              <img src="assets/work/exithere-magnet.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Exit Here Magnet" data-lightbox-src="assets/work/exithere-magnet.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">INSTALLED</div>
+              <img src="assets/work/exithere-installed.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Exit Here Installed" data-lightbox-src="assets/work/exithere-installed.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">FINISHED 1</div>
+              <img src="assets/work/exithere-finished1.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Exit Here Finished 1" data-lightbox-src="assets/work/exithere-finished1.webp" data-lightbox-type="image" />
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">FINISHED 2</div>
+              <img src="assets/work/exithere-finished2.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Exit Here Finished 2" data-lightbox-src="assets/work/exithere-finished2.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Thorpe's Scrap Metal -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#78909c;">
+            <img src="assets/work/thorpes-magnet.webp" class="mob-proj-logo" alt="Thorpes" />
+            <div>
+              <div class="mob-proj-label" style="color:#78909c;">STEEL · VEHICLE MAGNET</div>
+              <div class="mob-proj-name">Thorpe's Scrap Metal</div>
+              <div class="mob-project-meta">Vehicle Magnet Design</div>
+            </div>
+          </div>
+          <p class="mob-body-text">Clean vehicle magnet design for Thorpe's Scrap Metal — legible, durable, and on-brand for a working truck.</p>
+          <div class="mob-proj-grid">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">VEHICLE MAGNET</div>
+              <img src="assets/work/thorpes-magnet.webp" class="mob-proj-thumb mob-lightbox-trigger" alt="Thorpes Magnet" data-lightbox-src="assets/work/thorpes-magnet.webp" data-lightbox-type="image" />
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end mob-tab-vehicle -->
+
+      <!-- ─── TAB: MOTION GRAPHICS ─── -->
+      <div class="mob-proj-panel hidden" id="mob-tab-motion">
+
+        <!-- FASTSIGNS Digital Ads -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#e63946;">
+            <div>
+              <div class="mob-proj-label" style="color:#ff6b6b;">MOTION DESIGN · DIGITAL SIGNAGE</div>
+              <div class="mob-proj-name">FASTSIGNS Digital Screen Ads</div>
+              <div class="mob-project-meta">Motion Design · Digital Signage · Wide-Format Display</div>
+            </div>
+          </div>
+          <p class="mob-body-text">Created for display on FASTSIGNS New Rochelle's in-store digital signage screens. Designed to cycle in a high-traffic environment combining motion graphics with branded messaging.</p>
+          <div class="mob-motion-vids">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">AD SPOT 01</div>
+              <video class="mob-proj-vid" src="assets/fastsigns-ad-01.mp4" controls playsinline></video>
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">AD SPOT 02</div>
+              <video class="mob-proj-vid" src="assets/fastsigns-ad-02.mp4" controls playsinline></video>
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">AD SPOT 03</div>
+              <video class="mob-proj-vid" src="assets/fastsigns-ad-03.mp4" controls playsinline></video>
+            </div>
+          </div>
+        </div>
+
+        <!-- VHS / Special Effects -->
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#9b59b6;">
+            <div>
+              <div class="mob-proj-label" style="color:#c39bd3;">CUSTOM OVERLAYS · ANALOG AESTHETICS</div>
+              <div class="mob-proj-name">Special Effects</div>
+              <div class="mob-project-meta">VHS Overlays · Datamosh · Motion Design</div>
+            </div>
+          </div>
+          <p class="mob-body-text">Custom VHS-style graphic overlays built from scratch — tracking lines, tape noise, color bleeding, and analog artifacts. Built for use in edits to add texture, era, and character to any footage.</p>
+          <div class="mob-motion-vids">
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">OVERVIEW</div>
+              <video class="mob-proj-vid" src="assets/vhs-overview.mp4" controls playsinline></video>
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">EFFECT 01</div>
+              <video class="mob-proj-vid" src="assets/vhs-effect-01.mp4" controls playsinline></video>
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">EFFECT 02</div>
+              <video class="mob-proj-vid" src="assets/vhs-effect-02.mp4" controls playsinline></video>
+            </div>
+            <div class="mob-img-block-labeled">
+              <div class="mob-img-label">DATAMOSH</div>
+              <video class="mob-proj-vid" src="assets/vhs-datamosh.mp4" controls playsinline></video>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end mob-tab-motion -->
+
+      <!-- ─── TAB: LATEST VIDEO ─── -->
+      <div class="mob-proj-panel hidden" id="mob-tab-video">
+        <div class="mob-proj-card">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#ff0000;">
+            <div>
+              <div class="mob-proj-label" style="color:#ff4444;">CONSISTENCYY · YOUTUBE</div>
+              <div class="mob-proj-name">Latest Video</div>
+              <div class="mob-project-meta">Unfiltered and fully realized.</div>
+            </div>
+          </div>
+          <div class="mob-iframe-wrap" style="margin: 12px 0;">
+            <iframe
+              width="100%"
+              height="220"
+              src="https://www.youtube.com/embed/BqZYoVnPVSM?si=w7nQl19JRauRKvec"
+              title="Latest Video"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen>
+            </iframe>
+          </div>
+          <a class="mob-yt-full-link" href="https://www.youtube.com/@Consistencyy" target="_blank">▶ View Full Channel on YouTube</a>
+        </div>
+      </div><!-- end mob-tab-video -->
+
+    </div><!-- end mob-sheet-content -->
+  </div><!-- end mob-sheet-projects -->
 
   <!-- Sheet: YouTube -->
   <div class="mob-sheet hidden" id="mob-sheet-youtube">
@@ -1950,7 +2364,7 @@ Thanks for stopping by :)
     </div>
   </div>
 
-  <!-- Sheet: Internet Explorer (homepage + search) -->
+  <!-- Sheet: Internet Explorer -->
   <div class="mob-sheet hidden" id="mob-sheet-ie">
     <div class="mob-sheet-handle-bar"></div>
     <div class="mob-sheet-titlebar">
@@ -1998,7 +2412,6 @@ Thanks for stopping by :)
         <button class="mob-snake-btn" id="mob-snake-start">▶ Start</button>
         <button class="mob-snake-btn" id="mob-snake-reset">↺ Reset</button>
       </div>
-      <!-- D-pad for touch -->
       <div class="mob-dpad">
         <button class="mob-dpad-btn" id="dpad-up" style="grid-area: up">▲</button>
         <button class="mob-dpad-btn" id="dpad-left" style="grid-area: left">◀</button>
