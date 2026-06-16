@@ -4297,7 +4297,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .fastsigns-subtitle {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 10px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -4353,7 +4353,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .fastsigns-go-sub {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 9px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -4373,7 +4373,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .fastsigns-vid-label {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 9px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -4430,7 +4430,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .vhs-title {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 36px;
   font-weight: 700;
   color: #fff;
@@ -4446,7 +4446,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .vhs-subtitle {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 10px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -4597,7 +4597,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .cc-title {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 38px;
   font-weight: 700;
   color: #e8e4f0;
@@ -4612,11 +4612,11 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .cc-subtitle {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 10px;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: #3a3550;
+  color: #ffffff;
   margin: 0;
 }
 
@@ -4633,7 +4633,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 
 /* Shared label + title + desc */
 .cc-vid-label {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 9px;
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -4642,7 +4642,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 }
 
 .cc-vid-title {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: Calibri, 'Helvetica Neue', Arial, sans-serif;
   font-size: 16px;
   font-weight: 700;
   color: #d8d0f0;
