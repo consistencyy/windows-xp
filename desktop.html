@@ -972,7 +972,7 @@ Thanks for stopping by :)
       <!-- SUB-TABS -->
       <div class="gfx-subtabs">
         <button class="gfx-subtab active" onclick="showMotionPanel('motion-fastsigns', this)">FASTSIGNS Digital Ads</button>
-        <button class="gfx-subtab" onclick="showMotionPanel('motion-vhs', this)">Special Effects</button>
+        <button class="gfx-subtab" onclick="showMotionPanel('motion-corecore', this)">Core Core</button>
       </div>
 
       <!-- ─────────────────────────────────────
@@ -991,72 +991,87 @@ Thanks for stopping by :)
               Created and produced for display on FASTSIGNS New Rochelle's digital signage screens. These advertisements were designed to cycle in-store, combining motion graphics with branded messaging. Built for attention in a high-traffic environment.
             </p>
 
-            <div class="fastsigns-videos">
+            <!-- Row 1: two standard ads side by side -->
+            <div class="fastsigns-videos fastsigns-videos--pair">
               <div class="fastsigns-vid-block">
-                <div class="fastsigns-vid-label">AD SPOT 01</div>
-                <video class="fastsigns-vid" src="assets/fastsigns-ad-01.mp4" controls></video>
+                <div class="fastsigns-vid-label">AD SPOT 01 — Outdoor Advertising</div>
+                <video class="fastsigns-vid" src="assets/fastsigns-ad-01.webm" controls></video>
               </div>
               <div class="fastsigns-vid-block">
-                <div class="fastsigns-vid-label">AD SPOT 02</div>
-                <video class="fastsigns-vid" src="assets/fastsigns-ad-02.mp4" controls></video>
+                <div class="fastsigns-vid-label">AD SPOT 02 — Digital Signage</div>
+                <video class="fastsigns-vid" src="assets/fastsigns-ad-02.webm" controls></video>
               </div>
-              <div class="fastsigns-vid-block">
-                <div class="fastsigns-vid-label">AD SPOT 03</div>
-                <video class="fastsigns-vid" src="assets/fastsigns-ad-03.mp4" controls></video>
+            </div>
+
+            <!-- Row 2: grand opening spotlight -->
+            <div class="fastsigns-grand-opening">
+              <div class="fastsigns-go-label">
+                <span class="fastsigns-go-tag">★ GRAND OPENING</span>
+                <span class="fastsigns-go-sub">AD SPOT 03 — Best of New Rochelle</span>
               </div>
+              <video class="fastsigns-vid fastsigns-vid--hero" src="assets/fastsigns-ad-03.webm" controls></video>
             </div>
 
           </div>
         </div>
       </div>
 
+
       <!-- ─────────────────────────────────────
-           MOTION SUB-PANEL: VHS GRAPHICS
+           MOTION SUB-PANEL: CORE CORE
            ───────────────────────────────────── -->
-      <div class="motion-panel" id="motion-vhs" style="display:none;">
-        <div class="vhs-bg">
-          <div class="vhs-scanlines"></div>
-          <div class="vhs-content">
+      <div class="motion-panel" id="motion-corecore" style="display:none;">
+        <div class="cc-bg">
+          <div class="cc-grain"></div>
+          <div class="cc-content">
 
-            <div class="vhs-header">
-              <h1 class="vhs-title">Special<span class="vhs-accent"> Effects</span></h1>
-              <p class="vhs-subtitle">Custom Overlays · Analog Aesthetics · Motion Design</p>
+            <div class="cc-header">
+              <h1 class="cc-title">Core<span class="cc-accent"> Core</span></h1>
+              <p class="cc-subtitle">Cinematography · Feeling · Motion</p>
             </div>
 
-            <!-- TOP: Blurb + hero video side by side -->
-            <div class="vhs-top">
-              <p class="vhs-blurb">
-                Custom VHS-style graphic overlays built from scratch — tracking lines, tape noise, color bleeding, and analog artifacts, all designed as reusable motion assets. Built for use in edits to add texture, era, and character to any footage.
-              </p>
-              <div class="vhs-hero-vid-block">
-                <div class="vhs-vid-label">OVERVIEW</div>
-                <video class="vhs-hero-vid" src="assets/vhs-overview.mp4" controls></video>
-              </div>
-            </div>
+            <p class="cc-blurb">
+              There's a specific feeling I keep chasing — peaceful and heavy at the same time. The kind of video that sits with you. Graffiti, cold light, slow cuts, and a city that doesn't care. These are the pieces I'm most proud of.
+            </p>
 
-            <!-- MIDDLE: Two effect showcase videos -->
-            <div class="vhs-vid-label vhs-section-label">EFFECTS SHOWCASE</div>
-            <div class="vhs-showcase">
-              <div class="vhs-showcase-block">
-                <div class="vhs-vid-label">EFFECT 01</div>
-                <video class="vhs-showcase-vid" src="assets/vhs-effect-01.mp4" controls></video>
-              </div>
-              <div class="vhs-showcase-block">
-                <div class="vhs-vid-label">EFFECT 02</div>
-                <video class="vhs-showcase-vid" src="assets/vhs-effect-02.mp4" controls></video>
-              </div>
-            </div>
-
-            <!-- BOTTOM: Datamosh section -->
-            <div class="vhs-datamosh">
-              <div class="vhs-datamosh-left">
-                <div class="vhs-datamosh-label">DATAMOSH</div>
-                <p class="vhs-datamosh-blurb">
-                  Datamoshing is a glitch technique that corrupts video compression data to create painterly, melting frame transitions. I built this effect by hand — no plugins, just frame manipulation and intentional codec abuse.
+            <!-- VIDEO 1: Doctor Interview Intro — hero layout -->
+            <div class="cc-feature">
+              <div class="cc-feature-info">
+                <div class="cc-vid-label">FILM 01</div>
+                <h2 class="cc-vid-title">Untitled — Doctor Intro</h2>
+                <p class="cc-vid-desc">
+                  An intro sequence for a sit-down interview with a close friend — now a med student. Shot on the streets: graffiti walls, city views, and that particular grey that Westchester does in the cold. The piece is about the journey, not the destination. Quiet, but it moves.
                 </p>
               </div>
-              <div class="vhs-datamosh-vid-block">
-                <video class="vhs-datamosh-vid" src="assets/vhs-datamosh.mp4" controls></video>
+              <div class="cc-feature-vid">
+                <video class="cc-vid" src="assets/cc-doctor-intro.webm" controls></video>
+              </div>
+            </div>
+
+            <!-- VIDEO 2: Eminem RESONANCE — full bleed layout -->
+            <div class="cc-spotlight">
+              <div class="cc-spotlight-label-row">
+                <div class="cc-vid-label">FILM 02</div>
+                <div class="cc-spotlight-tag">★ STANDOUT WORK</div>
+              </div>
+              <h2 class="cc-vid-title cc-spotlight-title">Eminem If he was RESONANCE — Music Video</h2>
+              <p class="cc-vid-desc cc-spotlight-desc">
+                Retrowave production, Eminem's bars, January in Westchester and New York City. The contrast shouldn't work and it does. Solemn views, hard cuts, and a kind of beauty that only shows up when everything's frozen and empty. One of my best.
+              </p>
+              <video class="cc-vid cc-vid--wide" src="assets/cc-resonance.webm" controls></video>
+            </div>
+
+            <!-- VIDEO 3: Datamosh showcase — split layout -->
+            <div class="cc-datamosh">
+              <div class="cc-datamosh-left">
+                <div class="cc-vid-label">FILM 03</div>
+                <h2 class="cc-vid-title">Datamosh Showcase</h2>
+                <p class="cc-vid-desc">
+                  A collection of datamoshed clips — some made to feel something, some made because corrupting codecs by hand is its own kind of art. Iframe manipulation, intentional compression artifacts, painterly melt transitions. No plugins, built frame by frame.
+                </p>
+              </div>
+              <div class="cc-datamosh-right">
+                <video class="cc-vid" src="assets/cc-datamosh.webm" controls></video>
               </div>
             </div>
 
@@ -1349,7 +1364,7 @@ Thanks for stopping by :)
       </div>
 
       <div class="cyt-sidebar-heading">Subscribers</div>
-      <div class="cyt-sidebar-body cyt-sub-count">989</div>
+      <div class="cyt-sidebar-body cyt-sub-count">990</div>
 
       <div class="cyt-sidebar-heading">Playlists</div>
       <div class="cyt-sidebar-body">
@@ -2218,46 +2233,42 @@ Thanks for stopping by :)
           <p class="mob-body-text">Created for display on FASTSIGNS New Rochelle's in-store digital signage screens. Designed to cycle in a high-traffic environment combining motion graphics with branded messaging.</p>
           <div class="mob-motion-vids">
             <div class="mob-img-block-labeled">
-              <div class="mob-img-label">AD SPOT 01</div>
-              <video class="mob-proj-vid" src="assets/fastsigns-ad-01.mp4" controls playsinline></video>
+              <div class="mob-img-label">AD SPOT 01 — Outdoor Advertising</div>
+              <video class="mob-proj-vid" src="assets/fastsigns-ad-01.webm" controls playsinline></video>
             </div>
             <div class="mob-img-block-labeled">
-              <div class="mob-img-label">AD SPOT 02</div>
-              <video class="mob-proj-vid" src="assets/fastsigns-ad-02.mp4" controls playsinline></video>
+              <div class="mob-img-label">AD SPOT 02 — Digital Signage</div>
+              <video class="mob-proj-vid" src="assets/fastsigns-ad-02.webm" controls playsinline></video>
             </div>
             <div class="mob-img-block-labeled">
-              <div class="mob-img-label">AD SPOT 03</div>
-              <video class="mob-proj-vid" src="assets/fastsigns-ad-03.mp4" controls playsinline></video>
+              <div class="mob-img-label">★ GRAND OPENING — Best of New Rochelle</div>
+              <video class="mob-proj-vid" src="assets/fastsigns-ad-03.webm" controls playsinline></video>
             </div>
           </div>
         </div>
 
-        <!-- VHS / Special Effects -->
+        <!-- Core Core -->
         <div class="mob-proj-card">
-          <div class="mob-proj-card-header" style="--mob-proj-color:#9b59b6;">
+          <div class="mob-proj-card-header" style="--mob-proj-color:#7c6fcd;">
             <div>
-              <div class="mob-proj-label" style="color:#c39bd3;">CUSTOM OVERLAYS · ANALOG AESTHETICS</div>
-              <div class="mob-proj-name">Special Effects</div>
-              <div class="mob-project-meta">VHS Overlays · Datamosh · Motion Design</div>
+              <div class="mob-proj-label" style="color:#a89fe8;">CINEMATOGRAPHY · FEELING · MOTION</div>
+              <div class="mob-proj-name">Core Core</div>
+              <div class="mob-project-meta">Graffiti · City Views · Melancholy · Datamosh</div>
             </div>
           </div>
-          <p class="mob-body-text">Custom VHS-style graphic overlays built from scratch — tracking lines, tape noise, color bleeding, and analog artifacts. Built for use in edits to add texture, era, and character to any footage.</p>
+          <p class="mob-body-text">Peaceful and heavy at the same time. The kind of video that sits with you — cold light, slow cuts, and a city that doesn't care.</p>
           <div class="mob-motion-vids">
             <div class="mob-img-block-labeled">
-              <div class="mob-img-label">OVERVIEW</div>
-              <video class="mob-proj-vid" src="assets/vhs-overview.mp4" controls playsinline></video>
+              <div class="mob-img-label">FILM 01 — Doctor Intro</div>
+              <video class="mob-proj-vid" src="assets/cc-doctor-intro.webm" controls playsinline></video>
             </div>
             <div class="mob-img-block-labeled">
-              <div class="mob-img-label">EFFECT 01</div>
-              <video class="mob-proj-vid" src="assets/vhs-effect-01.mp4" controls playsinline></video>
+              <div class="mob-img-label">★ FILM 02 — Eminem RESONANCE</div>
+              <video class="mob-proj-vid" src="assets/cc-resonance.webm" controls playsinline></video>
             </div>
             <div class="mob-img-block-labeled">
-              <div class="mob-img-label">EFFECT 02</div>
-              <video class="mob-proj-vid" src="assets/vhs-effect-02.mp4" controls playsinline></video>
-            </div>
-            <div class="mob-img-block-labeled">
-              <div class="mob-img-label">DATAMOSH</div>
-              <video class="mob-proj-vid" src="assets/vhs-datamosh.mp4" controls playsinline></video>
+              <div class="mob-img-label">FILM 03 — Datamosh Showcase</div>
+              <video class="mob-proj-vid" src="assets/cc-datamosh.webm" controls playsinline></video>
             </div>
           </div>
         </div>
@@ -2306,7 +2317,7 @@ Thanks for stopping by :)
         <img src="assets/profile-pic.jpg" class="mob-yt-avatar" alt="" />
         <div>
           <div class="mob-yt-name">Consistencyy</div>
-          <div class="mob-yt-subs">989 subscribers</div>
+          <div class="mob-yt-subs">990 subscribers</div>
         </div>
         <a class="mob-yt-btn" href="https://www.youtube.com/@Consistencyy" target="_blank">Subscribe</a>
       </div>

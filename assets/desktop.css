@@ -4322,6 +4322,50 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   gap: 16px;
 }
 
+/* Two-up grid for the standard ad pair */
+.fastsigns-videos--pair {
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 28px;
+}
+
+/* Grand opening spotlight block */
+.fastsigns-grand-opening {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fastsigns-go-label {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+
+.fastsigns-go-tag {
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fff;
+  background: #e8350a;
+  padding: 3px 8px;
+}
+
+.fastsigns-go-sub {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #003da5;
+}
+
+.fastsigns-vid--hero {
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16/9;
+}
+
 .fastsigns-vid-block {
   display: flex;
   flex-direction: column;
@@ -4514,6 +4558,185 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
   aspect-ratio: 16/9;
   background: #111;
   border: 1px solid #1a1a1a;
+  display: block;
+}
+
+/* ════════════════════════════════════════════════
+   CORE CORE — Cinematography Panel
+   ════════════════════════════════════════════════ */
+.cc-bg {
+  min-height: 100%;
+  background: #0a0a0f;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle grain texture overlay */
+.cc-grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.35;
+}
+
+.cc-content {
+  position: relative;
+  z-index: 2;
+  padding: 36px 44px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+/* Header */
+.cc-header {
+  border-left: 3px solid #7c6fcd;
+  padding-left: 14px;
+}
+
+.cc-title {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 38px;
+  font-weight: 700;
+  color: #e8e4f0;
+  margin: 0 0 4px;
+  letter-spacing: 3px;
+}
+
+.cc-accent {
+  color: #7c6fcd;
+  font-weight: 300;
+  letter-spacing: 6px;
+}
+
+.cc-subtitle {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #3a3550;
+  margin: 0;
+}
+
+.cc-blurb {
+  font-family: Calibri, sans-serif;
+  font-size: 14px;
+  color: #6e6880;
+  line-height: 1.8;
+  max-width: 680px;
+  margin: -24px 0 0;
+  border-left: 3px solid #2a2440;
+  padding-left: 14px;
+}
+
+/* Shared label + title + desc */
+.cc-vid-label {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #7c6fcd;
+  margin-bottom: 6px;
+}
+
+.cc-vid-title {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: #d8d0f0;
+  margin: 0 0 10px;
+  letter-spacing: 1px;
+}
+
+.cc-vid-desc {
+  font-family: Calibri, sans-serif;
+  font-size: 13px;
+  color: #5a5470;
+  line-height: 1.75;
+  margin: 0;
+}
+
+/* VIDEO 1: feature layout — text left, video right */
+.cc-feature {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 32px;
+  align-items: start;
+  border-top: 1px solid #16121e;
+  padding-top: 8px;
+}
+
+.cc-feature-vid video {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #080808;
+  border: 1px solid #1e1a2a;
+  display: block;
+}
+
+/* VIDEO 2: spotlight — full-width with elevated label */
+.cc-spotlight {
+  border-top: 1px solid #16121e;
+  padding-top: 8px;
+}
+
+.cc-spotlight-label-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.cc-spotlight-tag {
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #0a0a0f;
+  background: #7c6fcd;
+  padding: 3px 8px;
+}
+
+.cc-spotlight-title {
+  font-size: 20px;
+  letter-spacing: 0;
+}
+
+.cc-spotlight-desc {
+  max-width: 680px;
+  margin-bottom: 16px;
+}
+
+.cc-vid {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #080808;
+  border: 1px solid #1e1a2a;
+  display: block;
+}
+
+.cc-vid--wide {
+  width: 100%;
+}
+
+/* VIDEO 3: datamosh — text left, video right */
+.cc-datamosh {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 32px;
+  align-items: start;
+  border-top: 1px solid #16121e;
+  padding-top: 8px;
+}
+
+.cc-datamosh-right video {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #080808;
+  border: 1px solid #1e1a2a;
   display: block;
 }
 
