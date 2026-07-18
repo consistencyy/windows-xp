@@ -520,7 +520,7 @@ setTimeout(() => {
   internetHome.classList.remove("hidden"); // ← THIS is the fix
   currentView = "home";
   updateBrowserView("home");
-}, 4500);
+}, 300);
 }
 
 function closeBrowser() {
@@ -959,7 +959,7 @@ function openConsistency() {
     fakeLoading.style.display = "none";
     mockYoutube.style.display = "flex";
     mockYoutube.classList.remove("hidden");
-  }, 3200);
+  }, 300);
 }
 
 // ==============================
@@ -1296,7 +1296,7 @@ if (conorIcon) {
   setTimeout(() => {
     fakeLoading.style.display = "none";
     updateBrowserView("wikipedia");  // ✅ fixes the view handling
-    }, 4500); // match loading duration
+    }, 300); // match loading duration
   });
 }
 
@@ -1433,7 +1433,7 @@ document.getElementById("open-profile-wikipedia")?.addEventListener("click", () 
   setTimeout(() => {
     fakeLoading.style.display = "none";
     updateBrowserView("wikipedia");
-  }, 4500);
+  }, 300);
 
   closeStartMenu();
 });
