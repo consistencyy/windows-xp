@@ -48,12 +48,19 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 .recycle-bin{position:absolute;right:16px;bottom:48px;}
 .consistency {position:absolute;right:16px;bottom:168px;}
 .mixed-media  {position:absolute;right:16px;bottom:288px;}
-/* Hub sits directly under About Me in the first column. */
+/* Vertical stack: About Me on top, Hub directly under it. Never overlays IE. */
+.icon-col {
+  display: flex;
+  flex-direction: column;
+  width: 120px;
+  flex: 0 0 120px;
+  align-items: stretch;
+}
 .hub-app {
-  position: absolute;
-  left: 16px;
-  top: 112px;
-  z-index: 21;
+  position: static;
+  left: auto;
+  top: auto;
+  z-index: auto;
 }
 .hub-app img { width: 54px; height: 54px; object-fit: contain; }
 
