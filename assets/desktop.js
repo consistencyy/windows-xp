@@ -783,9 +783,9 @@ function stopDragReadme() {
   document.removeEventListener("mouseup", stopDragReadme);
 }
 
-// ✅ Double-click on the desktop icon opens readme
+// Double-click Hub icon returns to the landing page
 if (readmeIcon) {
-  readmeIcon.ondblclick = () => window.open('https://www.consistency.ink/', '_self');
+  readmeIcon.ondblclick = () => { window.location.href = "https://consistency.ink/"; };
 }
 
 // ✅ Double-click on Consistency icon opens YouTube window
@@ -1403,6 +1403,11 @@ document.getElementById("open-photos")?.addEventListener("click", () => {
 document.getElementById("open-snake")?.addEventListener("click", () => {
   openSnake();
   closeStartMenu();
+});
+
+document.getElementById("open-hub")?.addEventListener("click", () => {
+  closeStartMenu();
+  window.location.href = "https://consistency.ink/";
 });
 
 document.getElementById("open-readme")?.addEventListener("click", () => {
