@@ -48,6 +48,7 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 .recycle-bin{position:absolute;right:16px;bottom:48px;}
 .consistency {position:absolute;right:16px;bottom:168px;}
 .mixed-media  {position:absolute;right:16px;bottom:288px;}
+.hub-app img { width: 48px; height: 48px; object-fit: contain; }
 
 /******************** TASKBAR ********************/
 .taskbar {
