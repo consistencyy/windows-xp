@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>booting…</title>
+
+  <style>
+    /* ============================================================
+       80's TERMINAL BOOT SEQUENCE — stage 1 of the intro, played
+       before crimsonsky.html / loading.html. Rougher and more
+       "raw CLI" than the cleaner XP-style screen that follows.
+       The 4:3 crop and CRT scanline/vignette effect are handled by
+       the parent page (index.html) and sit on top of this iframe
+       automatically — nothing extra needed in here for that.
+       ============================================================ */
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      overflow: hidden;
+      font-family: 'Courier New', Consolas, monospace;
+    }
+
+    .term {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 26px 30px;
+      color: #33ff5b;
+      font-size: 14px;
+      line-height: 1.55;
+      text-shadow: 0 0 4px rgba(51,255,91,0.75), 0 0 10px rgba(51,255,91,0.35);
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .term-line {
+      white-space: pre;
+      opacity: 0;
+      animation: lineIn 80ms steps(1) forwards;
+    }
+
+    @keyframes lineIn {
+      to { opacity: 1; }
+    }
+
+    .term-line .dim {
+      color: #1c9e3a;
+    }
+
+    .term-line .warn {
+      color: #ffd23f;
+      text-shadow: 0 0 4px rgba(255,210,63,0.7);
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: #33ff5b;
+      box-shadow: 0 0 6px rgba(51,255,91,0.85);
+      margin-left: 2px;
+      vertical-align: -2px;
+      animation: blink 1s steps(1) infinite;
+    }
+
+    @keyframes blink {
+      0%, 49%   { opacity: 1; }
+      50%, 100% { opacity: 0; }
+    }
+
+    /* ------------------------------------------------------------
+       Loading spinner slot. Drop a transparent or black-background
+       GIF at assets/boot-spinner.gif and it'll be used automatically
+       — until then this falls back to a small CSS/JS ASCII spinner
+       so the screen never shows a broken image.
+       ------------------------------------------------------------ */
+    .boot-spinner-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+      opacity: 0;
+    }
+
+    .boot-spinner-row.show {
+      animation: lineIn 200ms steps(1) forwards;
+    }
+
+    .boot-spinner-gif {
+      width: 22px;
+      height: 22px;
+      image-rendering: pixelated;
+      display: none; /* shown by JS only if the gif actually loads */
+    }
+
+    .boot-spinner-ascii {
+      display: inline-block;
+      width: 1ch;
+      color: #33ff5b;
+      text-shadow: 0 0 4px rgba(51,255,91,0.75);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="term" id="term"></div>
+
+  <script>
+    var linesEl = document.getElementById('term');
+
+    // Edit this list to change the boot log. Use {cursor} once, on
+    // whichever line should show the blinking block cursor while
+    // it's the active line.
+    var LINES = [
+      'CM-BIOS (C) 1986-2026 CONOR MCCUTCHEON SYSTEMS',
+      '<span class="dim">--------------------------------------------------</span>',
+      'CPU..................... CM-486DX2 66MHz OK',
+      'MEMORY TEST.............. 640K OK',
+      'DETECTING DRIVES......... <span class="dim">C:</span> <span class="dim">D:</span> OK',
+      'DETECTING DRIVES......... <span class="warn">CRIMSONSKY.DRV NOT FOUND, RETRY</span>',
+      'DETECTING DRIVES......... CRIMSONSKY.DRV OK',
+      'LOADING PORTFOLIO.SYS.... OK',
+      'LOADING DESKTOP.SYS...... OK',
+      'STARTING GUI'
+    ];
+
+    var LINE_DELAY_MS = 230;
+
+    LINES.forEach(function (html, i) {
+      var line = document.createElement('div');
+      line.className = 'term-line';
+      line.style.animationDelay = (i * LINE_DELAY_MS) + 'ms';
+      line.innerHTML = html;
+      linesEl.appendChild(line);
+    });
+
+    // Cursor on the final line.
+    var cursor = document.createElement('span');
+    cursor.className = 'cursor';
+    linesEl.lastChild.appendChild(cursor);
+
+    // Spinner row, appearing just after the last boot line.
+    var spinnerRow = document.createElement('div');
+    spinnerRow.className = 'boot-spinner-row';
+    spinnerRow.style.animationDelay = (LINES.length * LINE_DELAY_MS + 150) + 'ms';
+
+    var gif = document.createElement('img');
+    gif.className = 'boot-spinner-gif';
+    gif.alt = '';
+    // Swap this path for your own transparent/black-bg loading GIF.
+    gif.src = 'assets/boot-spinner.gif';
+
+    var ascii = document.createElement('span');
+    ascii.className = 'boot-spinner-ascii';
+    ascii.textContent = '|';
+
+    // If the GIF actually exists, show it and drop the ASCII
+    // fallback. If it 404s, keep the ASCII spinner instead of a
+    // broken-image icon.
+    gif.onload = function () {
+      gif.style.display = 'inline-block';
+      ascii.style.display = 'none';
+    };
+    gif.onerror = function () {
+      gif.remove();
+    };
+
+    var label = document.createElement('span');
+    label.textContent = 'LOADING';
+
+    spinnerRow.appendChild(gif);
+    spinnerRow.appendChild(ascii);
+    spinnerRow.appendChild(label);
+    linesEl.appendChild(spinnerRow);
+
+    setTimeout(function () {
+      spinnerRow.classList.add('show');
+    }, 0);
+
+    // ASCII fallback spinner animation.
+    var frames = ['|', '/', '-', '\\'];
+    var fi = 0;
+    setInterval(function () {
+      if (ascii.style.display !== 'none') {
+        fi = (fi + 1) % frames.length;
+        ascii.textContent = frames[fi];
+      }
+    }, 120);
+  </script>
+
+</body>
+</html>

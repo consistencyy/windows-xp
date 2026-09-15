@@ -1412,7 +1412,15 @@ document.getElementById("open-readme")?.addEventListener("click", () => {
 
 document.getElementById("open-logout")?.addEventListener("click", () => {
   closeStartMenu();
-  setTimeout(() => location.reload(), 200);
+  // Ask the parent page to play the CRT power-down/power-up flash and
+  // reboot the whole site, same as the initial boot. Reloading just this
+  // iframe (the old behavior) skipped the flash entirely and only ever
+  // reloaded desktop.html on its own.
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type: "logoff" }, "*");
+  } else {
+    location.reload();
+  }
 });
 
 document.getElementById("open-profile-wikipedia")?.addEventListener("click", () => {
@@ -2132,4 +2140,3 @@ function mobCloseAll() {
     if (dy > 80 && dy > Math.abs(dx) * 1.5) closeLightbox();
   }, { passive: true });
 })();
-
