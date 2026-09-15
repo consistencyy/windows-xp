@@ -45,10 +45,10 @@
         <img alt="" src="assets/youtube.png" />
         <div class="icon-name">Consistency</div>
       </div>
-      <div class="icon mixed-media">
+      <div class="icon mixed-media hub-app" id="hub-icon" title="Hub" tabindex="0">
         <img alt="" src="assets/home.png" />
-        <div class="icon-name">Return home</div>
-</div>
+        <div class="icon-name">Hub</div>
+      </div>
 <div class="icon recycle-bin">
   <img alt="" src="assets/music.png" />
   <div class="icon-name">what i'm listening to</div>
@@ -113,6 +113,10 @@
           <div class="sm-separator"></div>
 
           <!-- Bottom items -->
+          <div class="sm-item" id="open-hub">
+            <img src="assets/home.png" class="sm-item-icon" alt="" />
+            <div class="sm-item-label">Hub</div>
+          </div>
           <div class="sm-item" id="open-readme">
             <img src="assets/help.png" class="sm-item-icon" alt="" />
             <div class="sm-item-label">Help</div>
@@ -1681,9 +1685,9 @@ Thanks for stopping by :)
       <div class="mob-icon-label">Media Player</div>
     </div>
 
-    <div class="mob-icon" onclick="window.open('https://www.consistency.ink/','_blank')">
+    <div class="mob-icon" onclick="window.location.href='https://consistency.ink/'">
       <div class="mob-icon-img-wrap"><img src="assets/home.png" alt="" /></div>
-      <div class="mob-icon-label">Return Home</div>
+      <div class="mob-icon-label">Hub</div>
     </div>
 
     <div class="mob-icon" onclick="mobOpenSheet('mob-sheet-ie')">
@@ -2405,5 +2409,6 @@ Thanks for stopping by :)
   </div>
 </div>
 <!-- END DESKTOP LIGHTBOX -->
+
 </body>
 </html>
