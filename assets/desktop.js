@@ -783,9 +783,15 @@ function stopDragReadme() {
   document.removeEventListener("mouseup", stopDragReadme);
 }
 
-// Double-click Hub icon returns to the landing page
+// Return home reloads this desktop (does not leave the XP session)
 if (readmeIcon) {
-  readmeIcon.ondblclick = () => { window.location.href = "https://consistency.ink/"; };
+  readmeIcon.ondblclick = () => { window.location.reload(); };
+}
+
+// Hub is its own app — opens the site landing page
+const hubIcon = document.getElementById("hub-icon");
+if (hubIcon) {
+  hubIcon.ondblclick = () => { window.location.href = "https://consistency.ink/"; };
 }
 
 // ✅ Double-click on Consistency icon opens YouTube window
