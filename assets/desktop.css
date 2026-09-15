@@ -48,7 +48,20 @@ html,body{height:100%;width:100%;margin:0;padding:0;overflow:hidden;background:#
 .recycle-bin{position:absolute;right:16px;bottom:48px;}
 .consistency {position:absolute;right:16px;bottom:168px;}
 .mixed-media  {position:absolute;right:16px;bottom:288px;}
-.hub-app img { width: 48px; height: 48px; object-fit: contain; }
+/* Hub lives in a second left-hand column at the TOP — never in the taskbar. */
+.hub-app {
+  position: absolute;
+  left: 148px;
+  top: 8px;
+  z-index: 21;
+}
+.hub-app img { width: 54px; height: 54px; object-fit: contain; }
+
+/* Kill the old floating pill if a cached/parent page still injects it. */
+.cm-hub-btn,
+a.cm-hub-btn {
+  display: none !important;
+}
 
 /******************** TASKBAR ********************/
 .taskbar {
