@@ -7124,3 +7124,109 @@ a.cm-hub-btn {
   .crt-tube.crt-switch { animation: none; }
   .crt-screen .crt-art { transform: scale(1.05); }
 }
+
+/* ════════════════════════════════════════════════════════════
+   MEDIA PLAYER — LAST.FM "RECENTLY PLAYED"
+   ════════════════════════════════════════════════════════════ */
+.lfm-panel[hidden] { display: none; }
+
+.lfm-panel {
+  flex-shrink: 0;
+  border-top: 1px solid #2a2a4a;
+  background: #0f0f22;
+}
+.lfm-panel--mobile {
+  margin-top: 16px;
+  border-top: 0;
+  background: none;
+}
+
+.lfm-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.lfm-profile {
+  color: #7fb8ff;
+  text-decoration: none;
+  letter-spacing: 0;
+  text-transform: none;
+  font: 10px Tahoma, sans-serif;
+}
+.lfm-profile:hover,
+.lfm-profile:focus-visible { text-decoration: underline; }
+
+.lfm-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: #b0b0cc;
+  font: 11px/1.25 Tahoma, sans-serif;
+  border-bottom: 1px solid #1a1a32;
+}
+.lfm-panel--mobile .lfm-row { padding: 7px 6px; font-size: 12px; }
+.lfm-row:hover { background: #1e1e3e; color: #fff; }
+.lfm-row:focus-visible { outline: 1px dotted #7fb8ff; outline-offset: -2px; }
+
+.lfm-art {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border: 1px solid #333;
+  background: #000;
+}
+.lfm-art--blank {
+  display: grid;
+  place-items: center;
+  color: #4a9eff;
+  font-size: 12px;
+}
+
+.lfm-text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.lfm-title,
+.lfm-artist {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lfm-artist { color: #6f6f99; font-size: 10px; }
+.lfm-row:hover .lfm-artist { color: #a8a8d0; }
+
+.lfm-when {
+  flex-shrink: 0;
+  color: #6f6f99;
+  font: 10px 'Courier New', monospace;
+}
+
+.lfm-row.is-live { background: #0a1f45; color: #fff; }
+.lfm-live { display: inline-flex; align-items: center; gap: 4px; color: #7fb8ff; }
+
+/* tiny bouncing equalizer next to "Listening now" */
+.lfm-eq { display: inline-flex; align-items: flex-end; gap: 1px; height: 9px; }
+.lfm-eq i {
+  width: 2px;
+  height: 100%;
+  background: #4a9eff;
+  transform-origin: bottom;
+  animation: lfm-eq 0.9s ease-in-out infinite;
+}
+.lfm-eq i:nth-child(2) { animation-delay: -0.3s; }
+.lfm-eq i:nth-child(3) { animation-delay: -0.6s; }
+@keyframes lfm-eq {
+  0%, 100% { transform: scaleY(0.3); }
+  50%      { transform: scaleY(1); }
+}
+
+.lfm-msg { padding: 8px 10px; color: #6f6f99; font: 11px Tahoma, sans-serif; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lfm-eq i { animation: none; transform: scaleY(0.7); }
+}

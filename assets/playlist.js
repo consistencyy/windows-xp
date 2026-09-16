@@ -39,3 +39,17 @@ window.PLAYLIST = [
     viz:   "ambience"
   }
 ];
+
+/* ════════════════════════════════════════════════════════════
+   LAST.FM "RECENTLY PLAYED"
+   Fill these in to show what you've been listening to under the playlist.
+   Leave either one blank and the panel stays hidden.
+     user    – your Last.fm username
+     apiKey  – from https://www.last.fm/api/account/create
+     count   – how many recent songs to show (3–5 fits best)
+   ════════════════════════════════════════════════════════════ */
+window.LASTFM = {
+  user:   "DesktopCM-Music",
+  apiKey: "6ac97f3f86788358feb7d656b65112a7",
+  count:  4
+};
