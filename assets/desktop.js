@@ -1,3 +1,47 @@
+/* ════════════════════════════════════════════════════════════
+   PLAYLIST LOADER
+   Reads window.PLAYLIST from assets/playlist.js. Works even if the
+   visualizer fails to load; returns [] (and logs why) if the playlist
+   file is missing or has a typo.
+   ════════════════════════════════════════════════════════════ */
+function readPlaylist() {
+  const list = window.PLAYLIST;
+  if (!Array.isArray(list)) {
+    console.error("Media Player: no playlist found. assets/playlist.js is missing, " +
+      "not loaded, or has a typo (often a missing comma between tracks).");
+    return [];
+  }
+  const out = [];
+  list.forEach((t, i) => {
+    if (!t || !(t.audio || t.src)) {
+      console.warn("Media Player: track " + (i + 1) + " in playlist.js has no audio path and was skipped.");
+      return;
+    }
+    const mood = Array.isArray(t.mood) ? t.mood : t.mood ? [t.mood] : [];
+    out.push({
+      title: t.title || "Untitled",
+      audio: t.audio || t.src,
+      art: t.art || t.coverSrc || "",
+      viz: t.viz || "bars",
+      mood: mood.map((m) => String(m).trim().toLowerCase()).filter(Boolean),
+      colors: Array.isArray(t.colors) && t.colors.length ? t.colors : null
+    });
+  });
+  return out;
+}
+
+function makeViz(audio, wrap) {
+  if (!window.XPViz || !audio || !wrap) return null;
+  try {
+    return XPViz.create({ audio, wrap, placeholder: "assets/cover-placeholder.png" });
+  } catch (e) {
+    console.warn("Media Player: visualizer unavailable,", e);
+    return null;
+  }
+}
+
+const PLAYLIST_ERROR = "No tracks found. Check assets/playlist.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   // Skip all desktop init on mobile
   if (/Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent) || window.innerWidth <= 768) return;
@@ -231,12 +275,8 @@ let browserInitialized = false;
   const mpSeekFill = document.getElementById("mp-seek-fill");
   const mpPlaylist = document.getElementById("mp-playlist");
 
-const tracks = window.XPViz ? XPViz.normalize(window.PLAYLIST) : [];
-const mpViz = window.XPViz ? XPViz.create({
-  audio,
-  wrap: document.getElementById("track-cover-container"),
-  placeholder: "assets/cover-placeholder.png"
-}) : null;
+const tracks = readPlaylist();
+const mpViz = makeViz(audio, document.getElementById("track-cover-container"));
 
   let current = 0;
   let isDragging = false;
@@ -248,6 +288,10 @@ const mpViz = window.XPViz ? XPViz.create({
   function buildPlaylist() {
     if (!mpPlaylist) return;
     mpPlaylist.innerHTML = "";
+    if (!tracks.length) {
+      mpPlaylist.innerHTML = `<div class="mp-playlist-item"><span class="mp-playlist-title">${PLAYLIST_ERROR}</span></div>`;
+      return;
+    }
     tracks.forEach((t, i) => {
       const item = document.createElement("div");
       item.className = "mp-playlist-item" + (i === current ? " active" : "");
@@ -306,6 +350,11 @@ const mpViz = window.XPViz ? XPViz.create({
   }
 
 function loadTrack(i) {
+  if (!tracks.length) {
+    if (title) title.textContent = "No tracks";
+    if (mpStatusText) mpStatusText.textContent = PLAYLIST_ERROR;
+    return;
+  }
   current = (i + tracks.length) % tracks.length;
   const t = tracks[current];
   audio.src = t.audio;
@@ -316,7 +365,9 @@ function loadTrack(i) {
 }
 
   function playTrack() {
-    audio.play();
+    if (!tracks.length || !audio.getAttribute("src")) return;
+    const p = audio.play();
+    if (p && p.catch) p.catch((e) => console.warn("Media Player: couldn't play", tracks[current].audio, e));
     if (playBtn) playBtn.classList.add('is-playing');
     if (mpStatusText) mpStatusText.textContent = "Playing: " + tracks[current].title;
   }
@@ -417,7 +468,7 @@ function closePlayer() {
   const mpCoverWrap = document.getElementById("track-cover-container");
   function openTheaterDesktop(trigger) {
     if (!window.XPTheater || !mpViz) return;
-    if (!audio.src) { loadTrack(current); playTrack(); }
+    if (!audio.getAttribute("src")) { loadTrack(current); playTrack(); }
     XPTheater.open({
       audio,
       viz: mpViz,
@@ -1846,7 +1897,7 @@ function initMobile() {
   }
 
   // Mobile Media Player
-  const mobTracks = window.XPViz ? XPViz.normalize(window.PLAYLIST) : [];
+  const mobTracks = readPlaylist();
 
   let mobCurrent = 0;
   const mobAudio     = document.getElementById("mob-audio");
@@ -1856,15 +1907,15 @@ function initMobile() {
   const mobNextBtn   = document.getElementById("mob-next");
   const mobVolSlider = document.getElementById("mob-vol");
   const mobPlaylistEl= document.getElementById("mob-playlist");
-  const mobViz = window.XPViz ? XPViz.create({
-    audio: mobAudio,
-    wrap: document.getElementById("mob-artwork-wrap"),
-    placeholder: "assets/cover-placeholder.png"
-  }) : null;
+  const mobViz = makeViz(mobAudio, document.getElementById("mob-artwork-wrap"));
 
   function mobBuildPlaylist() {
     if (!mobPlaylistEl) return;
     mobPlaylistEl.innerHTML = "";
+    if (!mobTracks.length) {
+      mobPlaylistEl.textContent = PLAYLIST_ERROR;
+      return;
+    }
     mobTracks.forEach((t, i) => {
       const el = document.createElement("div");
       el.className = "mob-playlist-item" + (i === mobCurrent ? " active" : "");
@@ -1875,6 +1926,10 @@ function initMobile() {
   }
 
   function mobLoadTrack(i) {
+    if (!mobTracks.length) {
+      if (mobTrackTitle) mobTrackTitle.textContent = PLAYLIST_ERROR;
+      return;
+    }
     mobCurrent = (i + mobTracks.length) % mobTracks.length;
     const t = mobTracks[mobCurrent];
     if (mobAudio) mobAudio.src = t.audio;
@@ -1886,7 +1941,7 @@ function initMobile() {
   }
 
   function mobPlayTrack() {
-    if (mobAudio) { mobAudio.play(); if (mobPlayBtn) mobPlayBtn.textContent = "⏸"; }
+    if (mobAudio && mobTracks.length && mobAudio.getAttribute("src")) { const p = mobAudio.play(); if (p && p.catch) p.catch(() => {}); if (mobPlayBtn) mobPlayBtn.textContent = "⏸"; }
   }
 
   function mobTogglePlay() {
@@ -1909,7 +1964,7 @@ function initMobile() {
     mobArtWrap.setAttribute("aria-label", "Open full screen visualizer");
     const openMobTheater = () => {
       if (!window.XPTheater) return;
-      if (!mobAudio.src) mobLoadTrack(0);
+      if (!mobAudio.getAttribute("src")) mobLoadTrack(0);
       XPTheater.open({
         audio: mobAudio,
         viz: mobViz,

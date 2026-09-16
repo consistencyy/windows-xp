@@ -103,6 +103,10 @@
     const img = wrap.querySelector(".crt-art-img");
     const vid = wrap.querySelector(".crt-art-video");
     const canvas = wrap.querySelector(".crt-viz");
+    if (!tube || !img || !vid || !canvas) {
+      console.warn("XPViz: artwork markup is missing .crt-tube / .crt-art-img / .crt-art-video / .crt-viz; visualizer disabled.");
+      return null;
+    }
     const g = canvas.getContext("2d");
 
     let analyser = null, freq = null, wave = null;
