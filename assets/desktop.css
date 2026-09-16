@@ -7047,6 +7047,14 @@ a.cm-hub-btn {
   transform: scale(calc(1.05 + var(--pulse) * 0.05));
   transition: filter 0.4s ease;
 }
+/* look settings shared with the full screen view */
+.crt-screen .crt-art {
+  filter: saturate(1.15) contrast(1.1) brightness(calc(var(--viz-video, 0.5) + var(--pulse) * 0.4));
+}
+.crt-screen.viz-engine .crt-viz { filter: none; }
+.crt-screen.no-crt .crt-overlay { display: none; }
+.crt-screen.no-video .crt-art { visibility: hidden; }
+
 .crt-screen:not(.is-live) .crt-art {
   filter: saturate(1) contrast(1.05) brightness(0.9);
 }

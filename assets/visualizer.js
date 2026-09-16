@@ -133,13 +133,47 @@
       }
     }
 
+    /* ── Shared look with the fullscreen view ──
+       When theater.js is loaded, this screen draws with the same engine,
+       presets, colors and effect settings as the fullscreen visualizer. */
+    const SMALL_TIER = { scale: 1, stars: 160, bands: 24, rows: 22, cols: 48 };
+    let engine = null, engineFrame = 0, lastT = 0;
+    const theater = () => (window.XPTheater && XPTheater.createRenderer ? XPTheater : null);
+    function getEngine() {
+      const T = theater();
+      if (!engine && T) {
+        try {
+          engine = T.createRenderer(canvas, { tier: () => SMALL_TIER, colors: () => colors });
+          wrap.classList.add("viz-engine");
+          applyLook();
+        } catch (e) {
+          engine = null;
+        }
+      }
+      return engine;
+    }
+    function applyLook() {
+      const T = theater();
+      if (!T) return;
+      const s = T.getSettings();
+      wrap.classList.toggle("no-crt", !s.crt);
+      wrap.classList.toggle("no-video", !s.video);
+      wrap.style.setProperty("--viz-video", s.videoLevel);
+      if (engine) engine.invalidateLut();
+    }
+    document.addEventListener("xpt:settings", applyLook);
+
     function sizeCanvas() {
       const w = wrap.clientWidth, h = wrap.clientHeight;
       if (!w || !h) return false;
-      if (w !== W || h !== H) {
-        W = canvas.width = w;   // 1:1 CSS pixels — a little chunky on purpose
-        H = canvas.height = h;
+      // the shared engine renders sharper; the fallback stays 1:1 and a little chunky
+      const k = getEngine() ? Math.min(window.devicePixelRatio || 1, 2) : 1;
+      const pw = Math.round(w * k), ph = Math.round(h * k);
+      if (pw !== W || ph !== H) {
+        W = canvas.width = pw;
+        H = canvas.height = ph;
       }
+      if (engine) engine.setSize(W, H);
       return true;
     }
 
@@ -304,23 +338,38 @@
         return;
       }
 
+      const dt = Math.min(50, lastT ? now - lastT : 16.7);
+      lastT = now;
       const { f, w } = sample(now);
-      const bass = bandLevel(f, 1, Math.max(2, Math.round(f.length / 32)));
+      let bass;
+      if (engine) {
+        const T = theater();
+        if (engineFrame++ % 30 === 0) engine.refreshLut();
+        engine.draw(now, dt, f, w, T.resolvePreset(T.getSettings().preset, currentTrack.viz));
+        const lv = engine.levels();
+        bass = Math.min(1, lv.bass * 0.7 + lv.beat * 0.3);
+      } else {
+        bass = bandLevel(f, 1, Math.max(2, Math.round(f.length / 32)));
+        if (style === "scope") drawScope(w);
+        else if (style === "ambience") drawAmbience(f, bass);
+        else drawBars(f);
+      }
       if (!reducedMotion) wrap.style.setProperty("--pulse", bass.toFixed(3));
-
-      if (style === "scope") drawScope(w);
-      else if (style === "ambience") drawAmbience(f, bass);
-      else drawBars(f);
 
       if (audio.paused) {
         fadeFrames--;
-        if (fadeFrames <= 0) { running = false; wrap.style.setProperty("--pulse", "0"); return; }
+        if (fadeFrames <= 0) {
+          running = false;
+          wrap.style.setProperty("--pulse", "0");
+          if (engine) engine.clear();
+          return;
+        }
       }
       schedule();
     }
 
     function schedule() { if (!raf) raf = requestAnimationFrame(frame); }
-    function start() { running = true; fadeFrames = 40; schedule(); }
+    function start() { running = true; fadeFrames = 40; lastT = 0; schedule(); }
 
     audio.addEventListener("play", () => {
       connect();
@@ -369,6 +418,7 @@
       style = currentTrack.viz || "bars";
       setColors(currentTrack.colors || DEFAULT_COLORS);
       peaks.fill(0);
+      if (engine) engine.reset();
       silentFrames = 0;
       let art = currentTrack.art;
       if (!art) {
@@ -395,6 +445,7 @@
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
       g.clearRect(0, 0, W, H);
+      if (engine) { engine.reset(); engine.clear(); g.clearRect(0, 0, W, H); }
       wrap.classList.remove("is-live");
       wrap.style.setProperty("--pulse", "0");
       currentTrack = {};
@@ -423,10 +474,12 @@
     }
     const getColors = () => colors.slice();
     const isLive = () => lastLive;
+    const getTrackViz = () => currentTrack.viz || "";
     const getArt = () => ({ src: currentArt, video: isVideo(currentArt) });
 
     img.src = placeholder;
-    return { setTrack, reset, sample, setDetail, suspend, getColors, getArt, isLive, audio };
+    applyLook();
+    return { setTrack, reset, sample, setDetail, suspend, getColors, getArt, getTrackViz, isLive, audio };
   }
 
   window.XPViz = { create, normalize, pickClip };

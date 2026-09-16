@@ -21,6 +21,7 @@
   const TAU = Math.PI * 2;
 
   const PRESETS = [
+    { id: "song",      name: "Per song" },
     { id: "spectrum",  name: "Spectrum" },
     { id: "tunnel",    name: "Tunnel" },
     { id: "warp",      name: "Warp" },
@@ -49,7 +50,7 @@
     window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
   const DEFAULTS = {
-    preset: "spectrum",
+    preset: "song",
     palette: "art",
     gain: 1.2,
     trails: 0.6,
@@ -74,6 +75,8 @@
   }
   function saveSettings(s) {
     try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); } catch (e) { /* private mode */ }
+    // let the small screens pick up the change right away
+    document.dispatchEvent(new CustomEvent("xpt:settings"));
   }
 
   const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
@@ -253,21 +256,11 @@
   let raf = 0;
 
   // render state
-  let canvas, ctx, buf, bctx;
+  let canvas = null, main = null;
   let W = 0, H = 0, cssW = 0, cssH = 0;
   let scale = 0.75, dpr = 1;
-  let lut = null, lutKey = "";
-  let lastNow = 0, t = 0, frameNo = 0;
-  let bass = 0, mid = 0, treb = 0, level = 0;
-  let beat = 0, lastBeat = 0;
-  const bassHist = new Float32Array(48);
-  let bassHistI = 0;
-  let peaks = new Float32Array(128);
-  let bandVals = new Float32Array(128);
-  let stars = null;
-  let ridge = null, ridgeHead = 0, ridgeTick = 0;
+  let lastNow = 0, frameNo = 0;
   let presetStart = 0, cycleStart = 0;
-  let barGrad = null, barGradKey = "", gapPattern = null, gapKey = "";
 
   // perf
   let fpsAcc = 0, fpsFrames = 0, fpsShown = 0;
@@ -315,9 +308,10 @@
     };
 
     canvas = q.canvas;
-    ctx = canvas.getContext("2d", { alpha: false });
-    buf = document.createElement("canvas");
-    bctx = buf.getContext("2d", { alpha: false });
+    main = createRenderer(canvas, {
+      tier,
+      colors: () => opts && opts.viz && opts.viz.getColors()
+    });
 
     // preset + palette buttons
     PRESETS.forEach((p, i) => {
@@ -444,12 +438,11 @@
       b.classList.toggle("is-on", on);
       b.setAttribute("aria-checked", on);
       const pal = PALETTES.find((p) => p.id === b.dataset.palette);
-      const stops = pal.stops || artStops();
+      const stops = pal.stops || artStopsFrom(opts && opts.viz && opts.viz.getColors());
       b.querySelector(".xpt-swatch-chip").style.background =
         `linear-gradient(90deg, ${stops.slice(1).join(", ")})`;
     });
-    const p = PRESETS.find((x) => x.id === settings.preset) || PRESETS[0];
-    q.lcdPreset.textContent = p.name.toUpperCase();
+    updateLcdPreset();
   }
 
   function formatSetting(key, v) {
@@ -465,7 +458,7 @@
     if (key === "videoLevel" || key === "*") q.stage.style.setProperty("--xpt-video", settings.videoLevel);
     if (key === "fps" || key === "*") q.fps.hidden = !settings.fps;
     if (key === "quality" || key === "*") { scale = startScale(); resize(); }
-    if (key === "palette" || key === "*") lutKey = "";
+    if ((key === "palette" || key === "*") && main) main.invalidateLut();
     if (key === "cycle") cycleStart = performance.now();
   }
 
@@ -484,7 +477,7 @@
     presetStart = performance.now();
     cycleStart = presetStart;
     syncControls();
-    if (ctx) { ctx.fillStyle = "#000"; ctx.fillRect(0, 0, W, H); }
+    if (main) main.clear();
     if (announce) toast(PRESETS.find((p) => p.id === id).name);
   }
   function stepPreset(dir) {
@@ -494,7 +487,7 @@
   function setPalette(id) {
     settings.palette = id;
     saveSettings(settings);
-    lutKey = "";
+    if (main) main.invalidateLut();
     syncControls();
     toast(PALETTES.find((p) => p.id === id).name + " colors");
   }
@@ -503,20 +496,17 @@
     setPalette(PALETTES[(i + 1) % PALETTES.length].id);
   }
 
-  function artStops() {
-    const c = (opts && opts.viz && opts.viz.getColors()) || ["#4a9eff", "#c8e6ff"];
-    return ["#03030c", c[0], c[1], c[1], "#ffffff"];
+  function trackViz() {
+    return (opts && opts.viz && opts.viz.getTrackViz && opts.viz.getTrackViz()) || "";
   }
-
-  function refreshLut() {
-    const pal = PALETTES.find((p) => p.id === settings.palette) || PALETTES[0];
-    const stops = pal.stops || artStops();
-    const key = stops.join("|");
-    if (key === lutKey) return;
-    lutKey = key;
-    lut = buildLut(stops);
-    barGradKey = "";
-    if (pal.id === "art") syncControls(); // update the "From song" swatch
+  function currentPresetId() {
+    return resolvePreset(settings.preset, trackViz());
+  }
+  function updateLcdPreset() {
+    if (!q.lcdPreset) return;
+    const id = currentPresetId();
+    const name = (PRESETS.find((x) => x.id === id) || PRESETS[1]).name.toUpperCase();
+    q.lcdPreset.textContent = settings.preset === "song" ? "SONG: " + name : name;
   }
 
   /* ── HUD ──────────────────────────────────────────────── */
@@ -619,7 +609,7 @@
 
   const audioEvents = ["play", "pause", "timeupdate", "loadedmetadata", "volumechange", "emptied", "loadstart"];
   function onAudio(e) {
-    if (e.type !== "timeupdate" && e.type !== "volumechange") updateArt();
+    if (e.type !== "timeupdate" && e.type !== "volumechange") { updateArt(); syncControls(); }
     if (e.type === "play" || e.type === "loadedmetadata" || e.type === "emptied") updateTitle();
     updateTransport();
   }
@@ -703,480 +693,570 @@
     const w = Math.max(160, Math.round(cssW * dpr * scale));
     const h = Math.max(90, Math.round(cssH * dpr * scale));
     if (w === W && h === H) return;
-    W = canvas.width = buf.width = w;
-    H = canvas.height = buf.height = h;
-    ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, W, H);
-    barGradKey = ""; gapKey = "";
-    stars = null; ridge = null;
+    W = w; H = h;
+    main.setSize(w, h);
   }
 
   /* ════════════════════════════════════════════════════════════
-     ANALYSIS
+     RENDERER — one instance per canvas (fullscreen + each small screen).
+     All look settings come from the shared settings object.
      ════════════════════════════════════════════════════════════ */
-  function avgRange(f, a, b) {
-    a = a | 0; b = Math.max(a + 1, b | 0);
-    let s = 0;
-    for (let i = a; i < b; i++) s += f[i];
-    return s / ((b - a) * 255);
+  const LEGACY_VIZ = { bars: "spectrum", scope: "plasma", ambience: "bloom" };
+  function resolvePreset(id, trackViz) {
+    if (id !== "song") return id;
+    const v = LEGACY_VIZ[trackViz] || trackViz;
+    return PRESETS.some((p) => p.id === v && v !== "song") ? v : "spectrum";
+  }
+  function artStopsFrom(c) {
+    c = c && c.length ? c : ["#4a9eff", "#c8e6ff"];
+    return ["#03030c", c[0], c[1] || c[0], c[1] || c[0], "#ffffff"];
   }
 
-  function analyze(f, now, dt) {
-    const n = f.length, g = settings.gain;
-    const rb = clamp(avgRange(f, 1, n * 0.012) * g, 0, 1.5);
-    const rm = clamp(avgRange(f, n * 0.012, n * 0.1) * g * 1.3, 0, 1.5);
-    const rt = clamp(avgRange(f, n * 0.1, n * 0.45) * g * 2.2, 0, 1.5);
-    const k = 1 - Math.pow(0.7, dt / 16.7);
-    bass += (rb - bass) * k;
-    mid += (rm - mid) * k;
-    treb += (rt - treb) * k;
-    level = (bass * 0.5 + mid * 0.35 + treb * 0.15);
+  function createRenderer(canvas, cfg) {
+    cfg = cfg || {};
+    const ctx = canvas.getContext("2d", { alpha: false });
+    const buf = document.createElement("canvas");
+    const bctx = buf.getContext("2d", { alpha: false });
+    let W = canvas.width, H = canvas.height;
+    buf.width = W; buf.height = H;
+    const tier = () => (cfg.tier ? cfg.tier() : QUALITY.med);
 
-    // beat: bass jumps well above its recent average
-    let avg = 0;
-    for (let i = 0; i < bassHist.length; i++) avg += bassHist[i];
-    avg /= bassHist.length;
-    bassHist[bassHistI] = rb;
-    bassHistI = (bassHistI + 1) % bassHist.length;
-    if (rb > avg * 1.32 && rb > 0.28 && now - lastBeat > 230) {
-      beat = 1;
-      lastBeat = now;
-    }
-    beat *= Math.pow(0.88, dt / 16.7);
-  }
+    let lut = null, lutKey = "";
+    let t = 0;
+    let bass = 0, mid = 0, treb = 0, level = 0;
+    let beat = 0, lastBeat = 0;
+    const bassHist = new Float32Array(48);
+    let bassHistI = 0;
+    let peaks = new Float32Array(128);
+    let bandVals = new Float32Array(128);
+    let stars = null;
+    let ridge = null, ridgeHead = 0, ridgeTick = 0;
+    let barGrad = null, barGradKey = "", gapPattern = null, gapKey = "";
 
-  // log-spaced band values (0..1+) into bandVals[0..count)
-  function computeBands(f, count, lo, hi) {
-    const n = f.length;
-    const a0 = Math.max(1, n * lo), a1 = n * hi;
-    const ratio = a1 / a0;
-    const g = settings.gain;
-    for (let b = 0; b < count; b++) {
-      const from = a0 * Math.pow(ratio, b / count);
-      const to = a0 * Math.pow(ratio, (b + 1) / count);
-      let v = avgRange(f, from, Math.max(from + 1, to));
-      // expand the dynamic range, then lift the highs so the right side isn't flat
-      v = Math.pow(v, 1.6) * g * 1.25 * (1 + (b / count) * 1.1);
-      bandVals[b] = v > 1.1 ? 1.1 : v;
-    }
-  }
-
-  /* ════════════════════════════════════════════════════════════
-     DRAW HELPERS
-     ════════════════════════════════════════════════════════════ */
-  function fade(amount) {
-    ctx.globalCompositeOperation = "source-over";
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = `rgba(0,0,0,${amount})`;
-    ctx.fillRect(0, 0, W, H);
-  }
-
-  // MilkDrop-style feedback: redraw last frame zoomed/rotated and slightly dimmer
-  function feedback(zoom, rot, keep, dx = 0, dy = 0) {
-    bctx.globalCompositeOperation = "copy";
-    bctx.drawImage(canvas, 0, 0);
-    ctx.globalCompositeOperation = "source-over";
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, W, H);
-    ctx.save();
-    ctx.globalAlpha = keep;
-    ctx.translate(W / 2 + dx, H / 2 + dy);
-    ctx.rotate(rot);
-    ctx.scale(zoom, zoom);
-    ctx.drawImage(buf, -W / 2, -H / 2);
-    ctx.restore();
-  }
-
-  function keepFromTrails(min, max) {
-    return min + (max - min) * settings.trails;
-  }
-
-  function mirror() {
-    const half = Math.floor(W / 2);
-    ctx.save();
-    ctx.globalCompositeOperation = "source-over";
-    ctx.globalAlpha = 1;
-    ctx.translate(W, 0);
-    ctx.scale(-1, 1);
-    ctx.drawImage(canvas, 0, 0, half, H, 0, 0, half, H);
-    ctx.restore();
-  }
-
-  /* ════════════════════════════════════════════════════════════
-     PRESETS
-     ════════════════════════════════════════════════════════════ */
-
-  // 1 · Spectrum — classic Winamp analyzer with peak caps, scope and reflection
-  function drawSpectrum(f, w, dt) {
-    fade(1 - settings.trails * 0.75);
-    const T = tier();
-    const count = T.bands;
-    computeBands(f, count, 0.002, 0.72);
-    if (peaks.length < count) peaks = new Float32Array(count);
-
-    const padX = W * 0.06;
-    const floor = H * 0.72;
-    const maxH = H * 0.56;
-    const gap = Math.max(1, W / count * 0.22);
-    const bw = (W - padX * 2 - gap * (count - 1)) / count;
-    const segH = Math.max(2, Math.round(H / 110));
-
-    const gk = `${W}x${H}|${lutKey}`;
-    if (gk !== barGradKey) {
-      barGradKey = gk;
-      barGrad = ctx.createLinearGradient(0, floor, 0, floor - maxH);
-      for (let i = 0; i <= 8; i++) barGrad.addColorStop(i / 8, lut.at(0.28 + (i / 8) * 0.72));
-    }
-    if (gapKey !== String(segH)) {
-      gapKey = String(segH);
-      const pc = document.createElement("canvas");
-      pc.width = 1; pc.height = segH + 1;
-      const pg = pc.getContext("2d");
-      pg.fillStyle = "#000";
-      pg.fillRect(0, segH, 1, 1);
-      gapPattern = ctx.createPattern(pc, "repeat");
+    // returns true when the colors changed
+    function refreshLut() {
+      const pal = PALETTES.find((p) => p.id === settings.palette) || PALETTES[0];
+      const stops = pal.stops || artStopsFrom(cfg.colors && cfg.colors());
+      const key = stops.join("|");
+      if (key === lutKey) return false;
+      lutKey = key;
+      lut = buildLut(stops);
+      barGradKey = "";
+      return true;
     }
 
-    ctx.fillStyle = barGrad;
-    const fall = 0.0009 * dt * H * settings.speed;
-    for (let b = 0; b < count; b++) {
-      const h = Math.min(1, bandVals[b]) * maxH;
-      const x = padX + b * (bw + gap);
-      ctx.fillRect(x, floor - h, bw, h);
-      peaks[b] = Math.max(peaks[b] - fall, h);
-    }
-    // segment gaps in one pass (LED look)
-    ctx.fillStyle = gapPattern;
-    ctx.fillRect(0, floor - maxH - segH, W, maxH + segH);
-
-    ctx.fillStyle = lut.at(1);
-    for (let b = 0; b < count; b++) {
-      const x = padX + b * (bw + gap);
-      ctx.fillRect(x, floor - peaks[b] - segH * 1.6, bw, Math.max(2, segH * 0.8));
+    /* ════════════════════════════════════════════════════════════
+       ANALYSIS
+       ════════════════════════════════════════════════════════════ */
+    function avgRange(f, a, b) {
+      a = a | 0; b = Math.max(a + 1, b | 0);
+      let s = 0;
+      for (let i = a; i < b; i++) s += f[i];
+      return s / ((b - a) * 255);
     }
 
-    // floor line
-    ctx.fillStyle = lut.atA(0.6, 0.5);
-    ctx.fillRect(padX, floor + 1, W - padX * 2, Math.max(1, H / 400));
+    function analyze(f, now, dt) {
+      const n = f.length, g = settings.gain;
+      const rb = clamp(avgRange(f, 1, n * 0.012) * g, 0, 1.5);
+      const rm = clamp(avgRange(f, n * 0.012, n * 0.1) * g * 1.3, 0, 1.5);
+      const rt = clamp(avgRange(f, n * 0.1, n * 0.45) * g * 2.2, 0, 1.5);
+      const k = 1 - Math.pow(0.7, dt / 16.7);
+      bass += (rb - bass) * k;
+      mid += (rm - mid) * k;
+      treb += (rt - treb) * k;
+      level = (bass * 0.5 + mid * 0.35 + treb * 0.15);
 
-    // reflection
-    const reflH = Math.min(H - floor - 2, maxH * 0.45);
-    ctx.save();
-    ctx.globalAlpha = 0.18;
-    ctx.translate(0, floor * 2 + 4);
-    ctx.scale(1, -1);
-    ctx.drawImage(canvas, 0, floor - reflH, W, reflH, 0, floor - reflH, W, reflH);
-    ctx.restore();
-
-    // oscilloscope strip along the top
-    const sy = H * 0.1, sh = H * 0.07;
-    ctx.globalAlpha = 0.85;
-    ctx.strokeStyle = lut.at(0.85);
-    ctx.lineWidth = Math.max(1, H / 360);
-    ctx.beginPath();
-    const n = w.length, step = Math.max(1, Math.floor(n / (W * 0.6)));
-    for (let i = 0; i < n; i += step) {
-      const x = padX + (i / n) * (W - padX * 2);
-      const y = sy + ((w[i] - 128) / 128) * sh;
-      i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
-    }
-    ctx.stroke();
-    ctx.globalAlpha = 1;
-  }
-
-  // 2 · Tunnel — feedback zoom with a waveform ring that warps on the beat
-  function drawTunnel(f, w, dt) {
-    const sp = settings.speed;
-    feedback(1.018 + bass * 0.05 * sp + beat * 0.02, (0.0025 + mid * 0.006) * sp * (dt / 16.7), keepFromTrails(0.78, 0.965));
-
-    const cx = W / 2, cy = H / 2;
-    const m = Math.min(W, H);
-    const sides = 5 + (((t / 6) | 0) % 4);
-    const pts = 180;
-    const R = m * (0.1 + bass * 0.07 + beat * 0.03);
-    const n = w.length;
-
-    ctx.globalCompositeOperation = "lighter";
-    ctx.lineJoin = "round";
-    for (let ring = 0; ring < 2; ring++) {
-      const rot = t * (ring ? -0.4 : 0.3) * sp;
-      ctx.beginPath();
-      for (let i = 0; i <= pts; i++) {
-        const a = (i / pts) * TAU;
-        // polygon-ish radius
-        const seg = TAU / sides;
-        const local = (((a + rot) % seg) + seg) % seg; // always 0..seg
-        const poly = Math.cos(Math.PI / sides) / Math.cos(local - Math.PI / sides);
-        const wv = (w[((i / pts) * (n - 1)) | 0] - 128) / 128;
-        const r = R * (ring ? 0.62 : 1) * poly * (1 + wv * (0.35 + treb * 0.4));
-        const x = cx + Math.cos(a + rot) * r;
-        const y = cy + Math.sin(a + rot) * r;
-        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      // beat: bass jumps well above its recent average
+      let avg = 0;
+      for (let i = 0; i < bassHist.length; i++) avg += bassHist[i];
+      avg /= bassHist.length;
+      bassHist[bassHistI] = rb;
+      bassHistI = (bassHistI + 1) % bassHist.length;
+      if (rb > avg * 1.32 && rb > 0.28 && now - lastBeat > 230) {
+        beat = 1;
+        lastBeat = now;
       }
-      ctx.strokeStyle = lut.at(ring ? 0.95 : 0.55 + 0.35 * Math.sin(t * 0.5));
-      ctx.lineWidth = Math.max(1.5, m / (ring ? 260 : 170));
-      ctx.stroke();
-    }
-    // core glow
-    const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.6);
-    core.addColorStop(0, lut.atA(1, 0.35 + beat * 0.5));
-    core.addColorStop(1, lut.atA(0.5, 0));
-    ctx.fillStyle = core;
-    ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
-    ctx.globalCompositeOperation = "source-over";
-  }
-
-  // 3 · Warp — starfield that surges with the bass, spectrum ring at the center
-  const STAR_BUCKETS = 8;
-  function drawWarp(f, w, dt) {
-    const T = tier();
-    const count = T.stars;
-    if (!stars || stars.length !== count * 4) {
-      stars = new Float32Array(count * 4); // x, y, z, prevZ
-      for (let i = 0; i < count; i++) resetStar(i, true);
-    }
-    fade(1 - keepFromTrails(0.35, 0.88));
-
-    const cx = W / 2, cy = H / 2;
-    const fov = Math.min(W, H) * 0.9;
-    const v = (0.004 + bass * 0.03 + beat * 0.035) * settings.speed * (dt / 16.7);
-    const drift = Math.sin(t * 0.25) * 0.2;
-
-    ctx.globalCompositeOperation = "lighter";
-    ctx.lineCap = "round";
-    for (let bkt = 0; bkt < STAR_BUCKETS; bkt++) {
-      ctx.beginPath();
-      const zLo = bkt / STAR_BUCKETS, zHi = (bkt + 1) / STAR_BUCKETS;
-      for (let i = 0; i < count; i++) {
-        const o = i * 4;
-        const z = stars[o + 2];
-        if (bkt === 0) { // advance once per frame (in the first bucket pass)
-          stars[o + 3] = z;
-          stars[o + 2] = z - v;
-          if (stars[o + 2] <= 0.02) { resetStar(i, false); continue; }
-        }
-        const nz = 1 - stars[o + 2]; // 0 far → 1 near
-        if (nz < zLo || nz >= zHi) continue;
-        const x = stars[o] + drift * stars[o + 2];
-        const y = stars[o + 1];
-        const sx = cx + (x / stars[o + 2]) * fov, sy = cy + (y / stars[o + 2]) * fov;
-        const px = cx + (x / stars[o + 3]) * fov, py = cy + (y / stars[o + 3]) * fov;
-        if (sx < -50 || sx > W + 50 || sy < -50 || sy > H + 50) continue;
-        ctx.moveTo(px, py);
-        ctx.lineTo(sx, sy);
-      }
-      ctx.strokeStyle = lut.at(0.35 + zLo * 0.65);
-      ctx.lineWidth = Math.max(1, (0.5 + zLo * 2.2) * (H / 540));
-      ctx.stroke();
+      beat *= Math.pow(0.88, dt / 16.7);
     }
 
-    // spectrum ring
-    const bars = 72;
-    computeBands(f, bars / 2, 0.003, 0.6);
-    const R = Math.min(W, H) * (0.09 + bass * 0.03);
-    ctx.lineWidth = Math.max(1.5, H / 300);
-    ctx.strokeStyle = lut.at(0.9);
-    ctx.beginPath();
-    for (let i = 0; i < bars; i++) {
-      const bi = i < bars / 2 ? i : bars - 1 - i;
-      const val = Math.min(1, bandVals[bi]);
-      const a = (i / bars) * TAU - Math.PI / 2 + t * 0.1;
-      const r2 = R + val * Math.min(W, H) * 0.16;
-      ctx.moveTo(cx + Math.cos(a) * R, cy + Math.sin(a) * R);
-      ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
-    }
-    ctx.stroke();
-    ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = "#000";
-    ctx.beginPath();
-    ctx.arc(cx, cy, R * 0.92, 0, TAU);
-    ctx.fill();
-    ctx.strokeStyle = lut.atA(1, 0.6 + beat * 0.4);
-    ctx.lineWidth = Math.max(1, H / 400);
-    ctx.stroke();
-  }
-  function resetStar(i, anyDepth) {
-    const o = i * 4;
-    const ang = Math.random() * TAU;
-    const rad = 0.05 + Math.random() * 1.4;
-    stars[o] = Math.cos(ang) * rad * (W / H);
-    stars[o + 1] = Math.sin(ang) * rad;
-    stars[o + 2] = anyDepth ? 0.05 + Math.random() * 0.95 : 1;
-    stars[o + 3] = stars[o + 2];
-  }
-
-  // 4 · Plasma Scope — glowing Lissajous figures in a slowly swirling feedback
-  function drawPlasma(f, w, dt) {
-    const sp = settings.speed;
-    feedback(0.985 - bass * 0.01, Math.sin(t * 0.21) * 0.012 * sp, keepFromTrails(0.8, 0.975),
-      Math.sin(t * 0.37) * W * 0.002, Math.cos(t * 0.29) * H * 0.002);
-
-    const cx = W / 2, cy = H / 2;
-    const m = Math.min(W, H);
-    const n = w.length;
-    const R = m * (0.3 + bass * 0.12);
-    const step = Math.max(1, Math.floor(n / 700));
-
-    ctx.globalCompositeOperation = "lighter";
-    ctx.lineJoin = "round";
-    const layers = [
-      { off: n >> 4, rot: t * 0.3 * sp, col: 0.55 + 0.4 * Math.sin(t * 0.4), wid: 2.2 },
-      { off: n >> 3, rot: -t * 0.2 * sp + 1, col: 0.9, wid: 1.2 }
-    ];
-    for (const L of layers) {
-      const c = Math.cos(L.rot), s = Math.sin(L.rot);
-      ctx.beginPath();
-      for (let i = 0; i < n - L.off; i += step) {
-        const a = (w[i] - 128) / 128, b = (w[i + L.off] - 128) / 128;
-        const x = cx + (a * c - b * s) * R;
-        const y = cy + (a * s + b * c) * R;
-        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
-      }
-      ctx.strokeStyle = lut.at(L.col);
-      ctx.lineWidth = Math.max(1, (m / 360) * L.wid);
-      ctx.stroke();
-    }
-    // horizontal waveform band
-    ctx.beginPath();
-    for (let i = 0; i < n; i += step) {
-      const x = (i / n) * W;
-      const y = cy + ((w[i] - 128) / 128) * H * 0.18;
-      i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
-    }
-    ctx.strokeStyle = lut.atA(0.4, 0.35);
-    ctx.lineWidth = Math.max(1, m / 500);
-    ctx.stroke();
-    ctx.globalCompositeOperation = "source-over";
-  }
-
-  // 5 · Kaleido Bloom — 6-fold mirrored spectrum petals over a spinning feedback
-  let petal = null;
-  function drawBloom(f, w, dt) {
-    const sp = settings.speed;
-    feedback(1.012 + bass * 0.02, 0.006 * sp * (dt / 16.7) * (1 + mid), keepFromTrails(0.7, 0.93));
-
-    const cx = W / 2, cy = H / 2;
-    const m = Math.min(W, H);
-    const pts = 48;
-    computeBands(f, pts, 0.003, 0.55);
-    const inner = m * (0.04 + bass * 0.03);
-    const span = m * 0.42;
-    const wedge = Math.PI / 6;
-
-    // one half-petal path, reused 12 times
-    petal = new Path2D();
-    petal.moveTo(inner, 0);
-    for (let i = 0; i < pts; i++) {
-      const d = i / (pts - 1);
-      const r = inner + d * span;
-      const a = Math.min(1, bandVals[i]) * wedge * 0.95;
-      petal.lineTo(Math.cos(a) * r, Math.sin(a) * r);
-    }
-    petal.lineTo(inner + span, 0);
-
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.rotate(t * 0.15 * sp);
-    ctx.globalCompositeOperation = "lighter";
-    ctx.lineWidth = Math.max(1, m / 420);
-    const fillC = lut.atA(0.45 + 0.3 * Math.sin(t * 0.3), (0.06 + beat * 0.08).toFixed(3));
-    const strokeC = lut.at(0.92);
-    for (let k = 0; k < 6; k++) {
-      for (let side = 0; side < 2; side++) {
-        ctx.save();
-        ctx.rotate(k * (TAU / 6));
-        if (side) ctx.scale(1, -1);
-        ctx.fillStyle = fillC;
-        ctx.fill(petal);
-        ctx.strokeStyle = strokeC;
-        ctx.stroke(petal);
-        ctx.restore();
+    // log-spaced band values (0..1+) into bandVals[0..count)
+    function computeBands(f, count, lo, hi) {
+      const n = f.length;
+      const a0 = Math.max(1, n * lo), a1 = n * hi;
+      const ratio = a1 / a0;
+      const g = settings.gain;
+      for (let b = 0; b < count; b++) {
+        const from = a0 * Math.pow(ratio, b / count);
+        const to = a0 * Math.pow(ratio, (b + 1) / count);
+        let v = avgRange(f, from, Math.max(from + 1, to));
+        // expand the dynamic range, then lift the highs so the right side isn't flat
+        v = Math.pow(v, 1.6) * g * 1.25 * (1 + (b / count) * 1.1);
+        bandVals[b] = v > 1.1 ? 1.1 : v;
       }
     }
-    // center
-    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, inner * 2.2);
-    g.addColorStop(0, lut.atA(1, 0.9));
-    g.addColorStop(1, lut.atA(0.6, 0));
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.arc(0, 0, inner * 2.2 * (1 + beat * 0.4), 0, TAU);
-    ctx.fill();
-    ctx.restore();
-    ctx.globalCompositeOperation = "source-over";
-  }
 
-  // 6 · Ridgeline — spectrum history as stacked, occluding mountain lines
-  function drawRidge(f, w, dt) {
-    const T = tier();
-    const rows = T.rows, cols = T.cols;
-    if (!ridge || ridge.length !== rows || ridge[0].length !== cols) {
-      ridge = Array.from({ length: rows }, () => new Float32Array(cols));
-      ridgeHead = 0;
-    }
-    ridgeTick += dt * settings.speed;
-    if (ridgeTick >= 50) {
-      ridgeTick %= 50;
-      computeBands(f, cols / 2, 0.003, 0.6);
-      const row = ridge[ridgeHead];
-      const half = cols / 2;
-      for (let c = 0; c < cols; c++) {
-        // symmetric: lows in the middle, highs toward the edges
-        const bi = c < half ? half - 1 - c : c - half;
-        const v = Math.min(1, bandVals[bi]);
-        row[c] = v * v * (0.35 + 0.65 * Math.exp(-Math.pow((c - half + 0.5) / (cols * 0.28), 2)));
-      }
-      ridgeHead = (ridgeHead + 1) % rows;
+    /* ════════════════════════════════════════════════════════════
+       DRAW HELPERS
+       ════════════════════════════════════════════════════════════ */
+    function fade(amount) {
+      ctx.globalCompositeOperation = "source-over";
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = `rgba(0,0,0,${amount})`;
+      ctx.fillRect(0, 0, W, H);
     }
 
-    ctx.globalCompositeOperation = "source-over";
-    ctx.globalAlpha = 1;
-    ctx.fillStyle = "#000";
-    ctx.fillRect(0, 0, W, H);
-
-    const lw = Math.max(1, H / 420);
-    ctx.lineWidth = lw;
-    ctx.lineJoin = "round";
-    for (let j = 0; j < rows; j++) {
-      // oldest (back) first
-      const row = ridge[(ridgeHead + j) % rows];
-      const d = j / (rows - 1);               // 0 back → 1 front
-      const y0 = H * (0.2 + 0.68 * Math.pow(d, 1.25));
-      const width = W * (0.42 + 0.5 * d);
-      const x0 = (W - width) / 2;
-      const amp = H * (0.07 + 0.2 * d) * (1 + beat * 0.15 * d);
-
-      ctx.beginPath();
-      ctx.moveTo(x0, y0);
-      for (let c = 0; c < cols; c++) {
-        ctx.lineTo(x0 + (c / (cols - 1)) * width, y0 - row[c] * amp);
-      }
-      ctx.lineTo(x0 + width, y0);
-      // occlude the rows behind
+    // MilkDrop-style feedback: redraw last frame zoomed/rotated and slightly dimmer
+    function feedback(zoom, rot, keep, dx = 0, dy = 0) {
+      bctx.globalCompositeOperation = "copy";
+      bctx.drawImage(canvas, 0, 0);
+      ctx.globalCompositeOperation = "source-over";
+      ctx.globalAlpha = 1;
       ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, W, H);
+      ctx.save();
+      ctx.globalAlpha = keep;
+      ctx.translate(W / 2 + dx, H / 2 + dy);
+      ctx.rotate(rot);
+      ctx.scale(zoom, zoom);
+      ctx.drawImage(buf, -W / 2, -H / 2);
+      ctx.restore();
+    }
+
+    function keepFromTrails(min, max) {
+      return min + (max - min) * settings.trails;
+    }
+
+    function mirror() {
+      const half = Math.floor(W / 2);
+      ctx.save();
+      ctx.globalCompositeOperation = "source-over";
+      ctx.globalAlpha = 1;
+      ctx.translate(W, 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(canvas, 0, 0, half, H, 0, 0, half, H);
+      ctx.restore();
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       PRESETS
+       ════════════════════════════════════════════════════════════ */
+
+    // 1 · Spectrum — classic Winamp analyzer with peak caps, scope and reflection
+    function drawSpectrum(f, w, dt) {
+      fade(1 - settings.trails * 0.75);
+      const T = tier();
+      const count = T.bands;
+      computeBands(f, count, 0.002, 0.72);
+      if (peaks.length < count) peaks = new Float32Array(count);
+
+      const padX = W * 0.06;
+      const floor = H * 0.72;
+      const maxH = H * 0.56;
+      const gap = Math.max(1, W / count * 0.22);
+      const bw = (W - padX * 2 - gap * (count - 1)) / count;
+      const segH = Math.max(2, Math.round(H / 110));
+
+      const gk = `${W}x${H}|${lutKey}`;
+      if (gk !== barGradKey) {
+        barGradKey = gk;
+        barGrad = ctx.createLinearGradient(0, floor, 0, floor - maxH);
+        for (let i = 0; i <= 8; i++) barGrad.addColorStop(i / 8, lut.at(0.28 + (i / 8) * 0.72));
+      }
+      if (gapKey !== String(segH)) {
+        gapKey = String(segH);
+        const pc = document.createElement("canvas");
+        pc.width = 1; pc.height = segH + 1;
+        const pg = pc.getContext("2d");
+        pg.fillStyle = "#000";
+        pg.fillRect(0, segH, 1, 1);
+        gapPattern = ctx.createPattern(pc, "repeat");
+      }
+
+      ctx.fillStyle = barGrad;
+      const fall = 0.0009 * dt * H * settings.speed;
+      for (let b = 0; b < count; b++) {
+        const h = Math.min(1, bandVals[b]) * maxH;
+        const x = padX + b * (bw + gap);
+        ctx.fillRect(x, floor - h, bw, h);
+        peaks[b] = Math.max(peaks[b] - fall, h);
+      }
+      // segment gaps in one pass (LED look)
+      ctx.fillStyle = gapPattern;
+      ctx.fillRect(0, floor - maxH - segH, W, maxH + segH);
+
+      ctx.fillStyle = lut.at(1);
+      for (let b = 0; b < count; b++) {
+        const x = padX + b * (bw + gap);
+        ctx.fillRect(x, floor - peaks[b] - segH * 1.6, bw, Math.max(2, segH * 0.8));
+      }
+
+      // floor line
+      ctx.fillStyle = lut.atA(0.6, 0.5);
+      ctx.fillRect(padX, floor + 1, W - padX * 2, Math.max(1, H / 400));
+
+      // reflection
+      const reflH = Math.min(H - floor - 2, maxH * 0.45);
+      ctx.save();
+      ctx.globalAlpha = 0.18;
+      ctx.translate(0, floor * 2 + 4);
+      ctx.scale(1, -1);
+      ctx.drawImage(canvas, 0, floor - reflH, W, reflH, 0, floor - reflH, W, reflH);
+      ctx.restore();
+
+      // oscilloscope strip along the top
+      const sy = H * 0.1, sh = H * 0.07;
+      ctx.globalAlpha = 0.85;
+      ctx.strokeStyle = lut.at(0.85);
+      ctx.lineWidth = Math.max(1, H / 360);
+      ctx.beginPath();
+      const n = w.length, step = Math.max(1, Math.floor(n / (W * 0.6)));
+      for (let i = 0; i < n; i += step) {
+        const x = padX + (i / n) * (W - padX * 2);
+        const y = sy + ((w[i] - 128) / 128) * sh;
+        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+
+    // 2 · Tunnel — feedback zoom with a waveform ring that warps on the beat
+    function drawTunnel(f, w, dt) {
+      const sp = settings.speed;
+      feedback(1.018 + bass * 0.05 * sp + beat * 0.02, (0.0025 + mid * 0.006) * sp * (dt / 16.7), keepFromTrails(0.78, 0.965));
+
+      const cx = W / 2, cy = H / 2;
+      const m = Math.min(W, H);
+      const sides = 5 + (((t / 6) | 0) % 4);
+      const pts = 180;
+      const R = m * (0.1 + bass * 0.07 + beat * 0.03);
+      const n = w.length;
+
+      ctx.globalCompositeOperation = "lighter";
+      ctx.lineJoin = "round";
+      for (let ring = 0; ring < 2; ring++) {
+        const rot = t * (ring ? -0.4 : 0.3) * sp;
+        ctx.beginPath();
+        for (let i = 0; i <= pts; i++) {
+          const a = (i / pts) * TAU;
+          // polygon-ish radius
+          const seg = TAU / sides;
+          const local = (((a + rot) % seg) + seg) % seg; // always 0..seg
+          const poly = Math.cos(Math.PI / sides) / Math.cos(local - Math.PI / sides);
+          const wv = (w[((i / pts) * (n - 1)) | 0] - 128) / 128;
+          const r = R * (ring ? 0.62 : 1) * poly * (1 + wv * (0.35 + treb * 0.4));
+          const x = cx + Math.cos(a + rot) * r;
+          const y = cy + Math.sin(a + rot) * r;
+          i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+        }
+        ctx.strokeStyle = lut.at(ring ? 0.95 : 0.55 + 0.35 * Math.sin(t * 0.5));
+        ctx.lineWidth = Math.max(1.5, m / (ring ? 260 : 170));
+        ctx.stroke();
+      }
+      // core glow
+      const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 0.6);
+      core.addColorStop(0, lut.atA(1, 0.35 + beat * 0.5));
+      core.addColorStop(1, lut.atA(0.5, 0));
+      ctx.fillStyle = core;
+      ctx.fillRect(cx - R, cy - R, R * 2, R * 2);
+      ctx.globalCompositeOperation = "source-over";
+    }
+
+    // 3 · Warp — starfield that surges with the bass, spectrum ring at the center
+    const STAR_BUCKETS = 8;
+    function drawWarp(f, w, dt) {
+      const T = tier();
+      const count = T.stars;
+      if (!stars || stars.length !== count * 4) {
+        stars = new Float32Array(count * 4); // x, y, z, prevZ
+        for (let i = 0; i < count; i++) resetStar(i, true);
+      }
+      fade(1 - keepFromTrails(0.35, 0.88));
+
+      const cx = W / 2, cy = H / 2;
+      const fov = Math.min(W, H) * 0.9;
+      const v = (0.004 + bass * 0.03 + beat * 0.035) * settings.speed * (dt / 16.7);
+      const drift = Math.sin(t * 0.25) * 0.2;
+
+      ctx.globalCompositeOperation = "lighter";
+      ctx.lineCap = "round";
+      for (let bkt = 0; bkt < STAR_BUCKETS; bkt++) {
+        ctx.beginPath();
+        const zLo = bkt / STAR_BUCKETS, zHi = (bkt + 1) / STAR_BUCKETS;
+        for (let i = 0; i < count; i++) {
+          const o = i * 4;
+          const z = stars[o + 2];
+          if (bkt === 0) { // advance once per frame (in the first bucket pass)
+            stars[o + 3] = z;
+            stars[o + 2] = z - v;
+            if (stars[o + 2] <= 0.02) { resetStar(i, false); continue; }
+          }
+          const nz = 1 - stars[o + 2]; // 0 far → 1 near
+          if (nz < zLo || nz >= zHi) continue;
+          const x = stars[o] + drift * stars[o + 2];
+          const y = stars[o + 1];
+          const sx = cx + (x / stars[o + 2]) * fov, sy = cy + (y / stars[o + 2]) * fov;
+          const px = cx + (x / stars[o + 3]) * fov, py = cy + (y / stars[o + 3]) * fov;
+          if (sx < -50 || sx > W + 50 || sy < -50 || sy > H + 50) continue;
+          ctx.moveTo(px, py);
+          ctx.lineTo(sx, sy);
+        }
+        ctx.strokeStyle = lut.at(0.35 + zLo * 0.65);
+        ctx.lineWidth = Math.max(1, (0.5 + zLo * 2.2) * (H / 540));
+        ctx.stroke();
+      }
+
+      // spectrum ring
+      const bars = 72;
+      computeBands(f, bars / 2, 0.003, 0.6);
+      const R = Math.min(W, H) * (0.09 + bass * 0.03);
+      ctx.lineWidth = Math.max(1.5, H / 300);
+      ctx.strokeStyle = lut.at(0.9);
+      ctx.beginPath();
+      for (let i = 0; i < bars; i++) {
+        const bi = i < bars / 2 ? i : bars - 1 - i;
+        const val = Math.min(1, bandVals[bi]);
+        const a = (i / bars) * TAU - Math.PI / 2 + t * 0.1;
+        const r2 = R + val * Math.min(W, H) * 0.16;
+        ctx.moveTo(cx + Math.cos(a) * R, cy + Math.sin(a) * R);
+        ctx.lineTo(cx + Math.cos(a) * r2, cy + Math.sin(a) * r2);
+      }
+      ctx.stroke();
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = "#000";
+      ctx.beginPath();
+      ctx.arc(cx, cy, R * 0.92, 0, TAU);
       ctx.fill();
-      ctx.strokeStyle = lut.atA(0.3 + d * 0.7, (0.25 + d * 0.75).toFixed(3));
+      ctx.strokeStyle = lut.atA(1, 0.6 + beat * 0.4);
+      ctx.lineWidth = Math.max(1, H / 400);
       ctx.stroke();
     }
-    // horizon glow
-    const g = ctx.createLinearGradient(0, H * 0.02, 0, H * 0.36);
-    g.addColorStop(0, lut.atA(0.5, 0));
-    g.addColorStop(0.6, lut.atA(0.6, (0.1 + level * 0.1).toFixed(3)));
-    g.addColorStop(1, lut.atA(0.5, 0));
-    ctx.fillStyle = g;
-    ctx.globalCompositeOperation = "lighter";
-    ctx.fillRect(0, H * 0.02, W, H * 0.34);
-    ctx.globalCompositeOperation = "source-over";
-  }
+    function resetStar(i, anyDepth) {
+      const o = i * 4;
+      const ang = Math.random() * TAU;
+      const rad = 0.05 + Math.random() * 1.4;
+      stars[o] = Math.cos(ang) * rad * (W / H);
+      stars[o + 1] = Math.sin(ang) * rad;
+      stars[o + 2] = anyDepth ? 0.05 + Math.random() * 0.95 : 1;
+      stars[o + 3] = stars[o + 2];
+    }
 
-  const DRAW = {
-    spectrum: drawSpectrum,
-    tunnel: drawTunnel,
-    warp: drawWarp,
-    plasma: drawPlasma,
-    bloom: drawBloom,
-    ridge: drawRidge
-  };
+    // 4 · Plasma Scope — glowing Lissajous figures in a slowly swirling feedback
+    function drawPlasma(f, w, dt) {
+      const sp = settings.speed;
+      feedback(0.985 - bass * 0.01, Math.sin(t * 0.21) * 0.012 * sp, keepFromTrails(0.8, 0.975),
+        Math.sin(t * 0.37) * W * 0.002, Math.cos(t * 0.29) * H * 0.002);
+
+      const cx = W / 2, cy = H / 2;
+      const m = Math.min(W, H);
+      const n = w.length;
+      const R = m * (0.3 + bass * 0.12);
+      const step = Math.max(1, Math.floor(n / 700));
+
+      ctx.globalCompositeOperation = "lighter";
+      ctx.lineJoin = "round";
+      const layers = [
+        { off: n >> 4, rot: t * 0.3 * sp, col: 0.55 + 0.4 * Math.sin(t * 0.4), wid: 2.2 },
+        { off: n >> 3, rot: -t * 0.2 * sp + 1, col: 0.9, wid: 1.2 }
+      ];
+      for (const L of layers) {
+        const c = Math.cos(L.rot), s = Math.sin(L.rot);
+        ctx.beginPath();
+        for (let i = 0; i < n - L.off; i += step) {
+          const a = (w[i] - 128) / 128, b = (w[i + L.off] - 128) / 128;
+          const x = cx + (a * c - b * s) * R;
+          const y = cy + (a * s + b * c) * R;
+          i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+        }
+        ctx.strokeStyle = lut.at(L.col);
+        ctx.lineWidth = Math.max(1, (m / 360) * L.wid);
+        ctx.stroke();
+      }
+      // horizontal waveform band
+      ctx.beginPath();
+      for (let i = 0; i < n; i += step) {
+        const x = (i / n) * W;
+        const y = cy + ((w[i] - 128) / 128) * H * 0.18;
+        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.strokeStyle = lut.atA(0.4, 0.35);
+      ctx.lineWidth = Math.max(1, m / 500);
+      ctx.stroke();
+      ctx.globalCompositeOperation = "source-over";
+    }
+
+    // 5 · Kaleido Bloom — 6-fold mirrored spectrum petals over a spinning feedback
+    let petal = null;
+    function drawBloom(f, w, dt) {
+      const sp = settings.speed;
+      feedback(1.012 + bass * 0.02, 0.006 * sp * (dt / 16.7) * (1 + mid), keepFromTrails(0.7, 0.93));
+
+      const cx = W / 2, cy = H / 2;
+      const m = Math.min(W, H);
+      const pts = 48;
+      computeBands(f, pts, 0.003, 0.55);
+      const inner = m * (0.04 + bass * 0.03);
+      const span = m * 0.42;
+      const wedge = Math.PI / 6;
+
+      // one half-petal path, reused 12 times
+      petal = new Path2D();
+      petal.moveTo(inner, 0);
+      for (let i = 0; i < pts; i++) {
+        const d = i / (pts - 1);
+        const r = inner + d * span;
+        const a = Math.min(1, bandVals[i]) * wedge * 0.95;
+        petal.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+      }
+      petal.lineTo(inner + span, 0);
+
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(t * 0.15 * sp);
+      ctx.globalCompositeOperation = "lighter";
+      ctx.lineWidth = Math.max(1, m / 420);
+      const fillC = lut.atA(0.45 + 0.3 * Math.sin(t * 0.3), (0.06 + beat * 0.08).toFixed(3));
+      const strokeC = lut.at(0.92);
+      for (let k = 0; k < 6; k++) {
+        for (let side = 0; side < 2; side++) {
+          ctx.save();
+          ctx.rotate(k * (TAU / 6));
+          if (side) ctx.scale(1, -1);
+          ctx.fillStyle = fillC;
+          ctx.fill(petal);
+          ctx.strokeStyle = strokeC;
+          ctx.stroke(petal);
+          ctx.restore();
+        }
+      }
+      // center
+      const g = ctx.createRadialGradient(0, 0, 0, 0, 0, inner * 2.2);
+      g.addColorStop(0, lut.atA(1, 0.9));
+      g.addColorStop(1, lut.atA(0.6, 0));
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(0, 0, inner * 2.2 * (1 + beat * 0.4), 0, TAU);
+      ctx.fill();
+      ctx.restore();
+      ctx.globalCompositeOperation = "source-over";
+    }
+
+    // 6 · Ridgeline — spectrum history as stacked, occluding mountain lines
+    function drawRidge(f, w, dt) {
+      const T = tier();
+      const rows = T.rows, cols = T.cols;
+      if (!ridge || ridge.length !== rows || ridge[0].length !== cols) {
+        ridge = Array.from({ length: rows }, () => new Float32Array(cols));
+        ridgeHead = 0;
+      }
+      ridgeTick += dt * settings.speed;
+      if (ridgeTick >= 50) {
+        ridgeTick %= 50;
+        computeBands(f, cols / 2, 0.003, 0.6);
+        const row = ridge[ridgeHead];
+        const half = cols / 2;
+        for (let c = 0; c < cols; c++) {
+          // symmetric: lows in the middle, highs toward the edges
+          const bi = c < half ? half - 1 - c : c - half;
+          const v = Math.min(1, bandVals[bi]);
+          row[c] = v * v * (0.35 + 0.65 * Math.exp(-Math.pow((c - half + 0.5) / (cols * 0.28), 2)));
+        }
+        ridgeHead = (ridgeHead + 1) % rows;
+      }
+
+      ctx.globalCompositeOperation = "source-over";
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, W, H);
+
+      const lw = Math.max(1, H / 420);
+      ctx.lineWidth = lw;
+      ctx.lineJoin = "round";
+      for (let j = 0; j < rows; j++) {
+        // oldest (back) first
+        const row = ridge[(ridgeHead + j) % rows];
+        const d = j / (rows - 1);               // 0 back → 1 front
+        const y0 = H * (0.2 + 0.68 * Math.pow(d, 1.25));
+        const width = W * (0.42 + 0.5 * d);
+        const x0 = (W - width) / 2;
+        const amp = H * (0.07 + 0.2 * d) * (1 + beat * 0.15 * d);
+
+        ctx.beginPath();
+        ctx.moveTo(x0, y0);
+        for (let c = 0; c < cols; c++) {
+          ctx.lineTo(x0 + (c / (cols - 1)) * width, y0 - row[c] * amp);
+        }
+        ctx.lineTo(x0 + width, y0);
+        // occlude the rows behind
+        ctx.fillStyle = "#000";
+        ctx.fill();
+        ctx.strokeStyle = lut.atA(0.3 + d * 0.7, (0.25 + d * 0.75).toFixed(3));
+        ctx.stroke();
+      }
+      // horizon glow
+      const g = ctx.createLinearGradient(0, H * 0.02, 0, H * 0.36);
+      g.addColorStop(0, lut.atA(0.5, 0));
+      g.addColorStop(0.6, lut.atA(0.6, (0.1 + level * 0.1).toFixed(3)));
+      g.addColorStop(1, lut.atA(0.5, 0));
+      ctx.fillStyle = g;
+      ctx.globalCompositeOperation = "lighter";
+      ctx.fillRect(0, H * 0.02, W, H * 0.34);
+      ctx.globalCompositeOperation = "source-over";
+    }
+
+    const DRAW = {
+      spectrum: drawSpectrum,
+      tunnel: drawTunnel,
+      warp: drawWarp,
+      plasma: drawPlasma,
+      bloom: drawBloom,
+      ridge: drawRidge
+    };
+
+
+    function clear() {
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "source-over";
+      ctx.fillStyle = "#000";
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    return {
+      setSize(w, h) {
+        if (w === W && h === H && buf.width === w && buf.height === h) return;
+        W = w; H = h;
+        if (canvas.width !== w) canvas.width = w;
+        if (canvas.height !== h) canvas.height = h;
+        buf.width = w; buf.height = h;
+        barGradKey = ""; gapKey = "";
+        stars = null; ridge = null;
+        clear();
+      },
+      clear,
+      reset() {
+        peaks.fill(0);
+        bassHist.fill(0);
+        beat = 0; bass = mid = treb = level = 0;
+      },
+      invalidateLut() { lutKey = ""; },
+      refreshLut,
+      levels: () => ({ bass, beat, level }),
+      draw(now, dt, f, w, presetId) {
+        t += (dt / 1000) * settings.speed;
+        if (!lut) refreshLut();
+        analyze(f, now, dt);
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = "source-over";
+        (DRAW[presetId] || drawSpectrum)(f, w, dt);
+        if (settings.mirror) mirror();
+        if (settings.flash && beat > 0.05) {
+          ctx.globalCompositeOperation = "lighter";
+          ctx.fillStyle = lut.atA(0.9, (beat * 0.1).toFixed(3));
+          ctx.fillRect(0, 0, W, H);
+          ctx.globalCompositeOperation = "source-over";
+        }
+      }
+    };
+  }
 
   /* ════════════════════════════════════════════════════════════
      LOOP
@@ -1189,28 +1269,16 @@
     const dt = Math.min(50, lastNow ? now - lastNow : 16.7);
     lastNow = now;
     frameNo++;
-    t += (dt / 1000) * settings.speed;
 
-    if (frameNo % 30 === 0) refreshLut();
+    if (frameNo % 30 === 0 && main.refreshLut() && settings.palette === "art") syncControls();
     if (settings.cycle && now - cycleStart > 30000) stepPreset(1);
 
     const { f, w } = opts.viz.sample(now);
-    analyze(f, now, dt);
+    main.draw(now, dt, f, w, currentPresetId());
+
     if (settings.video && lastArt && !reducedMotion) {
-      q.stage.style.setProperty("--xpt-pulse", Math.min(1, bass * 0.7 + beat * 0.3).toFixed(3));
-    }
-
-    ctx.globalAlpha = 1;
-    ctx.globalCompositeOperation = "source-over";
-    (DRAW[settings.preset] || drawSpectrum)(f, w, dt);
-
-    if (settings.mirror) mirror();
-
-    if (settings.flash && beat > 0.05) {
-      ctx.globalCompositeOperation = "lighter";
-      ctx.fillStyle = lut.atA(0.9, (beat * 0.1).toFixed(3));
-      ctx.fillRect(0, 0, W, H);
-      ctx.globalCompositeOperation = "source-over";
+      const lv = main.levels();
+      q.stage.style.setProperty("--xpt-pulse", Math.min(1, lv.bass * 0.7 + lv.beat * 0.3).toFixed(3));
     }
 
     perf(dt);
@@ -1261,8 +1329,8 @@
 
     scale = startScale();
     W = H = 0;
-    lutKey = "";
-    refreshLut();
+    main.invalidateLut();
+    main.refreshLut();
     applySettings("*");
     resize();
     updateTitle();
@@ -1271,8 +1339,7 @@
     updateTransport();
     presetStart = cycleStart = performance.now();
     lastNow = 0;
-    peaks.fill(0);
-    bassHist.fill(0);
+    main.reset();
     hudForcedHidden = false;
     togglePanel(false);
     wake();
@@ -1310,6 +1377,10 @@
   window.XPTheater = {
     open: openTheater,
     close: () => close(),
-    isOpen: () => open
+    isOpen: () => open,
+    // shared with the small in-window screens
+    createRenderer,
+    resolvePreset,
+    getSettings: () => settings
   };
 })();
