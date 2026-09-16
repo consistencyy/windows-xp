@@ -37,7 +37,16 @@ window.PLAYLIST = [
     audio: "assets/music3.mp3",
     art:   "assets/music3.webm",
     viz:   "ambience"
-  }
+  },                                // ← add this comma
+ {
+   title: "Artist - Blow Tha Speaker",
+   audio: "assets/blowthaspeaker.mp3",
+   mood:  ["upbeat", "energetic"],
+   art:   "assets/minky.webm",
+   viz:   "tunnel"
+ }
+];
+   
 ];
 
 /* ════════════════════════════════════════════════════════════
