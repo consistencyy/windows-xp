@@ -337,9 +337,13 @@ Thanks for stopping by :)
     <!-- LEFT: artwork + now playing -->
     <div class="mp-left">
       <div class="mp-now-playing-label">Now Playing</div>
-      <div class="mp-artwork-wrap" id="track-cover-container">
-        <img id="track-cover-img" src="assets/cover-placeholder.png" class="mp-artwork" />
-        <video id="track-cover-video" muted autoplay loop class="mp-artwork" style="display:none;"></video>
+      <div class="mp-artwork-wrap crt-screen" id="track-cover-container">
+        <div class="crt-tube">
+          <img id="track-cover-img" src="assets/cover-placeholder.png" class="mp-artwork crt-art crt-art-img" alt="" />
+          <video id="track-cover-video" muted loop playsinline class="mp-artwork crt-art crt-art-video" style="display:none;"></video>
+          <canvas class="crt-viz" aria-hidden="true"></canvas>
+        </div>
+        <div class="crt-overlay" aria-hidden="true"></div>
       </div>
       <div class="mp-track-name" id="track-title">Track Title</div>
     </div>
@@ -1647,6 +1651,8 @@ Thanks for stopping by :)
 
   <!-- END #desktop-root -->
 
+  <script src="assets/playlist.js" defer></script>
+  <script src="assets/visualizer.js" defer></script>
   <script src="assets/desktop.js" defer></script>
 
 <!-- ══════════════════════════════════════════════
@@ -2323,9 +2329,13 @@ Thanks for stopping by :)
     </div>
     <div class="mob-sheet-content">
       <div class="mob-player">
-        <div class="mob-player-artwork" id="mob-artwork-wrap">
-          <img id="mob-cover-img" src="assets/cover-placeholder.png" class="mob-cover" />
-          <video id="mob-cover-video" class="mob-cover" muted autoplay loop style="display:none;"></video>
+        <div class="mob-player-artwork crt-screen" id="mob-artwork-wrap">
+          <div class="crt-tube">
+            <img id="mob-cover-img" src="assets/cover-placeholder.png" class="mob-cover crt-art crt-art-img" alt="" />
+            <video id="mob-cover-video" class="mob-cover crt-art crt-art-video" muted loop playsinline style="display:none;"></video>
+            <canvas class="crt-viz" aria-hidden="true"></canvas>
+          </div>
+          <div class="crt-overlay" aria-hidden="true"></div>
         </div>
         <div class="mob-player-title" id="mob-track-title">Track Title</div>
         <audio id="mob-audio"></audio>
