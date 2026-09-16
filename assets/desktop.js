@@ -231,26 +231,12 @@ let browserInitialized = false;
   const mpSeekFill = document.getElementById("mp-seek-fill");
   const mpPlaylist = document.getElementById("mp-playlist");
 
-const tracks = [
-  {
-    src: "assets/music1.mp3",
-    title: "CHRYSTAL - The Days (Notion Remix)",
-    coverSrc: "assets/music1.webm",
-    coverType: "video"
-  },
-  {
-    src: "assets/music2.mp3",
-    title: "eery - Her",
-    coverSrc: "assets/music2.webm",
-    coverType: "video"
-  },
-  {
-    src: "assets/music3.mp3",
-    title: "The Backseat Lovers - Slowing Down",
-    coverSrc: "assets/music3.webm",
-    coverType: "video"
-  }
-];
+const tracks = window.XPViz ? XPViz.normalize(window.PLAYLIST) : [];
+const mpViz = window.XPViz ? XPViz.create({
+  audio,
+  wrap: document.getElementById("track-cover-container"),
+  placeholder: "assets/cover-placeholder.png"
+}) : null;
 
   let current = 0;
   let isDragging = false;
@@ -322,24 +308,10 @@ const tracks = [
 function loadTrack(i) {
   current = (i + tracks.length) % tracks.length;
   const t = tracks[current];
-  audio.src = t.src;
+  audio.src = t.audio;
   if (title) title.textContent = t.title;
   if (mpStatusText) mpStatusText.textContent = "Playing: " + t.title;
-
-  const img = document.getElementById("track-cover-img");
-  const video = document.getElementById("track-cover-video");
-
-  if (t.coverType === "image") {
-    img.src = t.coverSrc;
-    img.style.display = "block";
-    video.style.display = "none";
-    video.pause();
-  } else {
-    video.src = t.coverSrc;
-    video.style.display = "block";
-    img.style.display = "none";
-    video.play();
-  }
+  if (mpViz) mpViz.setTrack(t);
   updatePlaylistHighlight();
 }
 
@@ -376,13 +348,7 @@ function closePlayer() {
   if (mpCurrentTime) mpCurrentTime.textContent = '0:00';
   if (mpDuration) mpDuration.textContent = '0:00';
 
-  const img = document.getElementById("track-cover-img");
-  const video = document.getElementById("track-cover-video");
-
-  img.src = 'assets/cover-placeholder.png';
-  img.style.display = 'block';
-  video.src = '';
-  video.style.display = 'none';
+  if (mpViz) mpViz.reset();
 
   playerWin.classList.remove('show');
   playerWin.style.display = 'none';
@@ -1851,22 +1817,21 @@ function initMobile() {
   }
 
   // Mobile Media Player
-  const mobTracks = [
-    { src:"assets/music1.mp3", title:"CHRYSTAL - The Days (Notion Remix)", coverSrc:"assets/music1.webm", coverType:"video" },
-    { src:"assets/music2.mp3", title:"eery - Her",                          coverSrc:"assets/music2.webm", coverType:"video" },
-    { src:"assets/music3.mp3", title:"The Backseat Lovers - Slowing Down",   coverSrc:"assets/music3.webm", coverType:"video" }
-  ];
+  const mobTracks = window.XPViz ? XPViz.normalize(window.PLAYLIST) : [];
 
   let mobCurrent = 0;
   const mobAudio     = document.getElementById("mob-audio");
-  const mobCoverImg  = document.getElementById("mob-cover-img");
-  const mobCoverVid  = document.getElementById("mob-cover-video");
   const mobTrackTitle= document.getElementById("mob-track-title");
   const mobPlayBtn   = document.getElementById("mob-play");
   const mobPrevBtn   = document.getElementById("mob-prev");
   const mobNextBtn   = document.getElementById("mob-next");
   const mobVolSlider = document.getElementById("mob-vol");
   const mobPlaylistEl= document.getElementById("mob-playlist");
+  const mobViz = window.XPViz ? XPViz.create({
+    audio: mobAudio,
+    wrap: document.getElementById("mob-artwork-wrap"),
+    placeholder: "assets/cover-placeholder.png"
+  }) : null;
 
   function mobBuildPlaylist() {
     if (!mobPlaylistEl) return;
@@ -1883,16 +1848,9 @@ function initMobile() {
   function mobLoadTrack(i) {
     mobCurrent = (i + mobTracks.length) % mobTracks.length;
     const t = mobTracks[mobCurrent];
-    if (mobAudio) mobAudio.src = t.src;
+    if (mobAudio) mobAudio.src = t.audio;
     if (mobTrackTitle) mobTrackTitle.textContent = t.title;
-    if (t.coverType === "video" && mobCoverVid) {
-      mobCoverVid.src = t.coverSrc; mobCoverVid.style.display = "block";
-      if (mobCoverImg) mobCoverImg.style.display = "none";
-      mobCoverVid.play();
-    } else if (mobCoverImg) {
-      mobCoverImg.src = t.coverSrc; mobCoverImg.style.display = "block";
-      if (mobCoverVid) mobCoverVid.style.display = "none";
-    }
+    if (mobViz) mobViz.setTrack(t);
     document.querySelectorAll(".mob-playlist-item").forEach((el, idx) => {
       el.classList.toggle("active", idx === mobCurrent);
     });
@@ -2018,23 +1976,6 @@ function mobOpenSheet(id) {
   const bd = document.getElementById("mob-backdrop");
   if (bd) bd.classList.remove("hidden");
 
-  // Build player playlist on open
-  if (id === "mob-sheet-player") {
-    const mobPlaylistEl = document.getElementById("mob-playlist");
-    const mobTracks = [
-      { title:"CHRYSTAL - The Days (Notion Remix)" },
-      { title:"eery - Her" },
-      { title:"The Backseat Lovers - Slowing Down" }
-    ];
-    if (mobPlaylistEl && mobPlaylistEl.children.length === 0) {
-      mobTracks.forEach((t, i) => {
-        const el = document.createElement("div");
-        el.className = "mob-playlist-item";
-        el.innerHTML = `<span class="mob-playlist-num">${i+1}</span><span>${t.title}</span>`;
-        mobPlaylistEl.appendChild(el);
-      });
-    }
-  }
 }
 
 function mobCloseSheet(id) {
