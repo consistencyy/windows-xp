@@ -331,7 +331,9 @@
     });
     audio.addEventListener("pause", () => { fadeFrames = 40; wrap.classList.remove("is-live"); });
 
+    let currentArt = "";
     function showArt(src) {
+      currentArt = src || "";
       const useVideo = isVideo(src);
       const target = useVideo ? vid : img;
       const onReady = () => {
@@ -343,7 +345,7 @@
         vid.style.display = "block";
         vid.src = src;
         vid.addEventListener("loadeddata", onReady, { once: true });
-        vid.play().catch(() => {});
+        if (!suspended) vid.play().catch(() => {});
       } else {
         vid.pause();
         vid.removeAttribute("src");
@@ -413,15 +415,18 @@
       if (suspended) {
         if (raf) cancelAnimationFrame(raf);
         raf = 0;
-      } else if (!audio.paused) {
-        start();
+        vid.pause(); // the fullscreen view plays its own copy
+      } else {
+        if (vid.style.display !== "none" && vid.getAttribute("src")) vid.play().catch(() => {});
+        if (!audio.paused) start();
       }
     }
     const getColors = () => colors.slice();
     const isLive = () => lastLive;
+    const getArt = () => ({ src: currentArt, video: isVideo(currentArt) });
 
     img.src = placeholder;
-    return { setTrack, reset, sample, setDetail, suspend, getColors, isLive, audio };
+    return { setTrack, reset, sample, setDetail, suspend, getColors, getArt, isLive, audio };
   }
 
   window.XPViz = { create, normalize, pickClip };

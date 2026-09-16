@@ -7271,6 +7271,33 @@ html.xpt-open body { overflow: hidden; }
   touch-action: manipulation;
 }
 
+/* Music video / cover sits under the visualizer. The canvas is blended with
+   "screen", so its black areas let the video through and its colors glow on top. */
+.xpt-stage { --xpt-video: 0.45; --xpt-pulse: 0; }
+.xpt-art {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.xpt-art img,
+.xpt-art video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+  transform: scale(calc(1.03 + var(--xpt-pulse) * 0.03));
+  filter: saturate(1.15) brightness(calc(var(--xpt-video) + var(--xpt-pulse) * 0.25));
+  will-change: transform, filter;
+}
+.xpt-art.has-img img,
+.xpt-art.has-video video { display: block; }
+.xpt-art.has-img ~ .xpt-canvas,
+.xpt-art.has-video ~ .xpt-canvas { mix-blend-mode: screen; }
+.xpt.no-video .xpt-art { display: none; }
+
 /* CRT glass */
 .xpt-crt {
   position: absolute;
@@ -7622,9 +7649,11 @@ html.xpt-open body { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .xpt-crt::after,
   .xpt-marquee.is-scrolling .xpt-marquee-text { animation: none; }
+  .xpt-art img, .xpt-art video { transform: scale(1.03); }
   .xpt-top, .xpt-bar, .xpt-panel, .xpt-toast { transition: none; }
 }
 
 /* hint that the small screen opens the full screen visualizer */
 #track-cover-container,
 #mob-artwork-wrap { cursor: zoom-in; }
+.xpt-checks label.xpt-slider { display: grid; cursor: default; }

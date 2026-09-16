@@ -55,6 +55,8 @@
     trails: 0.6,
     speed: 1,
     crt: true,
+    video: true,
+    videoLevel: 0.45,
     flash: !reducedMotion,
     mirror: false,
     cycle: false,
@@ -126,6 +128,10 @@
 
     root.innerHTML = `
       <div class="xpt-stage">
+      <div class="xpt-art" aria-hidden="true">
+        <img class="xpt-art-img" alt="">
+        <video class="xpt-art-video" muted loop playsinline></video>
+      </div>
       <canvas class="xpt-canvas" aria-hidden="true"></canvas>
       <div class="xpt-crt" aria-hidden="true"></div>
       <div class="xpt-toast" aria-live="polite"></div>
@@ -173,6 +179,9 @@
 
             <fieldset class="xpt-group xpt-checks">
               <legend>Effects</legend>
+              <label><input type="checkbox" data-key="video"> Show music video</label>
+              <label class="xpt-slider"><span>Video</span>
+                <input type="range" data-key="videoLevel" min="0.1" max="1" step="0.01" aria-label="Music video brightness"><output></output></label>
               <label><input type="checkbox" data-key="crt"> CRT screen</label>
               <label><input type="checkbox" data-key="flash"> Flash on beat</label>
               <label><input type="checkbox" data-key="mirror"> Mirror</label>
@@ -276,6 +285,9 @@
     q = {
       stage: $(".xpt-stage"),
       canvas: $(".xpt-canvas"),
+      art: $(".xpt-art"),
+      artImg: $(".xpt-art-img"),
+      artVid: $(".xpt-art-video"),
       crt: $(".xpt-crt"),
       toast: $(".xpt-toast"),
       fps: $(".xpt-fps"),
@@ -442,13 +454,15 @@
 
   function formatSetting(key, v) {
     if (key === "gain" || key === "speed") return Number(v).toFixed(2) + "×";
-    if (key === "trails") return Math.round(v * 100) + "%";
+    if (key === "trails" || key === "videoLevel") return Math.round(v * 100) + "%";
     return "";
   }
 
   function applySettings(key) {
     syncControls();
     if (key === "crt" || key === "*") dom.classList.toggle("no-crt", !settings.crt);
+    if (key === "video" || key === "*") { dom.classList.toggle("no-video", !settings.video); lastArt = null; updateArt(); }
+    if (key === "videoLevel" || key === "*") q.stage.style.setProperty("--xpt-video", settings.videoLevel);
     if (key === "fps" || key === "*") q.fps.hidden = !settings.fps;
     if (key === "quality" || key === "*") { scale = startScale(); resize(); }
     if (key === "palette" || key === "*") lutKey = "";
@@ -563,8 +577,49 @@
     q.vol.value = a.volume;
   }
 
-  const audioEvents = ["play", "pause", "timeupdate", "loadedmetadata", "volumechange", "emptied"];
+  /* ── Music video / cover behind the visualizer ── */
+  let lastArt = null;
+  function updateArt() {
+    if (!opts || !q.art) return;
+    const art = (opts.viz.getArt && opts.viz.getArt()) || { src: "" };
+    const src = settings.video ? art.src : "";
+    if (lastArt === src) return;
+    lastArt = src;
+    const { artImg: img, artVid: vid } = q;
+    if (!src) {
+      vid.pause();
+      vid.removeAttribute("src");
+      vid.load();
+      img.removeAttribute("src");
+      q.art.classList.remove("has-img", "has-video");
+      return;
+    }
+    if (art.video) {
+      img.removeAttribute("src");
+      q.art.classList.remove("has-img");
+      q.art.classList.add("has-video");
+      vid.src = src;
+      vid.play().catch(() => {});
+    } else {
+      vid.pause();
+      vid.removeAttribute("src");
+      vid.load();
+      q.art.classList.remove("has-video");
+      q.art.classList.add("has-img");
+      img.src = src;
+    }
+  }
+  function clearArt() {
+    if (!q.artVid) return;
+    q.artVid.pause();
+    q.artVid.removeAttribute("src");
+    q.artVid.load();
+    lastArt = null;
+  }
+
+  const audioEvents = ["play", "pause", "timeupdate", "loadedmetadata", "volumechange", "emptied", "loadstart"];
   function onAudio(e) {
+    if (e.type !== "timeupdate" && e.type !== "volumechange") updateArt();
     if (e.type === "play" || e.type === "loadedmetadata" || e.type === "emptied") updateTitle();
     updateTransport();
   }
@@ -1141,6 +1196,9 @@
 
     const { f, w } = opts.viz.sample(now);
     analyze(f, now, dt);
+    if (settings.video && lastArt && !reducedMotion) {
+      q.stage.style.setProperty("--xpt-pulse", Math.min(1, bass * 0.7 + beat * 0.3).toFixed(3));
+    }
 
     ctx.globalAlpha = 1;
     ctx.globalCompositeOperation = "source-over";
@@ -1208,6 +1266,8 @@
     applySettings("*");
     resize();
     updateTitle();
+    lastArt = null;
+    updateArt();
     updateTransport();
     presetStart = cycleStart = performance.now();
     lastNow = 0;
@@ -1239,6 +1299,7 @@
     document.documentElement.classList.remove("xpt-open");
 
     audioEvents.forEach((ev) => opts.audio.removeEventListener(ev, onAudio));
+    clearArt();
     opts.viz.setDetail(false);
     opts.viz.suspend(false);
     const back = opts.trigger;
