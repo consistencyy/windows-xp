@@ -125,6 +125,7 @@
     root.tabIndex = -1;
 
     root.innerHTML = `
+      <div class="xpt-stage">
       <canvas class="xpt-canvas" aria-hidden="true"></canvas>
       <div class="xpt-crt" aria-hidden="true"></div>
       <div class="xpt-toast" aria-live="polite"></div>
@@ -226,6 +227,7 @@
             <input type="range" class="mp-vol-slider xpt-vol-input" min="0" max="1" step="0.01" aria-label="Volume">
           </label>
         </div>
+      </div>
       </div>`;
     document.body.appendChild(root);
     return root;
@@ -272,6 +274,7 @@
     if (dom) return;
     dom = buildDom();
     q = {
+      stage: $(".xpt-stage"),
       canvas: $(".xpt-canvas"),
       crt: $(".xpt-crt"),
       toast: $(".xpt-toast"),
@@ -623,8 +626,24 @@
   /* ── Sizing ───────────────────────────────────────────── */
   function resize() {
     if (!canvas) return;
-    cssW = dom.clientWidth || window.innerWidth;
-    cssH = dom.clientHeight || window.innerHeight;
+    // Desktop: letterbox to the same 4:3 frame as #desktop-root (1024×768,
+    // scaled with the same min() fit), so it lines up with the desktop exactly.
+    // Mobile: use the whole screen.
+    const vw = dom.clientWidth || window.innerWidth;
+    const vh = dom.clientHeight || window.innerHeight;
+    if (opts && opts.letterbox) {
+      const k = Math.min(vw / 1024, vh / 768);
+      cssW = Math.round(1024 * k);
+      cssH = Math.round(768 * k);
+    } else {
+      cssW = vw;
+      cssH = vh;
+    }
+    const st = q.stage.style;
+    st.width = cssW + "px";
+    st.height = cssH + "px";
+    st.left = Math.round((vw - cssW) / 2) + "px";
+    st.top = Math.round((vh - cssH) / 2) + "px";
     dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const w = Math.max(160, Math.round(cssW * dpr * scale));
     const h = Math.max(90, Math.round(cssH * dpr * scale));

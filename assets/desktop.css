@@ -7255,6 +7255,13 @@ html.xpt-open body { overflow: hidden; }
 }
 .xpt[hidden] { display: none; }
 
+.xpt-stage {
+  position: absolute;
+  overflow: hidden;
+  background: #000;
+  container-type: size;
+}
+
 .xpt-canvas {
   position: absolute;
   inset: 0;
@@ -7590,8 +7597,8 @@ html.xpt-open body { overflow: hidden; }
 .xpt-play.is-playing .mp-play-shape { opacity: 0; transform: scale(0.6); }
 .xpt-play.is-playing .mp-pause-bar { opacity: 1; transform: scale(1); }
 
-/* ── Small screens ── */
-@media (max-width: 640px) {
+/* ── Small screens (sized by the stage, so a small desktop frame counts too) ── */
+@container (max-width: 640px) {
   .xpt-lcd { max-width: calc(100vw - 110px); gap: 8px; }
   .xpt-lcd-preset { display: none; }
   .xpt-lcd-time { font-size: 16px; }

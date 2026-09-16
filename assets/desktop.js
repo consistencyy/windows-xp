@@ -423,6 +423,7 @@ function closePlayer() {
       viz: mpViz,
       trigger,
       volumeInput: volumeSlider,
+      letterbox: true,
       getTitle: () => (tracks[current] ? tracks[current].title : ""),
       toggle: togglePlay,
       prev: () => { loadTrack(current - 1); playTrack(); },
