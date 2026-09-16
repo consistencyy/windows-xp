@@ -412,6 +412,34 @@ function closePlayer() {
   if (prevBtn) prevBtn.onclick = () => { loadTrack(current - 1); playTrack(); };
   if (nextBtn) nextBtn.onclick = () => { loadTrack(current + 1); playTrack(); };
 
+  // Full screen visualizer (maximize button, or double-click the artwork)
+  const mpMaxBtn = playerWin.querySelector(".mp-max-btn");
+  const mpCoverWrap = document.getElementById("track-cover-container");
+  function openTheaterDesktop(trigger) {
+    if (!window.XPTheater || !mpViz) return;
+    if (!audio.src) { loadTrack(current); playTrack(); }
+    XPTheater.open({
+      audio,
+      viz: mpViz,
+      trigger,
+      volumeInput: volumeSlider,
+      getTitle: () => (tracks[current] ? tracks[current].title : ""),
+      toggle: togglePlay,
+      prev: () => { loadTrack(current - 1); playTrack(); },
+      next: () => { loadTrack(current + 1); playTrack(); }
+    });
+  }
+  if (mpMaxBtn) {
+    mpMaxBtn.title = "Full screen visualizer";
+    mpMaxBtn.setAttribute("aria-label", "Full screen visualizer");
+    mpMaxBtn.addEventListener("mousedown", (e) => e.stopPropagation());
+    mpMaxBtn.onclick = () => openTheaterDesktop(mpMaxBtn);
+  }
+  if (mpCoverWrap) {
+    mpCoverWrap.title = "Double-click for full screen visualizer";
+    mpCoverWrap.ondblclick = () => openTheaterDesktop(mpMaxBtn);
+  }
+
 // ==============================
 // CONSISTENCYY BROWSER WINDOW
 // ==============================
@@ -1871,6 +1899,32 @@ function initMobile() {
   if (mobNextBtn)   mobNextBtn.onclick   = () => { mobLoadTrack(mobCurrent + 1); mobPlayTrack(); };
   if (mobVolSlider) mobVolSlider.oninput = () => { if (mobAudio) mobAudio.volume = mobVolSlider.value; };
   if (mobAudio)     mobAudio.onended     = () => { mobLoadTrack(mobCurrent + 1); mobPlayTrack(); };
+
+  // Tap the artwork for the full screen visualizer
+  const mobArtWrap = document.getElementById("mob-artwork-wrap");
+  if (mobArtWrap && mobViz) {
+    mobArtWrap.setAttribute("role", "button");
+    mobArtWrap.setAttribute("tabindex", "0");
+    mobArtWrap.setAttribute("aria-label", "Open full screen visualizer");
+    const openMobTheater = () => {
+      if (!window.XPTheater) return;
+      if (!mobAudio.src) mobLoadTrack(0);
+      XPTheater.open({
+        audio: mobAudio,
+        viz: mobViz,
+        trigger: mobArtWrap,
+        volumeInput: mobVolSlider,
+        getTitle: () => (mobTracks[mobCurrent] ? mobTracks[mobCurrent].title : ""),
+        toggle: mobTogglePlay,
+        prev: () => { mobLoadTrack(mobCurrent - 1); mobPlayTrack(); },
+        next: () => { mobLoadTrack(mobCurrent + 1); mobPlayTrack(); }
+      });
+    };
+    mobArtWrap.addEventListener("click", openMobTheater);
+    mobArtWrap.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openMobTheater(); }
+    });
+  }
 
   document.getElementById("mob-sheet-player")?.addEventListener("mob-open", () => {
     mobBuildPlaylist();

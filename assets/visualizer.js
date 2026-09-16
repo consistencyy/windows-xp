@@ -33,8 +33,28 @@
       audio: t.audio || t.src || "",
       art: t.art || t.coverSrc || "",
       viz: t.viz || "bars",
+      mood: (Array.isArray(t.mood) ? t.mood : t.mood ? [t.mood] : [])
+        .map((m) => String(m).trim().toLowerCase()).filter(Boolean),
       colors: Array.isArray(t.colors) && t.colors.length ? t.colors : null
     }));
+  }
+
+  /* ── Clip bank ───────────────────────────────────────
+     Picks the clip whose tags overlap the track's moods the most,
+     choosing randomly among ties and avoiding an instant repeat. */
+  function pickClip(moods, avoid) {
+    const bank = (window.CLIP_BANK || []).filter((c) => c && c.src);
+    if (!moods || !moods.length || !bank.length) return "";
+    let best = 0, pool = [];
+    bank.forEach((c) => {
+      const tags = (c.tags || []).map((x) => String(x).toLowerCase());
+      const score = moods.filter((m) => tags.includes(m)).length;
+      if (score > best) { best = score; pool = [c]; }
+      else if (score === best && score > 0) pool.push(c);
+    });
+    if (!pool.length) return "";
+    const fresh = pool.length > 1 ? pool.filter((c) => c.src !== avoid) : pool;
+    return fresh[Math.floor(Math.random() * fresh.length)].src;
   }
 
   /* ── Color helpers ─────────────────────────────────── */
@@ -86,7 +106,7 @@
     const g = canvas.getContext("2d");
 
     let analyser = null, freq = null, wave = null;
-    let raf = 0, running = false;
+    let raf = 0, running = false, suspended = false, detail = false;
     let style = "bars", colors = DEFAULT_COLORS;
     let silentFrames = 0, switchFrames = 0, fadeFrames = 0;
     let peaks = new Array(16).fill(0);
@@ -100,12 +120,10 @@
       try {
         const src = ac.createMediaElementSource(audio);
         analyser = ac.createAnalyser();
-        analyser.fftSize = 512;
+        analyser.fftSize = detail ? 2048 : 512;
         analyser.smoothingTimeConstant = 0.78;
         src.connect(analyser);
         analyser.connect(ac.destination);
-        freq = new Uint8Array(analyser.frequencyBinCount);
-        wave = new Uint8Array(analyser.fftSize);
       } catch (e) {
         analyser = null;
       }
@@ -121,8 +139,15 @@
       return true;
     }
 
-    /* ── Audio sampling (with a fake signal when real data isn't available) ── */
+    /* ── Audio sampling (with a fake signal when real data isn't available) ──
+       Buffers are reused every frame to avoid garbage-collection hitches. */
+    let lastLive = false;
     function sample(now) {
+      const bins = analyser ? analyser.frequencyBinCount : (detail ? 1024 : 256);
+      if (!freq || freq.length !== bins) {
+        freq = new Uint8Array(bins);
+        wave = new Uint8Array(bins * 2);
+      }
       let live = false;
       if (analyser && !audio.paused) {
         analyser.getByteFrequencyData(freq);
@@ -132,22 +157,26 @@
         silentFrames = sum === 0 ? silentFrames + 1 : 0;
         live = silentFrames < 90;
       }
-      if (live) return { f: freq, w: wave };
+      lastLive = live;
+      if (live) return { f: freq, w: wave, live };
 
       // Fallback: opening the page from file:// (or an old browser) blocks
       // real analysis, so animate a plausible stand-in instead of freezing.
       const t = now / 1000;
       const amp = audio.paused ? 0 : 1;
-      const f = new Uint8Array(256), w = new Uint8Array(512);
       const beat = Math.pow(Math.max(0, Math.sin(t * 4.2)), 6);
-      for (let i = 0; i < 256; i++) {
-        const fall = 1 - i / 256;
-        f[i] = amp * Math.max(0, 255 * fall * (0.45 + 0.35 * Math.sin(t * 2.3 + i * 0.35) * Math.sin(t * 0.7 + i * 0.05) + 0.4 * beat * fall));
+      const k = 256 / bins;
+      for (let i = 0; i < bins; i++) {
+        const j = i * k;
+        const fall = 1 - i / bins;
+        freq[i] = amp * Math.max(0, 255 * fall * (0.45 + 0.35 * Math.sin(t * 2.3 + j * 0.35) * Math.sin(t * 0.7 + j * 0.05) + 0.4 * beat * fall));
       }
-      for (let i = 0; i < 512; i++) {
-        w[i] = 128 + amp * 60 * (Math.sin(i * 0.06 + t * 5) * 0.6 + Math.sin(i * 0.23 - t * 3) * 0.3) * (0.6 + beat);
+      const wl = wave.length, wk = 512 / wl;
+      for (let i = 0; i < wl; i++) {
+        const j = i * wk;
+        wave[i] = 128 + amp * 60 * (Math.sin(j * 0.06 + t * 5) * 0.6 + Math.sin(j * 0.23 - t * 3) * 0.3) * (0.6 + beat);
       }
-      return { f, w };
+      return { f: freq, w: wave, live };
     }
 
     function bandLevel(f, from, to) {
@@ -167,8 +196,9 @@
       grad.addColorStop(1, colors[1]);
       for (let b = 0; b < n; b++) {
         // log-ish mapping so the low end doesn't hog the whole display
-        const from = Math.floor(Math.pow(b / n, 1.8) * 150) + 1;
-        const to = Math.max(from + 1, Math.floor(Math.pow((b + 1) / n, 1.8) * 150) + 1);
+        const span = f.length * 0.586; // ≈ the lower 60% of the spectrum
+        const from = Math.floor(Math.pow(b / n, 1.8) * span) + 1;
+        const to = Math.max(from + 1, Math.floor(Math.pow((b + 1) / n, 1.8) * span) + 1);
         const v = Math.min(1, bandLevel(f, from, to) * 1.25);
         const maxH = H - pad * 2;
         const h = v * maxH;
@@ -226,7 +256,7 @@
       g.lineCap = "round";
       for (let i = 0; i < rays; i++) {
         const mirror = i < rays / 2 ? i : rays - 1 - i; // symmetric
-        const v = f[4 + mirror * 3] / 255;
+        const v = f[Math.floor((4 + mirror * 3) * f.length / 256)] / 255;
         const a = (i / rays) * Math.PI * 2 + spin;
         const len = base + v * Math.min(W, H) * 0.3;
         g.strokeStyle = i % 2 ? colors[0] : colors[1];
@@ -259,7 +289,7 @@
 
     function frame(now) {
       raf = 0;
-      if (!running) return;
+      if (!running || suspended) return;
       if (wrap.offsetParent === null || !sizeCanvas()) { schedule(); return; }
 
       if (switchFrames > 0) {
@@ -271,7 +301,7 @@
       }
 
       const { f, w } = sample(now);
-      const bass = bandLevel(f, 1, 8);
+      const bass = bandLevel(f, 1, Math.max(2, Math.round(f.length / 32)));
       if (!reducedMotion) wrap.style.setProperty("--pulse", bass.toFixed(3));
 
       if (style === "scope") drawScope(w);
@@ -290,6 +320,7 @@
 
     audio.addEventListener("play", () => {
       connect();
+      if (analyser) analyser.fftSize = detail ? 2048 : 512;
       if (sharedCtx && sharedCtx.state === "suspended") sharedCtx.resume();
       wrap.classList.add("is-live");
       start();
@@ -326,13 +357,19 @@
     }
 
     let currentTrack = {};
+    let lastClip = "";
     function setTrack(t) {
       currentTrack = t || {};
       style = currentTrack.viz || "bars";
       setColors(currentTrack.colors || DEFAULT_COLORS);
       peaks.fill(0);
       silentFrames = 0;
-      showArt(currentTrack.art || placeholder);
+      let art = currentTrack.art;
+      if (!art) {
+        art = pickClip(currentTrack.mood, lastClip);
+        if (art) lastClip = art;
+      }
+      showArt(art || placeholder);
 
       // channel-change moment: a quick burst of static + tube flicker
       g.clearRect(0, 0, W, H);
@@ -359,9 +396,29 @@
       showArt(placeholder);
     }
 
+    /* ── Hooks for the fullscreen visualizer ── */
+    function setDetail(on) {
+      detail = !!on;
+      if (analyser) {
+        analyser.fftSize = detail ? 2048 : 512;
+        analyser.smoothingTimeConstant = detail ? 0.72 : 0.78;
+      }
+    }
+    function suspend(on) {
+      suspended = !!on;
+      if (suspended) {
+        if (raf) cancelAnimationFrame(raf);
+        raf = 0;
+      } else if (!audio.paused) {
+        start();
+      }
+    }
+    const getColors = () => colors.slice();
+    const isLive = () => lastLive;
+
     img.src = placeholder;
-    return { setTrack, reset };
+    return { setTrack, reset, sample, setDetail, suspend, getColors, isLive, audio };
   }
 
-  window.XPViz = { create, normalize };
+  window.XPViz = { create, normalize, pickClip };
 })();
