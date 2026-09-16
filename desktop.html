@@ -352,6 +352,13 @@ Thanks for stopping by :)
     <div class="mp-right">
       <div class="mp-playlist-heading">Playlist</div>
       <div class="mp-playlist" id="mp-playlist"></div>
+      <div class="lfm-panel" data-lastfm hidden>
+        <div class="mp-playlist-heading lfm-heading">
+          <span>Recently played</span>
+          <a class="lfm-profile" target="_blank" rel="noopener">Last.fm &#8599;</a>
+        </div>
+        <div class="lfm-list"></div>
+      </div>
     </div>
 
   </div>
@@ -1654,6 +1661,7 @@ Thanks for stopping by :)
   <script src="assets/playlist.js" defer></script>
   <script src="assets/visualizer.js" defer></script>
   <script src="assets/desktop.js" defer></script>
+  <script src="assets/lastfm.js" defer></script>
 
 <!-- ══════════════════════════════════════════════
      MOBILE VIEW
@@ -2351,6 +2359,13 @@ Thanks for stopping by :)
       </div>
       <div class="mob-section-heading">Playlist</div>
       <div class="mob-playlist" id="mob-playlist"></div>
+      <div class="lfm-panel lfm-panel--mobile" data-lastfm hidden>
+        <div class="mob-section-heading lfm-heading">
+          <span>Recently played</span>
+          <a class="lfm-profile" target="_blank" rel="noopener">Last.fm &#8599;</a>
+        </div>
+        <div class="lfm-list"></div>
+      </div>
     </div>
   </div>
 
