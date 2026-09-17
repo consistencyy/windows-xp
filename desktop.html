@@ -1731,6 +1731,17 @@ Thanks for stopping by :)
 
   </div>
 
+  <!-- Now playing pill (shows when the player is minimized) -->
+  <div class="mob-nowplaying" id="mob-nowplaying" hidden>
+    <button type="button" class="mob-nowplaying-open" id="mob-nowplaying-open" aria-label="Open Media Player">
+      <span class="mob-nowplaying-eq" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="mob-nowplaying-title" id="mob-nowplaying-title"></span>
+    </button>
+    <button type="button" class="mob-nowplaying-toggle" id="mob-nowplaying-toggle" aria-label="Pause">
+      <span class="mob-np-icon" aria-hidden="true"></span>
+    </button>
+  </div>
+
   <!-- SLIM STATUS BAR (replaces old useless taskbar) -->
   <div class="mob-statusbar-strip">
     <div class="mob-statusbar-left">
@@ -2329,15 +2340,16 @@ Thanks for stopping by :)
   </div>
 
   <!-- Sheet: Media Player -->
-  <div class="mob-sheet hidden" id="mob-sheet-player">
-    <div class="mob-sheet-handle-bar"></div>
+  <div class="mob-sheet mob-sheet--player hidden" id="mob-sheet-player" role="dialog" aria-label="Media Player">
     <div class="mob-sheet-titlebar">
-      <img src="assets/music.png" class="mob-sheet-icon" />
-      <span>Media Player</span>
-      <button class="mob-sheet-close" onclick="mobCloseSheet('mob-sheet-player')">✕</button>
+      <img src="assets/music.png" class="mob-sheet-icon" alt="" />
+      <span>Windows Media Player</span>
+      <button type="button" class="mobp-winbtn" id="mob-player-min" aria-label="Minimize (keeps playing)">&#8212;</button>
+      <button type="button" class="mob-sheet-close" id="mob-player-close" aria-label="Close player">&#10005;</button>
     </div>
-    <div class="mob-sheet-content">
-      <div class="mob-player">
+
+    <div class="mobp">
+      <div class="mobp-stage">
         <div class="mob-player-artwork crt-screen" id="mob-artwork-wrap">
           <div class="crt-tube">
             <img id="mob-cover-img" src="assets/cover-placeholder.png" class="mob-cover crt-art crt-art-img" alt="" />
@@ -2346,26 +2358,64 @@ Thanks for stopping by :)
           </div>
           <div class="crt-overlay" aria-hidden="true"></div>
         </div>
-        <div class="mob-player-title" id="mob-track-title">Track Title</div>
-        <audio id="mob-audio"></audio>
-        <div class="mob-player-transport">
-          <button class="mob-ctrl" id="mob-prev">⏮</button>
-          <button class="mob-ctrl mob-play" id="mob-play">▶</button>
-          <button class="mob-ctrl" id="mob-next">⏭</button>
-        </div>
-        <div class="mob-vol-row">
-          <span>🔈</span>
-          <input type="range" id="mob-vol" min="0" max="1" step="0.01" value="1" class="mob-vol-slider" />
-        </div>
+        <button type="button" class="mobp-expand" id="mob-expand" aria-label="Full screen visualizer">
+          <span class="mobp-expand-icon" aria-hidden="true"></span>
+        </button>
       </div>
-      <div class="mob-section-heading">Playlist</div>
-      <div class="mob-playlist" id="mob-playlist"></div>
-      <div class="lfm-panel lfm-panel--mobile" data-lastfm hidden>
-        <div class="mob-section-heading lfm-heading">
-          <span>Recently played</span>
-          <a class="lfm-profile" target="_blank" rel="noopener">Last.fm &#8599;</a>
+
+      <div class="mobp-side">
+        <div class="mobp-lcd">
+          <span class="mobp-lcd-state" id="mob-state" aria-hidden="true">&#9632;</span>
+          <span class="mobp-lcd-time" id="mob-lcd-time">0:00</span>
+          <div class="mobp-marquee"><span class="mobp-marquee-text" id="mob-track-title">Media Player</span></div>
         </div>
-        <div class="lfm-list"></div>
+
+        <div class="mobp-seek-row">
+          <span class="mobp-time" id="mob-cur">0:00</span>
+          <div class="mp-seek-track mobp-seek" id="mob-seek" role="slider" tabindex="0"
+               aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="mp-seek-fill mobp-seek-fill" id="mob-seek-fill"></div>
+          </div>
+          <span class="mobp-time" id="mob-dur">0:00</span>
+        </div>
+
+        <div class="mobp-transport">
+          <button type="button" class="mp-ctrl-btn mobp-btn" id="mob-prev" aria-label="Previous"><span class="mp-icon-prev"></span></button>
+          <button type="button" class="mp-ctrl-btn mp-play-btn mobp-btn mobp-play" id="mob-play" aria-label="Play">
+            <span class="mp-play-icon">
+              <span class="mp-play-shape"></span>
+              <span class="mp-pause-bar mp-pause-bar-1"></span>
+              <span class="mp-pause-bar mp-pause-bar-2"></span>
+            </span>
+          </button>
+          <button type="button" class="mp-ctrl-btn mobp-btn" id="mob-next" aria-label="Next"><span class="mp-icon-next"></span></button>
+        </div>
+
+        <div class="mobp-tools">
+          <button type="button" class="mobp-tool" id="mob-style-btn">
+            <span class="mobp-tool-label">Style</span><span class="mobp-tool-value" id="mob-style-value">Per song</span>
+          </button>
+          <button type="button" class="mobp-tool" id="mob-color-btn">
+            <span class="mobp-tool-label">Colors</span><span class="mobp-tool-value" id="mob-color-value">From song</span>
+          </button>
+        </div>
+
+        <label class="mobp-vol" id="mob-vol-row">
+          <span aria-hidden="true">&#128264;</span>
+          <input type="range" id="mob-vol" min="0" max="1" step="0.01" value="1" class="mob-vol-slider" aria-label="Volume" />
+        </label>
+
+        <audio id="mob-audio" preload="metadata" playsinline></audio>
+
+        <div class="mob-section-heading">Playlist</div>
+        <div class="mob-playlist" id="mob-playlist"></div>
+        <div class="lfm-panel lfm-panel--mobile" data-lastfm hidden>
+          <div class="mob-section-heading lfm-heading">
+            <span>Recently played</span>
+            <a class="lfm-profile" target="_blank" rel="noopener">Last.fm &#8599;</a>
+          </div>
+          <div class="lfm-list"></div>
+        </div>
       </div>
     </div>
   </div>
