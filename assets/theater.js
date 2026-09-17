@@ -1320,6 +1320,7 @@
 
     dom.hidden = false;
     dom.dataset.wasFs = "0";
+    dom.classList.toggle("xpt--full", !opts.letterbox);
     document.documentElement.classList.add("xpt-open");
     requestFs();
 
@@ -1381,6 +1382,17 @@
     // shared with the small in-window screens
     createRenderer,
     resolvePreset,
-    getSettings: () => settings
+    getSettings: () => settings,
+    presets: PRESETS.map((p) => ({ id: p.id, name: p.name })),
+    palettes: PALETTES.map((p) => ({ id: p.id, name: p.name })),
+    // change look settings from outside (e.g. the mobile player's buttons)
+    updateSettings(patch) {
+      Object.assign(settings, patch || {});
+      saveSettings(settings);
+      if (dom) {
+        if (main) main.invalidateLut();
+        applySettings("preset");
+      }
+    }
   };
 })();

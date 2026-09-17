@@ -12,14 +12,57 @@
 (function () {
   "use strict";
 
+  /* ── Audio engine safety ───────────────────────────────
+     Analysing the music means routing it through Web Audio. If that
+     engine isn't running, the music goes silent, so:
+     - the engine is started/resumed inside a real tap or click;
+     - a player is only routed once the engine is confirmed running;
+     - on iPhone/iPad, routing only happens when Safari supports
+       navigator.audioSession ("playback" ignores the silent switch and
+       keeps playing in the background). Otherwise the visuals use the
+       built-in stand-in signal and the music plays untouched. */
+  const UA = navigator.userAgent;
+  const IS_IOS = /iPad|iPhone|iPod/.test(UA) || (/Macintosh/.test(UA) && navigator.maxTouchPoints > 1);
+
   let sharedCtx = null;
+  const routedPlayers = new Set();
   function getCtx() {
     if (sharedCtx) return sharedCtx;
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return null;
-    try { sharedCtx = new AC(); } catch (e) { sharedCtx = null; }
+    try { sharedCtx = new AC(); } catch (e) { sharedCtx = null; return null; }
+    sharedCtx.addEventListener && sharedCtx.addEventListener("statechange", () => {
+      // an interruption (phone call, Siri, etc.) would silence routed music
+      if (sharedCtx.state !== "running" && [...routedPlayers].some((a) => !a.paused)) {
+        sharedCtx.resume().catch(() => {});
+      }
+    });
     return sharedCtx;
   }
+
+  function canRoute() {
+    if (!IS_IOS) return true;
+    const s = navigator.audioSession;
+    if (!s || !("type" in s)) return false;
+    try { if (s.type !== "playback") s.type = "playback"; } catch (e) { return false; }
+    return s.type === "playback";
+  }
+
+  function unlockAudio() {
+    if (!canRoute()) return;
+    const ac = getCtx();
+    if (!ac || ac.state === "running") return;
+    ac.resume().catch(() => {});
+    try { // a silent blip inside the tap wakes Safari's audio engine
+      const b = ac.createBuffer(1, 1, 22050);
+      const src = ac.createBufferSource();
+      src.buffer = b;
+      src.connect(ac.destination);
+      src.start(0);
+    } catch (e) { /* ignore */ }
+  }
+  ["pointerup", "touchend", "click", "keydown"].forEach((ev) =>
+    document.addEventListener(ev, unlockAudio, { capture: true, passive: true }));
 
   const DEFAULT_COLORS = ["#4a9eff", "#c8e6ff"];
   const reducedMotion = window.matchMedia &&
@@ -117,33 +160,44 @@
     let spin = 0;
     let W = 0, H = 0;
 
+    let routeFailed = false;
     function connect() {
-      if (analyser) return;
+      if (analyser || routeFailed || !canRoute()) return;
       const ac = getCtx();
       if (!ac) return;
-      try {
-        const src = ac.createMediaElementSource(audio);
-        analyser = ac.createAnalyser();
-        analyser.fftSize = detail ? 2048 : 512;
-        analyser.smoothingTimeConstant = 0.78;
-        src.connect(analyser);
-        analyser.connect(ac.destination);
-      } catch (e) {
-        analyser = null;
-      }
+      const route = () => {
+        if (analyser || routeFailed || ac.state !== "running") return;
+        try {
+          const src = ac.createMediaElementSource(audio);
+          analyser = ac.createAnalyser();
+          analyser.fftSize = detail ? 2048 : 512;
+          analyser.smoothingTimeConstant = 0.78;
+          src.connect(analyser);
+          analyser.connect(ac.destination);
+          routedPlayers.add(audio);
+        } catch (e) {
+          analyser = null;
+          routeFailed = true; // keep the music playing untouched
+        }
+      };
+      if (ac.state === "running") route();
+      else ac.resume().then(route).catch(() => {});
     }
 
     /* ── Shared look with the fullscreen view ──
        When theater.js is loaded, this screen draws with the same engine,
        presets, colors and effect settings as the fullscreen visualizer. */
     const SMALL_TIER = { scale: 1, stars: 160, bands: 24, rows: 22, cols: 48 };
+    const MID_TIER = { scale: 1, stars: 380, bands: 40, rows: 30, cols: 64 };
+    let cssWidth = 0;
+    const smallTier = () => (cssWidth > 240 ? MID_TIER : SMALL_TIER);
     let engine = null, engineFrame = 0, lastT = 0;
     const theater = () => (window.XPTheater && XPTheater.createRenderer ? XPTheater : null);
     function getEngine() {
       const T = theater();
       if (!engine && T) {
         try {
-          engine = T.createRenderer(canvas, { tier: () => SMALL_TIER, colors: () => colors });
+          engine = T.createRenderer(canvas, { tier: smallTier, colors: () => colors });
           wrap.classList.add("viz-engine");
           applyLook();
         } catch (e) {
@@ -166,6 +220,7 @@
     function sizeCanvas() {
       const w = wrap.clientWidth, h = wrap.clientHeight;
       if (!w || !h) return false;
+      cssWidth = w;
       // the shared engine renders sharper; the fallback stays 1:1 and a little chunky
       const k = getEngine() ? Math.min(window.devicePixelRatio || 1, 2) : 1;
       const pw = Math.round(w * k), ph = Math.round(h * k);
@@ -374,7 +429,7 @@
     audio.addEventListener("play", () => {
       connect();
       if (analyser) analyser.fftSize = detail ? 2048 : 512;
-      if (sharedCtx && sharedCtx.state === "suspended") sharedCtx.resume();
+      if (analyser && sharedCtx && sharedCtx.state !== "running") sharedCtx.resume().catch(() => {});
       wrap.classList.add("is-live");
       start();
     });
@@ -482,5 +537,5 @@
     return { setTrack, reset, sample, setDetail, suspend, getColors, getArt, getTrackViz, isLive, audio };
   }
 
-  window.XPViz = { create, normalize, pickClip };
+  window.XPViz = { create, normalize, pickClip, isIOS: IS_IOS };
 })();
